@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Open Modbus Catalog device record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "manufacturer", "model", "aliases", "category", "analogInput", "communication", "sources"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)+$" },
+    "manufacturer": { "$ref": "#/$defs/label" },
+    "model": { "$ref": "#/$defs/label" },
+    "aliases": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/label" }
+    },
+    "category": { "const": "analog-input-module" },
+    "analogInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["differentialChannels", "resolutionBits"],
+      "properties": {
+        "differentialChannels": { "type": "integer", "minimum": 1 },
+        "resolutionBits": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "communication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "viaChassis", "firmware"],
+      "properties": {
+        "protocol": { "const": "modbus-tcp" },
+        "viaChassis": { "$ref": "#/$defs/label" },
+        "firmware": {
+          "description": "Documented chassis firmware applicability, or null if unknown.",
+          "anyOf": [{ "$ref": "#/$defs/label" }, { "type": "null" }]
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "reference"],
+        "properties": {
+          "url": { "type": "string", "pattern": "^https://[^\\s/]+(/[^\\s]*)?$" },
+          "reference": { "$ref": "#/$defs/label" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "label": { "type": "string", "minLength": 1, "pattern": "^\\S(.*\\S)?$" }
+  }
+}

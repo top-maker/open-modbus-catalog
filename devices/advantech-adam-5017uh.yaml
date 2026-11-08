@@ -1,0 +1,19 @@
+schemaVersion: 1
+id: advantech-adam-5017uh
+manufacturer: Advantech
+model: ADAM-5017UH
+aliases:
+  - ADAM5017UH
+category: analog-input-module
+analogInput:
+  differentialChannels: 8
+  resolutionBits: 12
+communication:
+  protocol: modbus-tcp
+  viaChassis: ADAM-5000/TCP
+  firmware: null
+sources:
+  - url: https://advdownload.advantech.com/productfile/Downloadfile5/1-1P8TXF7/ADAM-5000%20Series%20Manual_ed.3_D5.pdf
+    reference: "ADAM-5000 Series User Manual, edition 3, section 1.2.5 and table 1.8"
+  - url: https://advdownload.advantech.com/productfile/Downloadfile3/1-21FOSAD/ADAM-5000-TCP_User_Manual_Ed.1-FINAL.pdf
+    reference: "ADAM-5000/TCP Series User Manual, edition 1, table 2.2 and chapter 6"

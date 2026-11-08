@@ -1,0 +1,11 @@
+{
+  "name": "open-modbus-catalog",
+  "private": true,
+  "scripts": {
+    "validate": "node scripts/validate-catalog.mjs"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "yaml": "2.9.1"
+  }
+}

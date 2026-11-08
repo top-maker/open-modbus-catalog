@@ -19,20 +19,21 @@ const allowedFiles = new Set([
   'schema/device.schema.json',
   'scripts/validate-catalog.mjs',
 ]);
-const devicePath = /^devices\/([a-z0-9]+(?:-[a-z0-9]+)+)\.yaml$/;
+const devicePath = /^devices\/([^/]+)\.yaml$/;
 try {
   const { stdout } = await promisify(execFile)('git', [
     'ls-files', '-z', '--cached', '--others', '--exclude-standard',
   ], { cwd: root });
   const files = new Set(stdout.split('\0').filter(Boolean));
   const ids = new Set();
+  const models = new Set();
   for (const path of files) {
     const match = path.match(devicePath);
     if (!match && !allowedFiles.has(path)) {
       throw new Error(`Unexpected public file: ${path}`);
     }
 
-    const file = new URL(path, root);
+    const file = new URL(path.split("/").map(encodeURIComponent).join("/"), root);
     if (!lstatSync(file).isFile()) {
       throw new Error(`Expected a regular file: ${path}`);
     }
@@ -49,6 +50,19 @@ try {
       throw new Error(`${path}: filename must match device ID ${device.id}`);
     }
     ids.add(device.id);
+
+    const model = JSON.stringify([device.manufacturer.toLowerCase(), device.model.toLowerCase()]);
+    if (models.has(model)) {
+      throw new Error(`${path}: duplicate manufacturer and model`);
+    }
+    models.add(model);
+
+    for (const [index, { url }] of device.sources.entries()) {
+      const source = URL.parse(url);
+      if (!source || source.protocol !== 'https:' || source.username || source.password) {
+        throw new Error(`${path}: source ${index + 1} must be a valid HTTPS URL without credentials`);
+      }
+    }
   }
 
   if (ids.size === 0) throw new Error('No device records found');

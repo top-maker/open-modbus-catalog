@@ -8,7 +8,7 @@
 # [tool.uv]
 # prerelease = "allow"
 # ///
-"""Validate catalog Thing Models and run the L1 simulation round trip.
+"""Validate catalog Thing Models and run the simulation round trip.
 
 For each listed Thing Model, check the WoT structure and executable profile.
 When a package lists vectors, serve them with Modsim and require one Modpoll

@@ -246,7 +246,7 @@
             "$ref": "#/$defs/label"
           },
           "vectors": {
-            "description": "Known raw values per property for the L1 simulation round trip.",
+            "description": "Known raw values per property for the simulation round trip.",
             "type": "string",
             "pattern": "^models/[a-z0-9]+(-[a-z0-9]+)*\\.vectors\\.json$"
           },

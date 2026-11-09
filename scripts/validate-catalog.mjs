@@ -2,7 +2,6 @@ import { execFile } from 'node:child_process';
 import { lstatSync, readFileSync } from 'node:fs';
 import { promisify } from 'node:util';
 import Ajv2020 from 'ajv/dist/2020.js';
-import { createHash } from 'node:crypto';
 import { SaxesParser } from 'saxes';
 
 const root = new URL('../', import.meta.url);
@@ -80,7 +79,6 @@ function parseObject(bytes, file, path) {
 }
 
 function checkThingModels(device, files, allowedFiles, directory, path) {
-  const properties = new Map();
   for (const entry of device.thingModels ?? []) {
     const bytes = readPackageFile(files, allowedFiles, directory, entry.path, path);
     const model = parseObject(bytes, entry.path, path);
@@ -88,7 +86,6 @@ function checkThingModels(device, files, allowedFiles, directory, path) {
       throw new Error(`${path}: ${entry.path} must be a Thing Model with properties`);
     }
     const names = new Set(Object.keys(model.properties));
-    properties.set(entry.path, { names, sha256: createHash('sha256').update(bytes).digest('hex') });
     if (entry.vectors) {
       const vectors = parseObject(readPackageFile(files, allowedFiles, directory, entry.vectors, path), entry.vectors, path);
       const keys = Object.keys(vectors);
@@ -102,16 +99,6 @@ function checkThingModels(device, files, allowedFiles, directory, path) {
       if (Object.hasOwn(document, 'script')) {
         throw new Error(`${path}: ${scenario} must be declarative without a script`);
       }
-    }
-  }
-  for (const record of device.evidence ?? []) {
-    const model = properties.get(record.thingModel);
-    if (!model) throw new Error(`${path}: evidence references unlisted ${record.thingModel}`);
-    if (record.sha256 !== model.sha256) {
-      throw new Error(`${path}: evidence for ${record.thingModel} does not match its current bytes`);
-    }
-    if (record.points.some(point => !model.names.has(point))) {
-      throw new Error(`${path}: evidence names a point missing from ${record.thingModel}`);
     }
   }
 }

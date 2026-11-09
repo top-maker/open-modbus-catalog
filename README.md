@@ -2,7 +2,7 @@
 
 The public device catalog and feedback repository for ModioHub.
 
-The catalog holds device packages: identity, communication metadata, public source links, approved illustrations, and executable baseline Thing Models with simulation inputs and verification evidence. [ModioHub](https://github.com/top-maker/modiohub), [Modpoll](https://github.com/top-maker/modpoll) and [Modsim](https://github.com/top-maker/modsim) read packages from a pinned commit.
+The catalog holds device packages: identity, communication metadata, public source links, approved illustrations, and executable baseline Thing Models with simulation inputs. [ModioHub](https://github.com/top-maker/modiohub), [Modpoll](https://github.com/top-maker/modpoll) and [Modsim](https://github.com/top-maker/modsim) read packages from a pinned commit.
 
 Use [GitHub Issues](https://github.com/top-maker/open-modbus-catalog/issues/new/choose) to request a model, report a correction, or suggest a public source. Include the manufacturer, exact model, and firmware or hardware version when relevant. Share a public source link and page reference when available.
 
@@ -29,7 +29,7 @@ is listed and belongs to the same device package.
 For chassis-mounted modules, cite the exact module and compatible chassis.
 Record documented firmware applicability or use `null` when it is unknown.
 
-## Thing Models and verification
+## Thing Models and checks
 
 Put executable baseline Thing Models in `models/<name>.tm.json` and list each in
 `thingModels` with its hardware, chassis and firmware scope and its documentary
@@ -38,17 +38,12 @@ executable profile. Optional `models/<name>.vectors.json` maps properties to
 known raw values. Optional `simulation/<name>.sim.json` scenarios are
 declarative Modsim inputs; executable behavior scripts are not accepted.
 
-| Level | Meaning | Source |
-| --- | --- | --- |
-| L0 | Every point traces to a cited vendor document | Review |
-| L1 | The model passes the executable profile, Modsim serves its vectors and Modpoll reads them back unchanged, and each scenario serves every property | CI |
-| L2 | A maintainer reviewed a hardware reading recorded in `evidence` | Review and CI hash check |
-
-L1 shows that a model executes consistently. It does not show that the register
-map matches hardware. An `evidence` record names the chassis, firmware,
-configuration, points, tools and result, and pins the model's SHA-256. CI
-rejects evidence whose model bytes have changed, so a corrected model needs a
-new reading. Never record an unexecuted check as passed.
+CI validates every model against the executable profile. When a model lists
+vectors, CI also serves them with Modsim and requires Modpoll to read them back
+unchanged, and checks that each scenario serves every property. This shows that
+a model executes consistently; it does not show that the register map matches
+hardware. Hardware verification records are kept by ModioHub, not in this
+catalog.
 
 ## Checks
 

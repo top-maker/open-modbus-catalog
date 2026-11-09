@@ -13,8 +13,8 @@
 For each listed Thing Model, check the WoT structure and executable profile.
 When a package lists vectors, serve them with Modsim and require one Modpoll
 read to return exactly those values. Each declarative scenario must serve a
-value for every property. The round trip shows that the model executes
-consistently; it does not show that the register map matches real hardware.
+value for every property. The round trip shows that the Thing Model executes
+consistently; it does not show that its point mappings match real hardware.
 """
 
 import json
@@ -109,10 +109,10 @@ def check(package, entry):
 
 def main():
     failed = False
-    for record in sorted(ROOT.glob("devices/*/*/device.json")):
-        device = json.loads(record.read_text())
-        for entry in device.get("thingModels", []):
-            label = f"{device['id']} {entry['path']}"
+    for record in sorted(ROOT.glob("products/*/*/product.json")):
+        product = json.loads(record.read_text())
+        for entry in product.get("thingModels", []):
+            label = f"{product['id']} {entry['path']}"
             try:
                 print(f"✓ {label}: {', '.join(check(record.parent, entry))}")
             except Exception as error:  # noqa: BLE001 - report every model

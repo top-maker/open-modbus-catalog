@@ -5,11 +5,11 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import { SaxesParser } from 'saxes';
 
 const root = new URL('../', import.meta.url);
-const schema = JSON.parse(readFileSync(new URL('schema/device.schema.json', root), 'utf8'));
+const schema = JSON.parse(readFileSync(new URL('schema/product.schema.json', root), 'utf8'));
 const ajv = new Ajv2020({ allErrors: true });
-const validateDevice = ajv.compile(schema);
+const validateProduct = ajv.compile(schema);
 const allowedFiles = new Set([
-  '.github/ISSUE_TEMPLATE/device-feedback.md',
+  '.github/ISSUE_TEMPLATE/product-feedback.md',
   '.github/workflows/validate.yaml',
   '.gitignore',
   'AGENTS.md',
@@ -17,13 +17,13 @@ const allowedFiles = new Set([
   'README.md',
   'package-lock.json',
   'package.json',
-  'schema/device.schema.json',
+  'schema/product.schema.json',
   'scripts/check-thing-models.py',
   'scripts/check-thing-models.py.lock',
   'scripts/validate-catalog.mjs',
 ]);
 const slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
-const devicePath = new RegExp(`^devices/${slug}/${slug}/device\\.json$`);
+const productPath = new RegExp(`^products/${slug}/${slug}/product\\.json$`);
 const svgTags = new Set(['svg', 'title', 'desc', 'g', 'path', 'rect', 'circle', 'ellipse', 'line', 'polyline', 'polygon', 'text', 'tspan']);
 const svgAttributes = new Set('xmlns width height viewBox role aria-labelledby id fill stroke stroke-width stroke-linejoin stroke-linecap transform d x y rx ry cx cy r x1 x2 y1 y2 points font-family text-anchor font-size font-weight letter-spacing'.split(' '));
 
@@ -78,14 +78,14 @@ function parseObject(bytes, file, path) {
   return value;
 }
 
-function checkThingModels(device, files, allowedFiles, directory, path) {
-  for (const entry of device.thingModels ?? []) {
+function checkThingModels(product, files, allowedFiles, directory, path) {
+  for (const entry of product.thingModels ?? []) {
     const bytes = readPackageFile(files, allowedFiles, directory, entry.path, path);
-    const model = parseObject(bytes, entry.path, path);
-    if (model['@type'] !== 'tm:ThingModel' || !model.properties || typeof model.properties !== 'object') {
+    const thingModel = parseObject(bytes, entry.path, path);
+    if (thingModel['@type'] !== 'tm:ThingModel' || !thingModel.properties || typeof thingModel.properties !== 'object') {
       throw new Error(`${path}: ${entry.path} must be a Thing Model with properties`);
     }
-    const names = new Set(Object.keys(model.properties));
+    const names = new Set(Object.keys(thingModel.properties));
     if (entry.vectors) {
       const vectors = parseObject(readPackageFile(files, allowedFiles, directory, entry.vectors, path), entry.vectors, path);
       const keys = Object.keys(vectors);
@@ -115,35 +115,35 @@ try {
   ], { cwd: root });
   const files = new Set(stdout.split('\0').filter(Boolean));
   const ids = new Set();
-  const models = new Set();
+  const modelNumbers = new Set();
   for (const path of files) {
     if (!lstatSync(new URL(path.split('/').map(encodeURIComponent).join('/'), root)).isFile()) {
       throw new Error(`Expected a regular file: ${path}`);
     }
   }
   for (const path of files) {
-    if (!devicePath.test(path)) continue;
+    if (!productPath.test(path)) continue;
     allowedFiles.add(path);
-    const directory = path.slice(0, -'device.json'.length);
-    const device = JSON.parse(readFileSync(new URL(path, root), 'utf8'));
-    if (!validateDevice(device)) {
-      throw new Error(`${path}: ${ajv.errorsText(validateDevice.errors)}`);
+    const directory = path.slice(0, -'product.json'.length);
+    const product = JSON.parse(readFileSync(new URL(path, root), 'utf8'));
+    if (!validateProduct(product)) {
+      throw new Error(`${path}: ${ajv.errorsText(validateProduct.errors)}`);
     }
-    if (`devices/${device.id}/` !== directory) {
-      throw new Error(`${path}: device ID must equal its package path ${directory.slice('devices/'.length, -1)}`);
+    if (`products/${product.id}/` !== directory) {
+      throw new Error(`${path}: product ID must equal its package path ${directory.slice('products/'.length, -1)}`);
     }
-    if (ids.has(device.id)) throw new Error(`${path}: duplicate device ID ${device.id}`);
-    ids.add(device.id);
+    if (ids.has(product.id)) throw new Error(`${path}: duplicate product ID ${product.id}`);
+    ids.add(product.id);
 
-    const model = JSON.stringify([device.manufacturer.toLowerCase(), device.model.toLowerCase()]);
-    if (models.has(model)) throw new Error(`${path}: duplicate manufacturer and model`);
-    models.add(model);
+    const modelNumber = JSON.stringify([product.manufacturer.toLowerCase(), product.modelNumber.toLowerCase()]);
+    if (modelNumbers.has(modelNumber)) throw new Error(`${path}: duplicate manufacturer and model number`);
+    modelNumbers.add(modelNumber);
 
-    checkDescription(device.description, 'en', path);
-    for (const [locale, { description }] of Object.entries(device.translations ?? {})) {
+    checkDescription(product.description, 'en', path);
+    for (const [locale, { description }] of Object.entries(product.translations ?? {})) {
       checkDescription(description, locale, path);
     }
-    for (const document of device.documents) {
+    for (const document of product.documents) {
       if (document.url) {
         checkUrl(document.url, path);
         continue;
@@ -155,7 +155,7 @@ try {
       }
       allowedFiles.add(asset);
     }
-    for (const [index, image] of (device.images ?? []).entries()) {
+    for (const [index, image] of (product.images ?? []).entries()) {
       const asset = directory + image.path;
       const expected = `images/${String(index + 1).padStart(2, '0')}.svg`;
       if (image.path !== expected || !files.has(asset)) {
@@ -165,14 +165,14 @@ try {
       checkIllustration(new URL(asset, root), asset);
       allowedFiles.add(asset);
     }
-    checkThingModels(device, files, allowedFiles, directory, path);
+    checkThingModels(product, files, allowedFiles, directory, path);
   }
   for (const path of files) {
     if (!allowedFiles.has(path)) throw new Error(`Unexpected public file: ${path}`);
   }
 
-  if (ids.size === 0) throw new Error('No device records found');
-  console.log(`Validated ${ids.size} device record(s) and the public file allowlist.`);
+  if (ids.size === 0) throw new Error('No product records found');
+  console.log(`Validated ${ids.size} product record(s) and the public file allowlist.`);
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;

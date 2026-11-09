@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Open Modbus Catalog device record",
+  "title": "Open Modbus Catalog product record",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schemaVersion",
     "id",
     "manufacturer",
-    "model",
+    "modelNumber",
     "aliases",
     "category",
     "description",
@@ -16,20 +16,22 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": 3
+      "const": 4
     },
     "id": {
-      "description": "Stable ID equal to the package path under devices/.",
+      "description": "Stable product ID equal to the package path under products/.",
       "type": "string",
       "pattern": "^[a-z0-9]+(-[a-z0-9]+)*/[a-z0-9]+(-[a-z0-9]+)*$"
     },
     "manufacturer": {
       "$ref": "#/$defs/label"
     },
-    "model": {
+    "modelNumber": {
+      "description": "The manufacturer's model number, such as ADAM-5017UH.",
       "$ref": "#/$defs/label"
     },
     "aliases": {
+      "description": "Other spellings of the model number used in search.",
       "type": "array",
       "uniqueItems": true,
       "items": {
@@ -242,7 +244,7 @@
             "pattern": "^models/[a-z0-9]+(-[a-z0-9]+)*\\.tm\\.json$"
           },
           "scope": {
-            "description": "Hardware, chassis and firmware the register map applies to, and its documentary basis.",
+            "description": "Hardware, chassis and firmware the point mappings apply to, and its documentary basis.",
             "$ref": "#/$defs/label"
           },
           "vectors": {

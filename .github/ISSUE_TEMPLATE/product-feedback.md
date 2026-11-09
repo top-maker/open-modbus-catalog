@@ -1,9 +1,9 @@
 ---
-name: Device request or correction
-about: Request a Modbus model, report a correction, or suggest a public source
+name: Product request or correction
+about: Request a Modbus product, report a correction, or suggest a public source
 ---
 
-**Manufacturer and exact model or order code**
+**Manufacturer and exact model number or part number**
 
 **Request, correction, or missing documentation**
 

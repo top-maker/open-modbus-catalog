@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 2,
+  "id": "advantech-adam-5017uh",
+  "manufacturer": "Advantech",
+  "model": "ADAM-5017UH",
+  "aliases": [
+    "ADAM5017UH"
+  ],
+  "category": "analog-input-module",
+  "analogInput": {
+    "differentialChannels": 8,
+    "resolutionBits": 12
+  },
+  "communication": {
+    "protocol": "modbus-tcp",
+    "viaChassis": "ADAM-5000/TCP",
+    "firmware": null
+  },
+  "description": "8-channel high-speed analog input module with programmable voltage and current ranges per channel.",
+  "translations": {
+    "zh-CN": {
+      "description": "这款高速模拟量输入模块提供 8 路差分输入，各通道可单独设置电压或电流量程。模块适用于工业数据采集，可接入电压信号和标准电流信号，便于在同一设备上读取多路测量值。输入通道带光电隔离。"
+    }
+  },
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "ADAM-5017UH / ADAM-5018 / ADAM-5018P datasheet",
+      "url": "https://advdownload.advantech.com/productfile/PIS/ADAM-5017UH/file/ADAM-5017UH_5018_5018P_DS%28110520%2920201105153458.pdf",
+      "reference": "2020-11-05 edition, page 1, ADAM-5017UH column"
+    },
+    {
+      "type": "manual",
+      "title": "ADAM-5000 Series User Manual, Edition 4",
+      "url": "https://advdownload.advantech.com/productfile/Downloadfile4/1-2HXFOVU/ADAM-5000_User_Manual_Ed.4_FINAL.pdf",
+      "reference": "§1.2.5, printed pages 14–16; Figure 1.16; Tables 1.9 and 1.10"
+    },
+    {
+      "type": "manual",
+      "title": "ADAM-5000/TCP Series User Manual, Edition 1",
+      "url": "https://advdownload.advantech.com/productfile/Downloadfile3/1-21FOSAD/ADAM-5000-TCP_User_Manual_Ed.1-FINAL.pdf",
+      "reference": "Chapter 2, Table 2.2; Chapter 6, Modbus protocol"
+    }
+  ],
+  "images": [
+    {
+      "path": "images/01.svg",
+      "alt": "Front-view line illustration of the ADAM-5017UH analog input module and its 16 screw terminals",
+      "translations": {
+        "zh-CN": {
+          "alt": "ADAM-5017UH 模拟量输入模块的正视线稿，显示 16 个螺钉端子"
+        }
+      },
+      "view": "front-orthographic",
+      "source": {
+        "url": "https://advdownload.advantech.com/productfile/Downloadfile4/1-2HXFOVU/ADAM-5000_User_Manual_Ed.4_FINAL.pdf",
+        "reference": "§1.2.5, printed pages 14–16; Figure 1.16; Tables 1.9 and 1.10"
+      },
+      "rights": "Independently drawn product illustration. Approved for publication in Open Modbus Catalog."
+    }
+  ]
+}

@@ -8,19 +8,24 @@ Use [GitHub Issues](https://github.com/top-maker/open-modbus-catalog/issues/new/
 
 ## Device records
 
-Add one YAML record per exact model under `devices/`. The filename matches its
-stable ID. Choose a lowercase manufacturer-and-model ID when adding a record and
-retain it when correcting display names or adding aliases. Use aliases for
-alternate spellings of the same model. Give different models separate IDs.
+Add one `device.json` under `devices/<manufacturer>/<model>/`, using lowercase
+kebab-case directory names. Keep the record's stable ID when correcting display
+names or adding aliases. Use a separate ID for a different exact model.
 
-The v1 schema covers analog input modules that expose Modbus TCP through a
-chassis. Cite the vendor document and section for the exact module and chassis.
-Record the documented chassis firmware scope or use `null` when it is unknown.
-Confirm the installed chassis and firmware before using a register map.
+Provide a default English `description` and optional locale entries in
+`translations`. Each description is one line and 90–100 grapheme clusters.
+Consumers use the default when the requested locale is missing. Image alt text
+follows the same convention.
 
-The initial catalog uses source links for vendor documents and images. To add
-an image file, first record redistribution permission and update the schema and
-file allowlist through review.
+List official document links and exact references in `device.json`. Put only
+PDFs cleared for public redistribution in `documents/`. List approved
+illustrations in display order, starting with `images/01.svg`. Use passive
+560 × 560 SVGs with a cream background. Record source and publication rights
+for each image and for any local PDF. The validator checks that each local asset
+is listed and belongs to the same device package.
+
+For chassis-mounted modules, cite the exact module and compatible chassis.
+Record documented firmware applicability or use `null` when it is unknown.
 
 Run the same checks as CI from a Git checkout with Node.js 24:
 

@@ -3,56 +3,247 @@
   "title": "Open Modbus Catalog device record",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "id", "manufacturer", "model", "aliases", "category", "analogInput", "communication", "sources"],
+  "required": [
+    "schemaVersion",
+    "id",
+    "manufacturer",
+    "model",
+    "aliases",
+    "category",
+    "analogInput",
+    "communication",
+    "description",
+    "documents"
+  ],
   "properties": {
-    "schemaVersion": { "const": 1 },
-    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)+$" },
-    "manufacturer": { "$ref": "#/$defs/label" },
-    "model": { "$ref": "#/$defs/label" },
+    "schemaVersion": {
+      "const": 2
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)+$"
+    },
+    "manufacturer": {
+      "$ref": "#/$defs/label"
+    },
+    "model": {
+      "$ref": "#/$defs/label"
+    },
     "aliases": {
       "type": "array",
       "uniqueItems": true,
-      "items": { "$ref": "#/$defs/label" }
+      "items": {
+        "$ref": "#/$defs/label"
+      }
     },
-    "category": { "const": "analog-input-module" },
+    "category": {
+      "const": "analog-input-module"
+    },
     "analogInput": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["differentialChannels", "resolutionBits"],
+      "required": [
+        "differentialChannels",
+        "resolutionBits"
+      ],
       "properties": {
-        "differentialChannels": { "type": "integer", "minimum": 1 },
-        "resolutionBits": { "type": "integer", "minimum": 1 }
+        "differentialChannels": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "resolutionBits": {
+          "type": "integer",
+          "minimum": 1
+        }
       }
     },
     "communication": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["protocol", "viaChassis", "firmware"],
+      "required": [
+        "protocol",
+        "viaChassis",
+        "firmware"
+      ],
       "properties": {
-        "protocol": { "const": "modbus-tcp" },
-        "viaChassis": { "$ref": "#/$defs/label" },
+        "protocol": {
+          "const": "modbus-tcp"
+        },
+        "viaChassis": {
+          "$ref": "#/$defs/label"
+        },
         "firmware": {
           "description": "Documented chassis firmware applicability, or null if unknown.",
-          "anyOf": [{ "$ref": "#/$defs/label" }, { "type": "null" }]
+          "anyOf": [
+            {
+              "$ref": "#/$defs/label"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
-    "sources": {
+    "description": {
+      "$ref": "#/$defs/description"
+    },
+    "translations": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "$ref": "#/$defs/description"
+          }
+        }
+      }
+    },
+    "documents": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["url", "reference"],
+        "required": [
+          "type",
+          "title",
+          "reference"
+        ],
+        "oneOf": [
+          {
+            "required": [
+              "url"
+            ]
+          },
+          {
+            "required": [
+              "path"
+            ]
+          }
+        ],
         "properties": {
-          "url": { "type": "string", "pattern": "^https://[^\\s/]+(/[^\\s]*)?$" },
-          "reference": { "$ref": "#/$defs/label" }
+          "type": {
+            "enum": [
+              "datasheet",
+              "manual",
+              "other"
+            ]
+          },
+          "title": {
+            "$ref": "#/$defs/label"
+          },
+          "reference": {
+            "$ref": "#/$defs/label"
+          },
+          "url": {
+            "$ref": "#/$defs/httpsUrl"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^documents/[a-z0-9]+(?:-[a-z0-9]+)*\\.pdf$"
+          },
+          "rights": {
+            "$ref": "#/$defs/label"
+          }
+        },
+        "dependentRequired": {
+          "path": [
+            "rights"
+          ]
+        }
+      }
+    },
+    "images": {
+      "type": "array",
+      "maxItems": 99,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "alt",
+          "view",
+          "source",
+          "rights"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^images/(?:0[1-9]|[1-9][0-9])\\.svg$"
+          },
+          "alt": {
+            "$ref": "#/$defs/label"
+          },
+          "translations": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "alt"
+              ],
+              "properties": {
+                "alt": {
+                  "$ref": "#/$defs/label"
+                }
+              }
+            }
+          },
+          "view": {
+            "$ref": "#/$defs/label"
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          },
+          "rights": {
+            "$ref": "#/$defs/label"
+          }
         }
       }
     }
   },
   "$defs": {
-    "label": { "type": "string", "minLength": 1, "pattern": "^\\S(.*\\S)?$" }
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S(.*\\S)?$"
+    },
+    "httpsUrl": {
+      "type": "string",
+      "pattern": "^https://[^\\s/]+(/[^\\s]*)?$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "reference"
+      ],
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "reference": {
+          "$ref": "#/$defs/label"
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^<>\\x00-\\x1f\\x7f]+$"
+    }
   }
 }

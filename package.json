@@ -6,6 +6,6 @@
   },
   "devDependencies": {
     "ajv": "8.20.0",
-    "yaml": "2.9.1"
+    "saxes": "6.0.0"
   }
 }

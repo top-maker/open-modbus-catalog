@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="560" viewBox="0 0 560 560" role="img" aria-labelledby="title desc">
+  <title id="title">Advantech ADAM-5017UH front-view illustration</title>
+  <desc id="desc">Front orthographic view of the analog input module with its terminal block and sixteen screw terminals. Schematic, not to scale.</desc>
+  <rect width="560" height="560" fill="#fffaf0"/>
+  <g transform="translate(120 0)">
+  <g fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M132 56v-9h56v9M139 487v9h42v-9"/>
+    <rect x="107" y="56" width="106" height="431" rx="8"/>
+    <path d="M114 132h92M114 464h92" stroke-width="1.2"/>
+    <circle cx="187" cy="87" r="4.5" stroke-width="1.5"/>
+    <rect x="125" y="146" width="69" height="308" rx="3" stroke-width="1.7"/>
+    <path d="M153 147v306" stroke-width="1.1"/>
+  </g>
+  <g fill="none" stroke="#000" stroke-width="1.25" stroke-linecap="round">
+    <g transform="translate(0 154)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <g transform="translate(0 173)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <path d="M130 189h59" stroke-width="0.8"/>
+    <g transform="translate(0 192)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <g transform="translate(0 211)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <path d="M130 227h59" stroke-width="0.8"/>
+    <g transform="translate(0 230)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <g transform="translate(0 249)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <path d="M130 265h59" stroke-width="0.8"/>
+    <g transform="translate(0 268)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <g transform="translate(0 287)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <path d="M130 303h59" stroke-width="0.8"/>
+    <g transform="translate(0 306)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <g transform="translate(0 325)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <path d="M130 341h59" stroke-width="0.8"/>
+    <g transform="translate(0 344)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <g transform="translate(0 363)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <path d="M130 379h59" stroke-width="0.8"/>
+    <g transform="translate(0 382)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <g transform="translate(0 401)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <path d="M130 417h59" stroke-width="0.8"/>
+    <g transform="translate(0 420)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+    <g transform="translate(0 439)"><rect x="159" y="0" width="24" height="13" rx="1"/><circle cx="142" cy="6.5" r="5"/><path d="m139 9 6-5"/></g>
+  </g>
+  <g fill="#000" font-family="sans-serif" text-anchor="middle">
+    <text x="142" y="92" font-size="13" font-weight="600">8 AI</text>
+    <text x="160" y="116" font-size="12" font-weight="600">ADAM-5017UH</text>
+    <text x="160" y="525" font-size="11" letter-spacing="1">FRONT VIEW</text>
+    <text x="160" y="541" font-size="9" letter-spacing="0.8">NOT TO SCALE</text>
+  </g>
+  </g>
+</svg>

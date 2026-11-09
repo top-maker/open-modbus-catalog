@@ -2,6 +2,7 @@ import { execFile } from 'node:child_process';
 import { lstatSync, readFileSync } from 'node:fs';
 import { promisify } from 'node:util';
 import Ajv2020 from 'ajv/dist/2020.js';
+import { createHash } from 'node:crypto';
 import { SaxesParser } from 'saxes';
 
 const root = new URL('../', import.meta.url);
@@ -13,10 +14,13 @@ const allowedFiles = new Set([
   '.github/workflows/validate.yaml',
   '.gitignore',
   'AGENTS.md',
+  'LICENSE',
   'README.md',
   'package-lock.json',
   'package.json',
   'schema/device.schema.json',
+  'scripts/check-thing-models.py',
+  'scripts/check-thing-models.py.lock',
   'scripts/validate-catalog.mjs',
 ]);
 const slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
@@ -58,6 +62,60 @@ function checkDescription(text, locale, path) {
   }
 }
 
+function readPackageFile(files, allowedFiles, directory, file, path) {
+  const asset = directory + file;
+  if (!files.has(asset) || allowedFiles.has(asset)) {
+    throw new Error(`${path}: missing or duplicate package file ${file}`);
+  }
+  allowedFiles.add(asset);
+  return readFileSync(new URL(asset, root));
+}
+
+function parseObject(bytes, file, path) {
+  const value = JSON.parse(bytes.toString('utf8'));
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error(`${path}: ${file} must contain a JSON object`);
+  }
+  return value;
+}
+
+function checkThingModels(device, files, allowedFiles, directory, path) {
+  const properties = new Map();
+  for (const entry of device.thingModels ?? []) {
+    const bytes = readPackageFile(files, allowedFiles, directory, entry.path, path);
+    const model = parseObject(bytes, entry.path, path);
+    if (model['@type'] !== 'tm:ThingModel' || !model.properties || typeof model.properties !== 'object') {
+      throw new Error(`${path}: ${entry.path} must be a Thing Model with properties`);
+    }
+    const names = new Set(Object.keys(model.properties));
+    properties.set(entry.path, { names, sha256: createHash('sha256').update(bytes).digest('hex') });
+    if (entry.vectors) {
+      const vectors = parseObject(readPackageFile(files, allowedFiles, directory, entry.vectors, path), entry.vectors, path);
+      const keys = Object.keys(vectors);
+      if (keys.length === 0 || keys.some(key => !names.has(key) ||
+          !['number', 'boolean', 'string'].includes(typeof vectors[key]))) {
+        throw new Error(`${path}: ${entry.vectors} must map Thing Model properties to scalar values`);
+      }
+    }
+    for (const scenario of entry.scenarios ?? []) {
+      const document = parseObject(readPackageFile(files, allowedFiles, directory, scenario, path), scenario, path);
+      if (Object.hasOwn(document, 'script')) {
+        throw new Error(`${path}: ${scenario} must be declarative without a script`);
+      }
+    }
+  }
+  for (const record of device.evidence ?? []) {
+    const model = properties.get(record.thingModel);
+    if (!model) throw new Error(`${path}: evidence references unlisted ${record.thingModel}`);
+    if (record.sha256 !== model.sha256) {
+      throw new Error(`${path}: evidence for ${record.thingModel} does not match its current bytes`);
+    }
+    if (record.points.some(point => !model.names.has(point))) {
+      throw new Error(`${path}: evidence names a point missing from ${record.thingModel}`);
+    }
+  }
+}
+
 function checkUrl(url, path) {
   const source = URL.parse(url);
   if (!source || source.protocol !== 'https:' || source.username || source.password) {
@@ -83,6 +141,9 @@ try {
     const device = JSON.parse(readFileSync(new URL(path, root), 'utf8'));
     if (!validateDevice(device)) {
       throw new Error(`${path}: ${ajv.errorsText(validateDevice.errors)}`);
+    }
+    if (`devices/${device.id}/` !== directory) {
+      throw new Error(`${path}: device ID must equal its package path ${directory.slice('devices/'.length, -1)}`);
     }
     if (ids.has(device.id)) throw new Error(`${path}: duplicate device ID ${device.id}`);
     ids.add(device.id);
@@ -117,6 +178,7 @@ try {
       checkIllustration(new URL(asset, root), asset);
       allowedFiles.add(asset);
     }
+    checkThingModels(device, files, allowedFiles, directory, path);
   }
   for (const path of files) {
     if (!allowedFiles.has(path)) throw new Error(`Unexpected public file: ${path}`);

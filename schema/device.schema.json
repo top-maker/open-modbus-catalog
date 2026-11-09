@@ -10,18 +10,18 @@
     "model",
     "aliases",
     "category",
-    "analogInput",
-    "communication",
     "description",
+    "communication",
     "documents"
   ],
   "properties": {
     "schemaVersion": {
-      "const": 2
+      "const": 3
     },
     "id": {
+      "description": "Stable ID equal to the package path under devices/.",
       "type": "string",
-      "pattern": "^[a-z0-9]+(-[a-z0-9]+)+$"
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*/[a-z0-9]+(-[a-z0-9]+)*$"
     },
     "manufacturer": {
       "$ref": "#/$defs/label"
@@ -37,53 +37,7 @@
       }
     },
     "category": {
-      "const": "analog-input-module"
-    },
-    "analogInput": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "differentialChannels",
-        "resolutionBits"
-      ],
-      "properties": {
-        "differentialChannels": {
-          "type": "integer",
-          "minimum": 1
-        },
-        "resolutionBits": {
-          "type": "integer",
-          "minimum": 1
-        }
-      }
-    },
-    "communication": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "protocol",
-        "viaChassis",
-        "firmware"
-      ],
-      "properties": {
-        "protocol": {
-          "const": "modbus-tcp"
-        },
-        "viaChassis": {
-          "$ref": "#/$defs/label"
-        },
-        "firmware": {
-          "description": "Documented chassis firmware applicability, or null if unknown.",
-          "anyOf": [
-            {
-              "$ref": "#/$defs/label"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      }
+      "$ref": "#/$defs/slug"
     },
     "description": {
       "$ref": "#/$defs/description"
@@ -103,6 +57,64 @@
           "description": {
             "$ref": "#/$defs/description"
           }
+        }
+      }
+    },
+    "specs": {
+      "description": "Ordered public specifications cited from the listed documents.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "value"
+        ],
+        "properties": {
+          "label": {
+            "$ref": "#/$defs/label"
+          },
+          "value": {
+            "$ref": "#/$defs/label"
+          }
+        }
+      }
+    },
+    "communication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocols",
+        "firmware"
+      ],
+      "properties": {
+        "protocols": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "modbus-tcp",
+              "modbus-rtu",
+              "modbus-ascii"
+            ]
+          }
+        },
+        "viaChassis": {
+          "description": "Chassis or gateway that provides Modbus communication for a backplane module.",
+          "$ref": "#/$defs/label"
+        },
+        "firmware": {
+          "description": "Documented firmware applicability, or null if unknown.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/label"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
@@ -212,6 +224,117 @@
           }
         }
       }
+    },
+    "thingModels": {
+      "description": "Executable baseline Thing Models in this package.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "scope"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^models/[a-z0-9]+(-[a-z0-9]+)*\\.tm\\.json$"
+          },
+          "scope": {
+            "description": "Hardware, chassis and firmware the register map applies to, and its documentary basis.",
+            "$ref": "#/$defs/label"
+          },
+          "vectors": {
+            "description": "Known raw values per property for the L1 simulation round trip.",
+            "type": "string",
+            "pattern": "^models/[a-z0-9]+(-[a-z0-9]+)*\\.vectors\\.json$"
+          },
+          "scenarios": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^simulation/[a-z0-9]+(-[a-z0-9]+)*\\.sim\\.json$"
+            }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "description": "Maintainer-reviewed hardware readings (L2).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "thingModel",
+          "sha256",
+          "date",
+          "result",
+          "chassis",
+          "firmware",
+          "configuration",
+          "points",
+          "tools"
+        ],
+        "properties": {
+          "thingModel": {
+            "type": "string",
+            "pattern": "^models/[a-z0-9]+(-[a-z0-9]+)*\\.tm\\.json$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "result": {
+            "enum": [
+              "passed",
+              "partial",
+              "failed"
+            ]
+          },
+          "chassis": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/label"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "firmware": {
+            "$ref": "#/$defs/label"
+          },
+          "configuration": {
+            "description": "Slot, input ranges, wiring and other settings used for the reading.",
+            "$ref": "#/$defs/label"
+          },
+          "points": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/label"
+            }
+          },
+          "tools": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "$ref": "#/$defs/label"
+            }
+          },
+          "notes": {
+            "$ref": "#/$defs/label"
+          }
+        }
+      }
     }
   },
   "$defs": {
@@ -244,6 +367,10 @@
       "type": "string",
       "minLength": 1,
       "pattern": "^[^<>\\x00-\\x1f\\x7f]+$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
     }
   }
 }

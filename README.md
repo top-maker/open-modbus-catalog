@@ -2,15 +2,17 @@
 
 The public device catalog and feedback repository for ModioHub.
 
-The catalog holds device identity, communication metadata, public source links, and images approved for public redistribution. The website builds point previews and serves full Thing Models separately.
+The catalog holds device packages: identity, communication metadata, public source links, approved illustrations, and executable baseline Thing Models with simulation inputs and verification evidence. [ModioHub](https://github.com/top-maker/modiohub), [Modpoll](https://github.com/top-maker/modpoll) and [Modsim](https://github.com/top-maker/modsim) read packages from a pinned commit.
 
 Use [GitHub Issues](https://github.com/top-maker/open-modbus-catalog/issues/new/choose) to request a model, report a correction, or suggest a public source. Include the manufacturer, exact model, and firmware or hardware version when relevant. Share a public source link and page reference when available.
 
 ## Device records
 
 Add one `device.json` under `devices/<manufacturer>/<model>/`, using lowercase
-kebab-case directory names. Keep the record's stable ID when correcting display
-names or adding aliases. Use a separate ID for a different exact model.
+kebab-case directory names. The stable ID is that package path, such as
+`advantech/adam-5017uh`. Keep it when correcting display names or adding
+aliases. Use a separate ID for a different exact model. List cited
+specifications in `specs` as label and value pairs.
 
 Provide a default English `description` and optional locale entries in
 `translations`. Each description is one line and 90–100 grapheme clusters.
@@ -27,9 +29,40 @@ is listed and belongs to the same device package.
 For chassis-mounted modules, cite the exact module and compatible chassis.
 Record documented firmware applicability or use `null` when it is unknown.
 
-Run the same checks as CI from a Git checkout with Node.js 24:
+## Thing Models and verification
+
+Put executable baseline Thing Models in `models/<name>.tm.json` and list each in
+`thingModels` with its hardware, chassis and firmware scope and its documentary
+basis. Models follow the [modpoll-wot](https://github.com/top-maker/modpoll-wot)
+executable profile. Optional `models/<name>.vectors.json` maps properties to
+known raw values. Optional `simulation/<name>.sim.json` scenarios are
+declarative Modsim inputs; executable behavior scripts are not accepted.
+
+| Level | Meaning | Source |
+| --- | --- | --- |
+| L0 | Every point traces to a cited vendor document | Review |
+| L1 | The model passes the executable profile, Modsim serves its vectors and Modpoll reads them back unchanged, and each scenario serves every property | CI |
+| L2 | A maintainer reviewed a hardware reading recorded in `evidence` | Review and CI hash check |
+
+L1 shows that a model executes consistently. It does not show that the register
+map matches hardware. An `evidence` record names the chassis, firmware,
+configuration, points, tools and result, and pins the model's SHA-256. CI
+rejects evidence whose model bytes have changed, so a corrected model needs a
+new reading. Never record an unexecuted check as passed.
+
+## Checks
+
+Run the same checks as CI from a Git checkout with Node.js 24 and
+[uv](https://docs.astral.sh/uv/):
 
 ```sh
 npm ci
 npm run validate
+uv run --locked --script scripts/check-thing-models.py
 ```
+
+## License
+
+The catalog, including device records, Thing Models and illustrations, is
+available under the [MIT License](LICENSE). Linked vendor documents remain
+under their publishers' terms.

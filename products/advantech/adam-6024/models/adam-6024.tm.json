@@ -647,10 +647,5 @@
         "DO1"
       ]
     }
-  ],
-  "modpoll:audit": {
-    "identity": [
-      "MODULE_NAME"
-    ]
-  }
+  ]
 }

@@ -413,11 +413,5 @@
         "DO_WORD"
       ]
     }
-  ],
-  "modpoll:audit": {
-    "identity": [
-      "MODULE_NAME_1",
-      "MODULE_NAME_2"
-    ]
-  }
+  ]
 }

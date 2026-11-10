@@ -1610,12 +1610,5 @@
         "MODBUS_TABLE_VERSION"
       ]
     }
-  ],
-  "modpoll:audit": {
-    "identity": [
-      "DEVICE_ID",
-      "SOFTWARE_VERSION",
-      "MODBUS_TABLE_VERSION"
-    ]
-  }
+  ]
 }

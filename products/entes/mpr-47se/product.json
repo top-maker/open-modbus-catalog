@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 4,
+  "id": "entes/mpr-47se",
+  "manufacturer": "ENTES",
+  "modelNumber": "MPR-47SE",
+  "aliases": [
+    "MPR47SE",
+    "MPR47-SE"
+  ],
+  "category": "network-analyzer",
+  "description": "Panel-mount 96 × 96 mm network analyzer with Ethernet Modbus TCP, RS-485 Modbus RTU and harmonics.",
+  "translations": {
+    "zh-CN": {
+      "description": "这款 96×96 mm 面板安装式电网分析仪提供以太网 Modbus TCP 和 RS-485 Modbus RTU 通信，测量电压、电流、频率、四象限功率、功率因数与电能，并提供谐波测量。"
+    }
+  },
+  "specs": [
+    {
+      "label": "Maximum voltage",
+      "value": "480 VAC"
+    },
+    {
+      "label": "Current transformer secondary",
+      "value": "1 A or 5 A"
+    },
+    {
+      "label": "Frequency",
+      "value": "50–60 Hz"
+    },
+    {
+      "label": "Communication",
+      "value": "RS-485 Modbus RTU, Ethernet Modbus TCP"
+    },
+    {
+      "label": "Auxiliary supply",
+      "value": "50–270 VAC/DC"
+    },
+    {
+      "label": "Front size and panel cutout",
+      "value": "96 × 96 mm, cutout 92 × 92 mm"
+    }
+  ],
+  "communication": {
+    "protocols": [
+      "modbus-tcp",
+      "modbus-rtu"
+    ],
+    "firmware": null
+  },
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "MPR-4 Series installation guide A8327 Rev.4",
+      "url": "https://www.entes.com.tr/uploads/files/A8327-Rev.4-MPR4-47SE.pdf",
+      "reference": "English technical specifications and panel mounting dimensions, page 1"
+    },
+    {
+      "type": "other",
+      "title": "MPR 3X-4X Series Modbus register table, 2023-10-27",
+      "url": "https://www.entes.com.tr/uploads/files/1698403762-20231027%20%20MPR-3_4_Series_Register_Table.pdf",
+      "reference": "Measurements, Energy and Device Identification sheets, MPR47-SE column; MODBUS DESCRIPTION, page 14"
+    }
+  ],
+  "images": [
+    {
+      "path": "images/01.svg",
+      "alt": "Front-view line illustration of the MPR-47SE network analyzer with its segment display and five keys",
+      "translations": {
+        "zh-CN": {
+          "alt": "MPR-47SE 电网分析仪的正视线稿，显示段码屏和五个按键"
+        }
+      },
+      "view": "front-orthographic",
+      "source": {
+        "url": "https://www.entes.com.tr/uploads/files/A8327-Rev.4-MPR4-47SE.pdf",
+        "reference": "Panel mounting drawing and front view with five keys, page 1"
+      },
+      "rights": "Independently drawn from documented geometry. Pending maintainer release review."
+    }
+  ],
+  "thingModels": [
+    {
+      "path": "models/mpr-47se.tm.json",
+      "scope": "MPR-47SE points marked available in the ENTES MPR 3X-4X register table of 2023-10-27, read from holding registers over Modbus TCP or RTU. Firmware not stated; confirm the connection type setting and CT/VT ratios on the device.",
+      "vectors": "models/mpr-47se.vectors.json",
+      "scenarios": [
+        "simulation/mpr-47se.sim.json"
+      ]
+    }
+  ]
+}

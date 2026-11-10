@@ -1,0 +1,95 @@
+{
+  "version": "1",
+  "tick": 0.1,
+  "seed": 42,
+  "generators": {
+    "DI0": {
+      "kind": "constant",
+      "value": true
+    },
+    "DI1": {
+      "kind": "constant",
+      "value": false
+    },
+    "DI2": {
+      "kind": "constant",
+      "value": true
+    },
+    "DI3": {
+      "kind": "constant",
+      "value": false
+    },
+    "DI4": {
+      "kind": "constant",
+      "value": true
+    },
+    "DI5": {
+      "kind": "constant",
+      "value": false
+    },
+    "DI6": {
+      "kind": "constant",
+      "value": true
+    },
+    "DI7": {
+      "kind": "constant",
+      "value": false
+    },
+    "DI8": {
+      "kind": "constant",
+      "value": true
+    },
+    "DI9": {
+      "kind": "constant",
+      "value": false
+    },
+    "DI10": {
+      "kind": "constant",
+      "value": true
+    },
+    "DI11": {
+      "kind": "constant",
+      "value": false
+    },
+    "DO0": {
+      "kind": "constant",
+      "value": true
+    },
+    "DO1": {
+      "kind": "constant",
+      "value": true
+    },
+    "DO2": {
+      "kind": "constant",
+      "value": true
+    },
+    "DO3": {
+      "kind": "constant",
+      "value": false
+    },
+    "DO4": {
+      "kind": "constant",
+      "value": false
+    },
+    "DO5": {
+      "kind": "constant",
+      "value": false
+    },
+    "MODULE_NAME_1": {
+      "kind": "constant",
+      "value": 24656
+    },
+    "MODULE_NAME_2": {
+      "kind": "constant",
+      "value": 0
+    },
+    "DI_WORD": {
+      "kind": "constant",
+      "value": 1365
+    },
+    "DO_WORD": {
+      "kind": "constant",
+      "value": 7
+    }
+  }
+}

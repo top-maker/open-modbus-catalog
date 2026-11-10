@@ -1,0 +1,143 @@
+{
+  "version": "1",
+  "tick": 0.1,
+  "seed": 42,
+  "generators": {
+    "AI0_RAW": {
+      "kind": "sine",
+      "center": 32768,
+      "amplitude": 8000,
+      "period": 10
+    },
+    "AI1_RAW": {
+      "kind": "sine",
+      "center": 32768,
+      "amplitude": 9000,
+      "period": 11
+    },
+    "AI2_RAW": {
+      "kind": "sine",
+      "center": 32768,
+      "amplitude": 10000,
+      "period": 12
+    },
+    "AI3_RAW": {
+      "kind": "sine",
+      "center": 32768,
+      "amplitude": 11000,
+      "period": 13
+    },
+    "AI4_RAW": {
+      "kind": "sine",
+      "center": 32768,
+      "amplitude": 12000,
+      "period": 14
+    },
+    "AI5_RAW": {
+      "kind": "sine",
+      "center": 32768,
+      "amplitude": 13000,
+      "period": 15
+    },
+    "AO0_RAW": {
+      "kind": "constant",
+      "value": 2048
+    },
+    "AO1_RAW": {
+      "kind": "constant",
+      "value": 4096
+    },
+    "AI0_STATUS": {
+      "kind": "constant",
+      "value": 0
+    },
+    "AI1_STATUS": {
+      "kind": "constant",
+      "value": 0
+    },
+    "AI2_STATUS": {
+      "kind": "constant",
+      "value": 0
+    },
+    "AI3_STATUS": {
+      "kind": "constant",
+      "value": 0
+    },
+    "AI4_STATUS": {
+      "kind": "constant",
+      "value": 0
+    },
+    "AI5_STATUS": {
+      "kind": "constant",
+      "value": 0
+    },
+    "AI0_MAX_RAW": {
+      "kind": "constant",
+      "value": 41768
+    },
+    "AI1_MAX_RAW": {
+      "kind": "constant",
+      "value": 42768
+    },
+    "AI2_MAX_RAW": {
+      "kind": "constant",
+      "value": 43768
+    },
+    "AI3_MAX_RAW": {
+      "kind": "constant",
+      "value": 44768
+    },
+    "AI4_MAX_RAW": {
+      "kind": "constant",
+      "value": 45768
+    },
+    "AI5_MAX_RAW": {
+      "kind": "constant",
+      "value": 46768
+    },
+    "AI0_MIN_RAW": {
+      "kind": "constant",
+      "value": 23768
+    },
+    "AI1_MIN_RAW": {
+      "kind": "constant",
+      "value": 22768
+    },
+    "AI2_MIN_RAW": {
+      "kind": "constant",
+      "value": 21768
+    },
+    "AI3_MIN_RAW": {
+      "kind": "constant",
+      "value": 20768
+    },
+    "AI4_MIN_RAW": {
+      "kind": "constant",
+      "value": 19768
+    },
+    "AI5_MIN_RAW": {
+      "kind": "constant",
+      "value": 18768
+    },
+    "MODULE_NAME": {
+      "kind": "constant",
+      "value": 24612
+    },
+    "DI0": {
+      "kind": "constant",
+      "value": true
+    },
+    "DI1": {
+      "kind": "constant",
+      "value": false
+    },
+    "DO0": {
+      "kind": "constant",
+      "value": false
+    },
+    "DO1": {
+      "kind": "constant",
+      "value": true
+    }
+  }
+}

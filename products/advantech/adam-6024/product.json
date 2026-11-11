@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "id": "advantech/adam-6024",
   "manufacturer": "Advantech",
   "modelNumber": "ADAM-6024",
@@ -10,6 +10,7 @@
   "description": "Modbus TCP universal I/O module with 6 differential analog inputs, 2 analog outputs, 2 DI and 2 DO.",
   "translations": {
     "zh-CN": {
+      "manufacturer": "研华",
       "description": "这款以太网通用 I/O 模块通过 Modbus TCP 通信，提供 6 路差分模拟量输入、2 路模拟量输出、2 路数字量输入和 2 路数字量输出，模拟输入支持 ±10 V 和 0~20 mA 量程。"
     }
   },

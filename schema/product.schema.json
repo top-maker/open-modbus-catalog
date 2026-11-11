@@ -16,7 +16,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": 4
+      "const": 5
     },
     "id": {
       "description": "Stable product ID equal to the package path under products/.",
@@ -58,6 +58,10 @@
         "properties": {
           "description": {
             "$ref": "#/$defs/description"
+          },
+          "manufacturer": {
+            "description": "The manufacturer's established name in this locale, such as 研华 for Advantech. Omit it when there is none.",
+            "$ref": "#/$defs/label"
           }
         }
       }

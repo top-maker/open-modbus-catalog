@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "id": "advantech/adam-5017uh",
   "manufacturer": "Advantech",
   "modelNumber": "ADAM-5017UH",
@@ -10,6 +10,7 @@
   "description": "8-channel high-speed analog input module with programmable voltage and current ranges per channel.",
   "translations": {
     "zh-CN": {
+      "manufacturer": "研华",
       "description": "这款高速模拟量输入模块提供 8 路差分输入，各通道可单独设置电压或电流量程。模块适用于工业数据采集，可接入电压信号和标准电流信号，便于在同一设备上读取多路测量值。输入通道带光电隔离。"
     }
   },

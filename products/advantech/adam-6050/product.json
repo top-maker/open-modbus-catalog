@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "id": "advantech/adam-6050",
   "manufacturer": "Advantech",
   "modelNumber": "ADAM-6050",
@@ -10,6 +10,7 @@
   "description": "Modbus TCP digital I/O module with 12 isolated inputs, six sink-type outputs and 3 kHz counters.",
   "translations": {
     "zh-CN": {
+      "manufacturer": "研华",
       "description": "这款以太网数字量 I/O 模块通过 Modbus TCP 通信，提供 12 路隔离数字量输入和 6 路漏型集电极开路输出。输入支持干湿接点、3 kHz 计数和频率测量，输出支持脉冲输出。"
     }
   },

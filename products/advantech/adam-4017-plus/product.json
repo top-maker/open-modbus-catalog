@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "id": "advantech/adam-4017-plus",
   "manufacturer": "Advantech",
   "modelNumber": "ADAM-4017+",
@@ -10,6 +10,7 @@
   "description": "RS-485 Modbus RTU analog input module with eight differential channels for mV, V and mA signals.",
   "translations": {
     "zh-CN": {
+      "manufacturer": "研华",
       "description": "这款 RS-485 模拟量输入模块支持 Modbus RTU 和 ADAM ASCII 命令，提供 8 路差分输入，可按通道设置 mV、V 和 mA 量程，隔离电压 3000 VDC。"
     }
   },

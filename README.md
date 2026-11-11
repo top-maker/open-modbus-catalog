@@ -18,7 +18,9 @@ model number. List cited specifications in `specs` as label and value pairs.
 Provide a default English `description` and optional locale entries in
 `translations`. Each description is one line and 90–100 grapheme clusters.
 Consumers use the default when the requested locale is missing. Image alt text
-follows the same convention.
+follows the same convention. Add `manufacturer` to a locale entry only when the
+manufacturer has an established name in that locale, such as 研华 for Advantech;
+consumers show the default manufacturer name otherwise.
 
 List official document links and exact references in `product.json`. Put only
 PDFs cleared for public redistribution in `documents/`. List approved

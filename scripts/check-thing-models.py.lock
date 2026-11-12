@@ -7,8 +7,8 @@ prerelease-mode = "allow"
 
 [manifest]
 requirements = [
-    { name = "modpoll", specifier = "==2.0.0a5" },
-    { name = "modsim", specifier = "==2.0.0a6" },
+    { name = "modpoll", specifier = "==2.0.0a6" },
+    { name = "modsim", specifier = "==2.0.0a8" },
     { name = "pyyaml", specifier = "==6.0.3" },
 ]
 
@@ -199,7 +199,7 @@ wheels = [
 
 [[package]]
 name = "modpoll"
-version = "2.0.0a5"
+version = "2.0.0a6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "modpoll-wot" },
@@ -208,27 +208,27 @@ dependencies = [
     { name = "pymodbus" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f6/ab/12dd305e42c2195500bbe3081b875fa1e02ef91839a4f07d1d247533cd77/modpoll-2.0.0a5.tar.gz", hash = "sha256:ea14bae81c992a82e895d2ae6e9995cff1842a34d440b3f323341cf6e253530d", size = 20468, upload-time = "2026-11-10T14:15:28.112Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b6/b2/dfcde61b8fa2b12097a596b1a977800dadcd60e8836a58e0f9f6a42f19d4/modpoll-2.0.0a6.tar.gz", hash = "sha256:77ba4ca00bf324a65af84cf418b6035b5a05ed91036b7908ee7934a6089103eb", size = 20952, upload-time = "2026-11-12T04:18:26.604Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ed/fa/f63b1e6924f36b71e0b280b2b0ac21b2cf8768bd07fbe3dc26ee9920840f/modpoll-2.0.0a5-py3-none-any.whl", hash = "sha256:46155c89a5101af661b3b55309f1cb633d515c651793595abff6b65823e7e2ed", size = 22805, upload-time = "2026-11-10T14:15:27.033Z" },
+    { url = "https://files.pythonhosted.org/packages/f5/c1/3d287bcd66aac7be8c1684e86ecbc0db7c9e6a149e45a27877f357e19081/modpoll-2.0.0a6-py3-none-any.whl", hash = "sha256:e423ef6df89f890f54c4090620febf4935121d12bcb30eae594b73334d3c6239", size = 23292, upload-time = "2026-11-12T04:18:25.474Z" },
 ]
 
 [[package]]
 name = "modpoll-wot"
-version = "0.3.0a3"
+version = "0.4.0a1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jsonschema" },
     { name = "referencing" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ec/c3/aec90bc5a9b1eac294e49e6f0d5ad85846da505f9ee12639ac57d2ba74c7/modpoll_wot-0.3.0a3.tar.gz", hash = "sha256:e2f61c65540d8487eb1f91adbff812d29580c3195632a4a2377374134ee84305", size = 50388, upload-time = "2026-11-10T13:56:03.147Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f6/19/f27b28a5e50b5ff8c7cb25e3593df58f31c65d4da5f29d051d29ee0f4d2a/modpoll_wot-0.4.0a1.tar.gz", hash = "sha256:81d25997407a64799a034ad4df9c53dbb4f8a7842f4416dacb81a7e26d95b6b6", size = 54976, upload-time = "2026-11-12T03:52:27.323Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/09/80/cf5e0a63ff469cda8818116e5f8e3bdc8a293aa83a8ba788566f7903198f/modpoll_wot-0.3.0a3-py3-none-any.whl", hash = "sha256:1fb4a27a5a4503512303155881ec8b13c0543d086d39767d613434782d46161e", size = 42463, upload-time = "2026-11-10T13:56:02.184Z" },
+    { url = "https://files.pythonhosted.org/packages/e4/d3/4400813559fd11ca7d758d5ab343505366a7dd94c65be0c293b8048d915c/modpoll_wot-0.4.0a1-py3-none-any.whl", hash = "sha256:9708d2cadf65ce93626eb5755905f25e7aedcc1b9746e66277d5d94f08aa4c76", size = 46936, upload-time = "2026-11-12T03:52:26.239Z" },
 ]
 
 [[package]]
 name = "modsim"
-version = "2.0.0a6"
+version = "2.0.0a8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jsonschema" },
@@ -236,9 +236,9 @@ dependencies = [
     { name = "pymodbus" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f3/c5/b6663431d258757df5cf015d72438d6bb720507e6ae3d3ce73e36e90b711/modsim-2.0.0a6.tar.gz", hash = "sha256:bb840b11dde9a6a513bddf888b8a3c3a80f36803d3e7acfffa7c2b44df86243b", size = 29245, upload-time = "2026-11-10T14:31:36.127Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ef/72/b3a7cb6454f6cb4bda4900b3f5cdfd616db2c21caefdfaf9a6065888336f/modsim-2.0.0a8.tar.gz", hash = "sha256:0fc9da32c1d4903436a631043d82665f78ca99059f5ac3e4cd02ab5cdeb6fd4c", size = 29035, upload-time = "2026-11-12T04:51:30.885Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/b6/357ac2a42e2fc1ca25060b19bbe6578bc85b12148927621dc926e6c13e3c/modsim-2.0.0a6-py3-none-any.whl", hash = "sha256:01849687dff5165258efcd5386546b4472dfe48e0cd2fac2f998c4b7ac474114", size = 34440, upload-time = "2026-11-10T14:31:37.037Z" },
+    { url = "https://files.pythonhosted.org/packages/b5/aa/e8c59cd317bb88a1dade292f0a5e946d88c1b9671a5a21a9c11a82496df7/modsim-2.0.0a8-py3-none-any.whl", hash = "sha256:cf8e65bf73f241fcd6280ed861dcd8fadea323b8db439bd7311bb0e8db99be32", size = 34157, upload-time = "2026-11-12T04:51:29.911Z" },
 ]
 
 [[package]]

@@ -1,8 +1,8 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "modpoll==2.0.0a5",
-#     "modsim==2.0.0a6",
+#     "modpoll==2.0.0a6",
+#     "modsim==2.0.0a8",
 #     "pyyaml==6.0.3",
 # ]
 #
@@ -12,9 +12,9 @@
 """Validate catalog Thing Models and run the simulation check.
 
 For each package with model.tm.json, check the executable profile, then serve
-its scenario with Modsim and read it once with Modpoll. The scenario is
-model.sim.json, or one generated from simulation-presets.yaml for the
-product's category. Static values must read back unchanged and changing values
+its simulation data with Modsim and read it once with Modpoll. The data is
+model.data.json, checked by modpoll-wot, or static data generated from
+simulation-presets.yaml for the product's category. Static values must read back unchanged and changing values
 must stay within their range. Three more passes serve values derived from each
 point's type (bounds, high bit, asymmetric patterns) to check decoding. The
 check shows that a Thing Model executes consistently; it does not show that
@@ -31,7 +31,9 @@ import time
 
 import yaml
 
-from simulation import edge_values, load_presets, preset_scenario
+from modpoll_wot import load_simulation_data
+
+from simulation import edge_values, load_presets, preset_data
 
 ROOT = Path(__file__).resolve().parents[1]
 TIMEOUT = 30
@@ -68,13 +70,13 @@ def wait_for(port, server):
     raise RuntimeError("modsim did not start listening")
 
 
-def simulated_read(model, scenario):
+def simulated_read(model, data):
     port = free_port()
     with TemporaryDirectory() as directory:
-        source = Path(directory) / "scenario.sim.json"
-        source.write_text(json.dumps(scenario))
+        source = Path(directory) / "model.data.json"
+        source.write_text(json.dumps(data))
         server = subprocess.Popen(
-            [sys.executable, "-m", "modsim", "--config", str(model), "--scenario", str(source),
+            [sys.executable, "-m", "modsim", "--config", str(model), "--data", str(source),
              "--bind", "127.0.0.1", "--port", str(port)],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -98,16 +100,16 @@ def compare(expected, actual):
         raise RuntimeError(f"read back differs (expected, actual): {mismatched}")
 
 
-def check_scenario(model, thing_model, scenario):
-    actual = simulated_read(model, scenario)
-    generators = scenario.get("generators", {})
-    static = {name: value for name, value in scenario.get("initial", {}).items() if name not in generators}
+def check_data(model, thing_model, data):
+    actual = simulated_read(model, data)
+    generators = data.get("generators", {})
+    static = {name: value for name, value in data.get("initial", {}).items() if name not in generators}
     static |= {name: spec["value"] for name, spec in generators.items() if spec["kind"] == "constant"}
     compare(static, actual)
     for name, prop in thing_model["properties"].items():
         value = actual.get(name)
         if value is None:
-            raise RuntimeError(f"scenario served no value for {name}")
+            raise RuntimeError(f"simulation data served no value for {name}")
         if isinstance(value, (int, float)) and not isinstance(value, bool) and not (
                 prop.get("minimum", value) <= value <= prop.get("maximum", value)):
             raise RuntimeError(f"{name} read {value} outside its range")
@@ -117,13 +119,16 @@ def check(package, presets):
     model = package / "model.tm.json"
     run("modpoll_wot", "validate", str(model), "--kind", "tm", "--profile")
     thing_model = json.loads(model.read_text())
-    authored = package / "model.sim.json"
+    authored = package / "model.data.json"
     if authored.exists():
-        scenario, origin = json.loads(authored.read_text()), "model.sim.json"
+        data = load_simulation_data(
+            json.loads(authored.read_text()), properties=thing_model["properties"].keys()
+        ).data
+        origin = "model.data.json"
     else:
         category = yaml.safe_load((package / "product.yaml").read_text())["category"]
-        scenario, origin = preset_scenario(thing_model, category, presets), f"{category} preset"
-    check_scenario(model, thing_model, scenario)
+        data, origin = preset_data(thing_model, category, presets), f"{category} preset"
+    check_data(model, thing_model, data)
     passes = edge_values(thing_model)
     for values in passes:
         compare(values, simulated_read(model, {"version": "1", "initial": values}))

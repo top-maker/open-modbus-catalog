@@ -2,7 +2,7 @@
 
 The public product catalog and feedback repository for ModioHub.
 
-The catalog holds product packages. A product is one manufacturer model, such as Advantech ADAM-5017UH, covering every device of that model. Each package holds the product's identity, communication metadata, public source links, approved illustrations, and an executable baseline Thing Model with its simulation scenario. [ModioHub](https://github.com/top-maker/modiohub), [Modpoll](https://github.com/top-maker/modpoll) and [Modsim](https://github.com/top-maker/modsim) read packages from a pinned commit.
+The catalog holds product packages. A product is one manufacturer model, such as Advantech ADAM-5017UH, covering every device of that model. Each package holds the product's identity, communication metadata, public source links, approved illustrations, and an executable baseline Thing Model with its simulation data. [ModioHub](https://github.com/top-maker/modiohub), [Modpoll](https://github.com/top-maker/modpoll) and [Modsim](https://github.com/top-maker/modsim) read packages from a pinned commit.
 
 Contribute through [GitHub Issues](https://github.com/top-maker/open-modbus-catalog/issues/new/choose) to request a product, report a correction, or suggest a public source. Include the manufacturer, exact model number or part number, and firmware or hardware version when relevant. Share a public source link and page reference when available.
 
@@ -19,7 +19,7 @@ Advantech. Add the manufacturer there before its first product.
 products/<manufacturer>/<model-number>/
   product.yaml      required: identity, communication and sources
   model.tm.json     optional: baseline Thing Model
-  model.sim.json    optional: simulation scenario for the Thing Model
+  model.data.json   optional: simulation data for the Thing Model
   images/NN.svg     optional: illustrations listed in product.yaml
   documents/*.pdf   optional: PDFs cleared for redistribution, listed in product.yaml
 ```
@@ -69,15 +69,18 @@ Consumers fall back to the default language when a translation is missing.
 its `description` states the hardware, chassis, firmware and register map
 edition it applies to.
 
-`model.sim.json` is a declarative Modsim scenario. Static values in `initial`
-are the default; add `generators` only for points that should change over
-time. Scripts are not accepted. Without a scenario, CI generates a static one
-from [`simulation-presets.yaml`](simulation-presets.yaml), which gives values
-per category and point unit; `uv run scripts/simulation.py <package>` prints
-it as a starting point for `model.sim.json`.
+`model.data.json` is [simulation data](https://github.com/top-maker/modpoll-wot/blob/main/profile.md#simulation-data),
+which Modsim loads with `--data`. Static values in `initial` are the default;
+add `generators` only for points that should change over time, or `bindings`
+for a point that follows another. Simulation data carries no code. Without
+it, CI generates static data from
+[`simulation-presets.yaml`](simulation-presets.yaml), which gives values per
+category and point unit; `uv run scripts/simulation.py <package>` prints it as
+a starting point for `model.data.json`. Readings of real devices, such as a
+Modpoll `--export` snapshot, are instance data and do not belong here.
 
 CI runs the simulation check on every Thing Model: it validates the profile,
-serves the scenario with Modsim and reads it once with Modpoll, requiring
+serves the simulation data with Modsim and reads it once with Modpoll, requiring
 static values to read back unchanged and changing values to stay in range,
 then serves values derived from each point's type (bounds, high bit and
 asymmetric patterns) to check decoding. This shows that a Thing Model

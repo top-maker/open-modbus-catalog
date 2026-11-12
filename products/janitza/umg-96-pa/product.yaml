@@ -37,3 +37,14 @@ documents:
   title: UMG 96-PA / UMG 96-PA-MID user manual and technical data, document 2.061.015.3d, version 06/2020
   url: 'https://assets.janitza.com/ce18jq9ih0x6/0c5a496d4d065c49f6fb49/a3cae3ba5bf941ada63160681ddc5112/janitza-bhb-umg96pa-fw1-en.pdf'
   reference: Product features, chapter 5; communication settings, page 48; §13.12.1 RS485, page 49; §19.1 Modbus address list of frequently required measured values, pages 82–83
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the UMG 96-PA panel meter with its display and six function keys
+  translations:
+    zh-CN:
+      alt: UMG 96-PA 面板式仪表的正视线稿，显示屏幕和六个功能键
+  view: front-orthographic
+  source:
+    url: 'https://assets.janitza.com/ce18jq9ih0x6/0c5a496d4d065c49f6fb49/a3cae3ba5bf941ada63160681ddc5112/janitza-bhb-umg96pa-fw1-en.pdf'
+    reference: §19.3 dimensional drawings, front view, page 84; §4.1 front view, page 14
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

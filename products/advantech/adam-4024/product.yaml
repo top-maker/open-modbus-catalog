@@ -41,3 +41,14 @@ documents:
   title: ADAM-4000 Series User Manual, Edition 9
   url: 'https://advdownload.advantech.com/productfile/Downloadfile1/1-2IIGU49/ADAM-4000_Series_User_manual_Ed.9_FINAL.pdf'
   reference: §3.6, printed pages 41–43; Appendix G.1 item 6, printed page 267
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the ADAM-4024 analog output module with two 10-terminal plug-in blocks
+  translations:
+    zh-CN:
+      alt: ADAM-4024 模拟量输出模块的正视线稿，显示上下两组 10 位插拔式端子
+  view: front-orthographic
+  source:
+    url: 'https://advdownload.advantech.com/productfile/Downloadfile1/1-2IIGU49/ADAM-4000_Series_User_manual_Ed.9_FINAL.pdf'
+    reference: Appendix C.1 Figure C.1, ADAM module dimensions
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

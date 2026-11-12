@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Janitza UMG 96-PA front-view illustration</title>
+  <desc id="desc">Front orthographic view of the 96 x 96 mm panel-mount power analyser with its colour display window and a row of six square function keys. Schematic, not to scale.</desc>
+  <rect width="512" height="512" fill="#fff"/>
+  <g fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="83.2" y="60" width="345.6" height="345.6" rx="6"/>
+  </g>
+  <g fill="none" stroke="#000" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="97.6" y="74.4" width="316.8" height="316.8" rx="3"/>
+    <rect x="137.2" y="99.6" width="237.6" height="183.6" rx="1" stroke-width="1.7"/>
+    <rect x="144.4" y="319.2" width="30.6" height="30.6" rx="1.5"/>
+    <rect x="184" y="319.2" width="30.6" height="30.6" rx="1.5"/>
+    <rect x="223.6" y="319.2" width="30.6" height="30.6" rx="1.5"/>
+    <rect x="263.2" y="319.2" width="30.6" height="30.6" rx="1.5"/>
+    <rect x="302.8" y="319.2" width="30.6" height="30.6" rx="1.5"/>
+    <rect x="342.4" y="319.2" width="30.6" height="30.6" rx="1.5"/>
+  </g>
+  <g fill="#000" font-family="sans-serif" text-anchor="middle">
+    <text x="374.8" y="376.8" font-size="10" font-weight="600" text-anchor="end">UMG 96-PA</text>
+    <text x="256" y="476" font-size="11" letter-spacing="1">FRONT VIEW</text>
+    <text x="256" y="492" font-size="9" letter-spacing="0.8">NOT TO SCALE</text>
+  </g>
+</svg>

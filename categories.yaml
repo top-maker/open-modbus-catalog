@@ -24,6 +24,12 @@ digital-io-module:
     zh-CN:
       name: 数字量 I/O 模块
 
+energy-meter:
+  name: Energy meter
+  translations:
+    zh-CN:
+      name: 电能表
+
 network-analyzer:
   name: Network analyzer
   translations:

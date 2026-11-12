@@ -12,6 +12,12 @@ analog-input-module:
     zh-CN:
       name: 模拟量输入模块
 
+analog-output-module:
+  name: Analog output module
+  translations:
+    zh-CN:
+      name: 模拟量输出模块
+
 digital-io-module:
   name: Digital I/O module
   translations:

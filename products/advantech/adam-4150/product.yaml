@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: ADAM-4150
+aliases:
+- ADAM4150
+category: digital-io-module
+description: Robust RS-485 Modbus RTU module with 7 digital inputs, 3 kHz counters and 8 open-collector outputs.
+translations:
+  zh-CN:
+    description: 这款坚固型 RS-485 数字量 I/O 模块支持 Modbus RTU 和 ADAM ASCII 命令，提供 7 路可计数或测频的数字量输入和 8 路集电极开路输出，隔离电压 3000 VDC。
+specs:
+- label: Digital inputs
+  value: 7, dry or wet contact; 3 kHz counter or frequency input
+- label: Digital outputs
+  value: 8, open collector to 40 V; 100 Hz pulse output
+- label: Isolation
+  value: 3,000 VDC
+- label: Power input
+  value: 10–48 VDC, 1.6 W at 24 VDC
+- label: Protocols
+  value: ADAM ASCII command and Modbus RTU
+communication:
+  protocols:
+  - modbus-rtu
+  defaults:
+    serial:
+      unitId: 1
+      baudRate: 9600
+    reference: 'ADAM-4100 Series User Manual, Edition 7: §2.2.1 default factory settings, 9600 bit/s and address 01h; §2.2.4, factory protocol ADAM ASCII until switched to Modbus as in Appendix G'
+documents:
+- type: datasheet
+  title: ADAM-4118 / ADAM-4150 / ADAM-4168 datasheet
+  url: 'https://advdownload.advantech.com/productfile/PIS/ADAM-4168/file/ADAM-4118_4150_4168_DS(070523)20230712125049.pdf'
+  reference: 2023-07-05 edition, page 1, ADAM-4150 column
+- type: manual
+  title: ADAM-4100 Series User Manual, Edition 7
+  url: 'https://advdownload.advantech.com/productfile/Downloadfile1/1-33T3L5U/ADAM-4100_User_Manual_Ed.7-FINAL.pdf'
+  reference: §2.2.1 and §2.2.4; Appendix B, Tables B.3 and B.4, printed pages 104–106

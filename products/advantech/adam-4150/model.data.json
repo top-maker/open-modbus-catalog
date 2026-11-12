@@ -1,0 +1,28 @@
+{
+  "version": "1",
+  "initial": {
+    "DI0": true,
+    "DI1": false,
+    "DI2": true,
+    "DI3": false,
+    "DI4": true,
+    "DI5": false,
+    "DI6": true,
+    "PULSE_CONTINUOUS_DO0": false,
+    "PULSE_CONTINUOUS_DO1": false,
+    "PULSE_CONTINUOUS_DO2": false,
+    "PULSE_CONTINUOUS_DO3": false,
+    "PULSE_CONTINUOUS_DO4": false,
+    "PULSE_CONTINUOUS_DO5": false,
+    "PULSE_CONTINUOUS_DO6": false,
+    "PULSE_CONTINUOUS_DO7": false,
+    "MODULE_NAME_1": 16720,
+    "MODULE_NAME_2": 0,
+    "VERSION_1": 41472,
+    "VERSION_2": 45057,
+    "COMM_SAFETY_ENABLE": 0,
+    "COMM_SAFETY_FLAG": 0,
+    "DI_WORD": 85,
+    "DO_WORD": 51
+  }
+}

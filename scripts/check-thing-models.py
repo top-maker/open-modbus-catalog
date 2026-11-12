@@ -2,7 +2,7 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "modpoll==2.0.0a6",
-#     "modsim==2.0.0a7",
+#     "modsim==2.0.0a8",
 #     "pyyaml==6.0.3",
 # ]
 #

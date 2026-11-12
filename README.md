@@ -2,7 +2,7 @@
 
 The public product catalog and feedback repository for ModioHub.
 
-The catalog holds product packages. A product is one manufacturer model, such as Advantech ADAM-5017UH, covering every device of that model. Each package holds the product's identity, communication metadata, public source links, approved illustrations, and an executable baseline Thing Model with its simulation data. [ModioHub](https://github.com/top-maker/modiohub), [Modpoll](https://github.com/top-maker/modpoll) and [Modsim](https://github.com/top-maker/modsim) read packages from a pinned commit.
+The catalog holds product packages. A product is one manufacturer model, such as Advantech ADAM-5017UH, covering every device of that model. Each package holds the product's identity, communication metadata and public source links, and, where available, approved illustrations and an executable baseline Thing Model with its simulation data. [ModioHub](https://github.com/top-maker/modiohub), [Modpoll](https://github.com/top-maker/modpoll) and [Modsim](https://github.com/top-maker/modsim) read packages from a pinned commit.
 
 Contribute through [GitHub Issues](https://github.com/top-maker/open-modbus-catalog/issues/new/choose) to request a product, report a correction, or suggest a public source. Include the manufacturer, exact model number or part number, and firmware or hardware version when relevant. Share a public source link and page reference when available.
 
@@ -69,6 +69,11 @@ Consumers fall back to the default language when a translation is missing.
 its `description` states the hardware, chassis, firmware and register map
 edition it applies to.
 
+Addresses (`modv:address`) are zero-based protocol data unit addresses, as the
+profile defines them. Convert a manual's reference numbers before recording
+them: register `40001` is address `0`. Say so in the `description` when the
+manual's own numbering differs.
+
 `model.data.json` is [simulation data](https://github.com/top-maker/modpoll-wot/blob/main/profile.md#simulation-data),
 which Modsim loads with `--data`. Static values in `initial` are the default;
 add `generators` only for points that should change over time, or `bindings`
@@ -95,9 +100,15 @@ Run the same checks as CI from a Git checkout with Node.js 24 and
 
 ```sh
 npm ci
+npm test
 npm run validate
 uv run --locked --script scripts/check-thing-models.py
 ```
+
+`npm test` shows that each validation rule rejects the bad data it exists for.
+The simulation check runs four packages at a time; `--changed-since REF` limits
+it to packages changed since a Git ref, as pull requests do in CI, and `--jobs N`
+sets the parallelism.
 
 ## License
 

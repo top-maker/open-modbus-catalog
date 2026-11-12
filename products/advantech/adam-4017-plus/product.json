@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "id": "advantech/adam-4017-plus",
   "manufacturer": "Advantech",
   "modelNumber": "ADAM-4017+",
@@ -44,7 +44,17 @@
     "protocols": [
       "modbus-rtu"
     ],
-    "firmware": null
+    "firmware": null,
+    "defaults": {
+      "serial": {
+        "unitId": 1,
+        "baudRate": 9600,
+        "dataBits": 8,
+        "parity": "none",
+        "stopBits": 1
+      },
+      "reference": "ADAM-4000 Series User Manual, Edition 9: §2.2, printed page 10, address 01h and 9600 baud, factory protocol ADAM ASCII until set to Modbus as in Appendix H; §3.1, printed page 21, N, 8, 1"
+    }
   },
   "documents": [
     {

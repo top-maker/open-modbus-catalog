@@ -1,0 +1,31 @@
+# Product categories. Each key is a category ID that product records use in
+# `category`. Add a category here before the first product that needs it, and
+# reuse an existing one when it fits.
+#
+# name: English display name, sentence case.
+# translations.<locale>.name: established name in that locale. Consumers fall
+#   back to the English name when a locale is missing.
+
+analog-input-module:
+  name: Analog input module
+  translations:
+    zh-CN:
+      name: 模拟量输入模块
+
+digital-io-module:
+  name: Digital I/O module
+  translations:
+    zh-CN:
+      name: 数字量 I/O 模块
+
+network-analyzer:
+  name: Network analyzer
+  translations:
+    zh-CN:
+      name: 电力网络分析仪
+
+universal-io-module:
+  name: Universal I/O module
+  translations:
+    zh-CN:
+      name: 通用 I/O 模块

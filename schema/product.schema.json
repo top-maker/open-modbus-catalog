@@ -16,7 +16,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": 5
+      "const": 6
     },
     "id": {
       "description": "Stable product ID equal to the package path under products/.",
@@ -39,6 +39,7 @@
       }
     },
     "category": {
+      "description": "A category ID listed in categories.yaml.",
       "$ref": "#/$defs/slug"
     },
     "description": {
@@ -121,6 +122,72 @@
               "type": "null"
             }
           ]
+        },
+        "defaults": {
+          "description": "Documented communication settings a new device ships with, per transport. Record only values the cited documents state.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reference"
+          ],
+          "minProperties": 2,
+          "properties": {
+            "tcp": {
+              "description": "Modbus TCP settings. An absent port means the Modbus standard port 502.",
+              "type": "object",
+              "additionalProperties": false,
+              "minProperties": 1,
+              "properties": {
+                "port": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "unitId": {
+                  "$ref": "#/$defs/unitId"
+                }
+              }
+            },
+            "serial": {
+              "description": "Modbus RTU or ASCII settings on the serial line.",
+              "type": "object",
+              "additionalProperties": false,
+              "minProperties": 1,
+              "properties": {
+                "unitId": {
+                  "$ref": "#/$defs/unitId"
+                },
+                "baudRate": {
+                  "type": "integer",
+                  "minimum": 300,
+                  "maximum": 921600
+                },
+                "dataBits": {
+                  "enum": [
+                    7,
+                    8
+                  ]
+                },
+                "parity": {
+                  "enum": [
+                    "none",
+                    "even",
+                    "odd"
+                  ]
+                },
+                "stopBits": {
+                  "enum": [
+                    1,
+                    2
+                  ]
+                }
+              }
+            },
+            "reference": {
+              "description": "Document title and exact sections or pages that state these settings, and any step needed before Modbus is available.",
+              "$ref": "#/$defs/label"
+            }
+          }
         }
       }
     },
@@ -152,6 +219,7 @@
           "type": {
             "enum": [
               "datasheet",
+              "protocol",
               "manual",
               "other"
             ]
@@ -302,6 +370,11 @@
     "slug": {
       "type": "string",
       "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "unitId": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 255
     }
   }
 }

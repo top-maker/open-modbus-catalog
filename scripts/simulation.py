@@ -4,13 +4,14 @@
 # ///
 """Simulation values for catalog Thing Models.
 
-`preset_scenario` builds a static Modsim scenario (initial values only) from simulation-presets.yaml
-for a package without model.sim.json. `edge_values` builds the decoding passes
-of the simulation check from point types alone. Every value is chosen so that
-Modsim encodes it exactly and Modpoll reads it back unchanged.
+`preset_data` builds static simulation data (initial values only) from
+simulation-presets.yaml for a package without model.data.json. `edge_values`
+builds the decoding passes of the simulation check from point types alone.
+Scaled values are the raw integer times the multiplier as Modpoll computes it,
+which Modsim serves exactly and Modpoll reads back unchanged.
 
-Run it on a package to print the preset scenario, for example to start a
-model.sim.json:
+Run it on a package to print the preset simulation data, for example to start
+a model.data.json:
 
     uv run scripts/simulation.py products/advantech/adam-6024
 """
@@ -53,12 +54,9 @@ def bounds(prop, form):
     return low, high, factor
 
 
-def exact(raw, factor):
-    """The value Modpoll reads for raw, if Modsim encodes it back to raw."""
-    if factor == 1:
-        return raw
-    value = float(raw) * float(factor)
-    return value if Fraction(str(value)) / factor == raw else None
+def scaled(raw, factor):
+    """The value Modpoll reads for raw: float(raw) * float(multiplier)."""
+    return raw if factor == 1 else float(raw) * float(factor)
 
 
 def fit(prop, target):
@@ -81,11 +79,7 @@ def fit(prop, target):
     if low > high:
         return None
     raw = min(max(round(Fraction(str(target)) / factor) if factor else 0, low), high)
-    for step in range(0, 1000):
-        for candidate in (raw + step, raw - step):
-            if low <= candidate <= high and (value := exact(candidate, factor)) is not None:
-                return value
-    return None
+    return scaled(raw, factor)
 
 
 def load_presets():
@@ -104,7 +98,7 @@ def preset_value(name, prop, rules):
     raise ValueError(f"{name}: no simulation preset matches type {prop['type']}")
 
 
-def preset_scenario(thing_model, category, presets=None):
+def preset_data(thing_model, category, presets=None):
     presets = presets or load_presets()
     rules = presets.get(category, []) + presets["default"]
     initial = {}
@@ -132,7 +126,7 @@ def edge_values(thing_model):
             low, high, factor = bounds(prop, form)
             pattern = min(max(0x1234, low), high)
             high_bit = (high + 1) // 2 + 1 if low >= 0 else -1
-            values = [fit(prop, float(raw) * float(factor)) for raw in (low, high, high_bit if low <= high_bit <= high else pattern)]
+            values = [scaled(raw, factor) for raw in (low, high, high_bit if low <= high_bit <= high else pattern)]
         for target, value in zip(passes, values):
             if value is not None:
                 target[name] = value
@@ -143,7 +137,7 @@ def main():
     package = Path(sys.argv[1])
     product = yaml.safe_load((package / "product.yaml").read_text(encoding="utf-8"))
     thing_model = json.loads((package / "model.tm.json").read_text(encoding="utf-8"))
-    print(json.dumps(preset_scenario(thing_model, product["category"]), indent=2, ensure_ascii=False))
+    print(json.dumps(preset_data(thing_model, product["category"]), indent=2, ensure_ascii=False))
 
 
 if __name__ == "__main__":

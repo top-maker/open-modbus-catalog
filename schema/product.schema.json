@@ -314,5 +314,5 @@
       "maximum": 255
     }
   },
-  "description": "The product ID is the package path products/<manufacturer ID>/<model number slug>/; the manufacturer is its first segment, listed in manufacturers.yaml. model.tm.json and model.sim.json next to product.yaml are the baseline Thing Model and its simulation scenario."
+  "description": "The product ID is the package path products/<manufacturer ID>/<model number slug>/; the manufacturer is its first segment, listed in manufacturers.yaml. model.tm.json and model.data.json next to product.yaml are the baseline Thing Model and its simulation data."
 }

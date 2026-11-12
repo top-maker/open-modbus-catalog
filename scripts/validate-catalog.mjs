@@ -90,12 +90,13 @@ function readJsonObject(path) {
   return value;
 }
 
-// The baseline Thing Model and its scenario live at fixed paths next to product.yaml.
+// The baseline Thing Model and its simulation data live at fixed paths next to
+// product.yaml. The simulation check validates the data against modpoll-wot.
 function checkModel(files, directory) {
   const modelPath = `${directory}model.tm.json`;
-  const scenarioPath = `${directory}model.sim.json`;
+  const dataPath = `${directory}model.data.json`;
   if (!files.has(modelPath)) {
-    if (files.has(scenarioPath)) throw new Error(`${scenarioPath}: a scenario needs model.tm.json`);
+    if (files.has(dataPath)) throw new Error(`${dataPath}: simulation data needs model.tm.json`);
     return;
   }
   allowedFiles.add(modelPath);
@@ -103,14 +104,16 @@ function checkModel(files, directory) {
   if (model['@type'] !== 'tm:ThingModel' || !model.properties || typeof model.properties !== 'object') {
     throw new Error(`${modelPath}: expected a Thing Model with properties`);
   }
-  if (!files.has(scenarioPath)) return;
-  allowedFiles.add(scenarioPath);
-  const scenario = readJsonObject(scenarioPath);
-  if (Object.hasOwn(scenario, 'script')) throw new Error(`${scenarioPath}: scenarios must be declarative without a script`);
-  for (const section of ['generators', 'initial']) {
-    const unknown = Object.keys(scenario[section] ?? {}).filter(name => !Object.hasOwn(model.properties, name));
-    if (unknown.length) throw new Error(`${scenarioPath}: unknown properties ${unknown.join(', ')}`);
-  }
+  if (!files.has(dataPath)) return;
+  allowedFiles.add(dataPath);
+  const data = readJsonObject(dataPath);
+  if (data.version !== '1') throw new Error(`${dataPath}: expected simulation data version "1"`);
+  const names = [
+    ...['initial', 'generators', 'bindings'].flatMap(section => Object.keys(data[section] ?? {})),
+    ...Object.values(data.bindings ?? {}),
+  ];
+  const unknown = names.filter(name => !Object.hasOwn(model.properties, name));
+  if (unknown.length) throw new Error(`${dataPath}: unknown properties ${unknown.join(', ')}`);
 }
 
 try {

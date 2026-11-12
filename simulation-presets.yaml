@@ -1,4 +1,4 @@
-# Static simulation values for packages without model.sim.json.
+# Static simulation data for packages without model.data.json.
 #
 # Keys are category IDs from categories.yaml. Each rule may match a point by
 # `unit`, `type` (the Thing Model DataSchema type) and `name` (a

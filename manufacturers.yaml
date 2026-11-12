@@ -32,3 +32,10 @@ moxa:
     zh-CN:
       name: 摩莎
   website: https://www.moxa.com
+
+schneider-electric:
+  name: Schneider Electric
+  translations:
+    zh-CN:
+      name: 施耐德电气
+  website: https://www.se.com

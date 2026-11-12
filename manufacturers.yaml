@@ -22,7 +22,7 @@ eastron:
   name: Eastron
   translations:
     zh-CN:
-      name: 东瑞
+      name: 东鸿
   website: https://www.eastrongroup.com
 
 entes:
@@ -35,9 +35,6 @@ janitza:
 
 moxa:
   name: Moxa
-  translations:
-    zh-CN:
-      name: 摩莎
   website: https://www.moxa.com
 
 schneider-electric:

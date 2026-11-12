@@ -25,6 +25,8 @@ network-analyzer:
   - { unit: VAh, value: 125678 }
   - { name: pf_, value: 0.983 }
   - { name: cosphi, value: 0.991 }
+  - { name: cos_phi, value: 0.991 }
+  - { unit: VAh, value: 130000 }
 
 energy-meter:
   - { unit: V, value: 230.2 }

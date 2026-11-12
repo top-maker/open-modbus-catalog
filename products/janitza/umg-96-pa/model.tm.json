@@ -1,0 +1,936 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "modpoll": "https://top-maker.github.io/modpoll/vocab/wot-modbus#",
+      "modv": "https://www.w3.org/2019/wot/modbus",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "tm:ThingModel",
+  "title": "Janitza UMG 96-PA Power Analyser",
+  "description": "Thing Model for the Janitza UMG 96-PA power analyser over RS-485 Modbus RTU. It reads voltages, currents, active, apparent and reactive power, fundamental power factors, frequency, rotation field, obtained and supplied active energy, apparent energy, inductive and capacitive reactive energy and THD from the list of frequently required measured values in the user manual, document 2.061.015.3d, version 06/2020, chapter 19.1. All values are IEEE 754 floats with the high word first. Rows 19054–19060 and 19086–19092 are marked as differing from other UMG devices and repeat other rows' names, so they are omitted. The complete Modbus address list on janitza.de is not covered. The manual covers firmware 1. No hardware validation is claimed.",
+  "modpoll:version": "0.2",
+  "properties": {
+    "V_L1_N": {
+      "type": "number",
+      "description": "Voltage L1-N, holding registers 19000–19001 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19000,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L2_N": {
+      "type": "number",
+      "description": "Voltage L2-N, holding registers 19002–19003 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19002,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L3_N": {
+      "type": "number",
+      "description": "Voltage L3-N, holding registers 19004–19005 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19004,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L1_L2": {
+      "type": "number",
+      "description": "Voltage L1-L2, holding registers 19006–19007 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19006,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L2_L3": {
+      "type": "number",
+      "description": "Voltage L2-L3, holding registers 19008–19009 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19008,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L3_L1": {
+      "type": "number",
+      "description": "Voltage L3-L1, holding registers 19010–19011 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19010,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_L1": {
+      "type": "number",
+      "description": "Apparent current L1, holding registers 19012–19013 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19012,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_L2": {
+      "type": "number",
+      "description": "Apparent current L2, holding registers 19014–19015 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19014,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_L3": {
+      "type": "number",
+      "description": "Apparent current L3, holding registers 19016–19017 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19016,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_SUM": {
+      "type": "number",
+      "description": "Total current, I1+I2+I3, holding registers 19018–19019 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19018,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_L1": {
+      "type": "number",
+      "description": "Active power L1, holding registers 19020–19021 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19020,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_L2": {
+      "type": "number",
+      "description": "Active power L2, holding registers 19022–19023 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19022,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_L3": {
+      "type": "number",
+      "description": "Active power L3, holding registers 19024–19025 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19024,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_SUM": {
+      "type": "number",
+      "description": "Total active power, P1+P2+P3, holding registers 19026–19027 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19026,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "S_L1": {
+      "type": "number",
+      "description": "Apparent power L1, holding registers 19028–19029 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19028,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "S_L2": {
+      "type": "number",
+      "description": "Apparent power L2, holding registers 19030–19031 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19030,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "S_L3": {
+      "type": "number",
+      "description": "Apparent power L3, holding registers 19032–19033 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19032,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "S_SUM": {
+      "type": "number",
+      "description": "Total apparent power, S1+S2+S3, holding registers 19034–19035 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19034,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "Q_L1": {
+      "type": "number",
+      "description": "Reactive power (power frequency) L1, holding registers 19036–19037 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19036,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "Q_L2": {
+      "type": "number",
+      "description": "Reactive power (power frequency) L2, holding registers 19038–19039 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19038,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "Q_L3": {
+      "type": "number",
+      "description": "Reactive power (power frequency) L3, holding registers 19040–19041 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19040,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "Q_SUM": {
+      "type": "number",
+      "description": "Total reactive power, Q1+Q2+Q3, holding registers 19042–19043 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19042,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "COS_PHI_L1": {
+      "type": "number",
+      "description": "Fundamental power factor cos phi, UL1 IL1, holding registers 19044–19045 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19044,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "COS_PHI_L2": {
+      "type": "number",
+      "description": "Fundamental power factor cos phi, UL2 IL2, holding registers 19046–19047 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19046,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "COS_PHI_L3": {
+      "type": "number",
+      "description": "Fundamental power factor cos phi, UL3 IL3, holding registers 19048–19049 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19048,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "FREQUENCY": {
+      "type": "number",
+      "description": "Frequency, holding registers 19050–19051 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Hz",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19050,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "PHASE_SEQUENCE": {
+      "type": "number",
+      "description": "Rotation field: 1 right, 0 none, -1 left, holding registers 19052–19053 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19052,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "WH_OBTAINED_L1": {
+      "type": "number",
+      "description": "Active energy L1, obtained, holding registers 19062–19063 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19062,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "WH_OBTAINED_L2": {
+      "type": "number",
+      "description": "Active energy L2, obtained, holding registers 19064–19065 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19064,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "WH_OBTAINED_L3": {
+      "type": "number",
+      "description": "Active energy L3, obtained, holding registers 19066–19067 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19066,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "WH_OBTAINED_T1_SUM": {
+      "type": "number",
+      "description": "Active energy L1..L3, obtained, tariff 1, holding registers 19068–19069 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19068,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "WH_SUPPLIED_L1": {
+      "type": "number",
+      "description": "Active energy L1, supplied, holding registers 19070–19071 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19070,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "WH_SUPPLIED_L2": {
+      "type": "number",
+      "description": "Active energy L2, supplied, holding registers 19072–19073 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19072,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "WH_SUPPLIED_L3": {
+      "type": "number",
+      "description": "Active energy L3, supplied, holding registers 19074–19075 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19074,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "WH_SUPPLIED_SUM": {
+      "type": "number",
+      "description": "Active energy L1..L3, supplied, holding registers 19076–19077 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19076,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VAH_L1": {
+      "type": "number",
+      "description": "Apparent energy L1, holding registers 19078–19079 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19078,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VAH_L2": {
+      "type": "number",
+      "description": "Apparent energy L2, holding registers 19080–19081 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19080,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VAH_L3": {
+      "type": "number",
+      "description": "Apparent energy L3, holding registers 19082–19083 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19082,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VAH_SUM": {
+      "type": "number",
+      "description": "Apparent energy L1..L3, holding registers 19084–19085 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19084,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VARH_IND_L1": {
+      "type": "number",
+      "description": "Reactive energy, inductive, L1, holding registers 19094–19095 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19094,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VARH_IND_L2": {
+      "type": "number",
+      "description": "Reactive energy, inductive, L2, holding registers 19096–19097 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19096,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VARH_IND_L3": {
+      "type": "number",
+      "description": "Reactive energy, inductive, L3, holding registers 19098–19099 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19098,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VARH_IND_SUM": {
+      "type": "number",
+      "description": "Reactive energy L1..L3, inductive, holding registers 19100–19101 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19100,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VARH_CAP_L1": {
+      "type": "number",
+      "description": "Reactive energy, capacitive, L1, holding registers 19102–19103 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19102,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VARH_CAP_L2": {
+      "type": "number",
+      "description": "Reactive energy, capacitive, L2, holding registers 19104–19105 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19104,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VARH_CAP_L3": {
+      "type": "number",
+      "description": "Reactive energy, capacitive, L3, holding registers 19106–19107 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19106,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VARH_CAP_SUM": {
+      "type": "number",
+      "description": "Reactive energy L1..L3, capacitive, holding registers 19108–19109 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19108,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_U_L1": {
+      "type": "number",
+      "description": "Harmonic distortion THD U L1-N, holding registers 19110–19111 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19110,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_U_L2": {
+      "type": "number",
+      "description": "Harmonic distortion THD U L2-N, holding registers 19112–19113 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19112,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_U_L3": {
+      "type": "number",
+      "description": "Harmonic distortion THD U L3-N, holding registers 19114–19115 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19114,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_I_L1": {
+      "type": "number",
+      "description": "Harmonic distortion THD I L1, holding registers 19116–19117 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19116,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_I_L2": {
+      "type": "number",
+      "description": "Harmonic distortion THD I L2, holding registers 19118–19119 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19118,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_I_L3": {
+      "type": "number",
+      "description": "Harmonic distortion THD I L3, holding registers 19120–19121 (IEEE 754 float, high word first).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19120,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    }
+  },
+  "modpoll:acquisition": [
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 19000,
+      "modv:quantity": 54,
+      "modpoll:members": [
+        "V_L1_N",
+        "V_L2_N",
+        "V_L3_N",
+        "V_L1_L2",
+        "V_L2_L3",
+        "V_L3_L1",
+        "I_L1",
+        "I_L2",
+        "I_L3",
+        "I_SUM",
+        "P_L1",
+        "P_L2",
+        "P_L3",
+        "P_SUM",
+        "S_L1",
+        "S_L2",
+        "S_L3",
+        "S_SUM",
+        "Q_L1",
+        "Q_L2",
+        "Q_L3",
+        "Q_SUM",
+        "COS_PHI_L1",
+        "COS_PHI_L2",
+        "COS_PHI_L3",
+        "FREQUENCY",
+        "PHASE_SEQUENCE"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 19062,
+      "modv:quantity": 24,
+      "modpoll:members": [
+        "WH_OBTAINED_L1",
+        "WH_OBTAINED_L2",
+        "WH_OBTAINED_L3",
+        "WH_OBTAINED_T1_SUM",
+        "WH_SUPPLIED_L1",
+        "WH_SUPPLIED_L2",
+        "WH_SUPPLIED_L3",
+        "WH_SUPPLIED_SUM",
+        "VAH_L1",
+        "VAH_L2",
+        "VAH_L3",
+        "VAH_SUM"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 19094,
+      "modv:quantity": 28,
+      "modpoll:members": [
+        "VARH_IND_L1",
+        "VARH_IND_L2",
+        "VARH_IND_L3",
+        "VARH_IND_SUM",
+        "VARH_CAP_L1",
+        "VARH_CAP_L2",
+        "VARH_CAP_L3",
+        "VARH_CAP_SUM",
+        "THD_U_L1",
+        "THD_U_L2",
+        "THD_U_L3",
+        "THD_I_L1",
+        "THD_I_L2",
+        "THD_I_L3"
+      ]
+    }
+  ]
+}

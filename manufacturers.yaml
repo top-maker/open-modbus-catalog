@@ -22,6 +22,10 @@ entes:
   name: ENTES
   website: https://www.entes.com.tr
 
+janitza:
+  name: Janitza
+  website: https://www.janitza.com
+
 moxa:
   name: Moxa
   translations:

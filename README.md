@@ -13,7 +13,10 @@ lowercase kebab-case directory names. The stable product ID is that package
 path, such as `advantech/adam-5017uh`. Keep it when correcting display names or
 adding aliases. Put the manufacturer's model number in `modelNumber` and other
 spellings of it in `aliases`. Use a separate product for a different exact
-model number. List cited specifications in `specs` as label and value pairs.
+model number. Set `category` to an ID from `categories.yaml`, adding the
+category there with its English name and any established locale names when no
+existing one fits. List cited specifications in `specs` as label and value
+pairs.
 
 Provide a default English `description` and optional locale entries in
 `translations`. Each description is one line and 90–100 grapheme clusters.
@@ -22,7 +25,9 @@ follows the same convention. Add `manufacturer` to a locale entry only when the
 manufacturer has an established name in that locale, such as 研华 for Advantech;
 consumers show the default manufacturer name otherwise.
 
-List official document links and exact references in `product.json`. Put only
+List official document links and exact references in `product.json`. Use
+`datasheet` for the specification, `protocol` for a document that holds the
+Modbus register map, and `manual` when the map lives inside a user manual. Put only
 PDFs cleared for public redistribution in `documents/`. List approved
 illustrations in display order, starting with `images/01.svg`. Use passive
 560 × 560 SVGs with a cream background. Record source and publication rights
@@ -32,6 +37,14 @@ is listed and belongs to the same product package.
 For chassis-mounted modules, cite the exact module and record the compatible
 chassis in `communication.viaChassis`. Record documented firmware applicability
 or use `null` when it is unknown.
+
+Record the communication settings a new device ships with in
+`communication.defaults`: `tcp` (`port`, `unitId`) and `serial` (`unitId`,
+`baudRate`, `dataBits`, `parity`, `stopBits`), each only for a listed protocol.
+Include only values the documents state, and cite them in `reference`, with any
+step needed before Modbus is available, such as switching from a vendor
+protocol. Consumers assume port 502 when `tcp.port` is absent and ask the user
+for anything else that is missing.
 
 ## Thing Models and checks
 

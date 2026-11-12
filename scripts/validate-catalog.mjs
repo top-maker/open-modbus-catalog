@@ -3,11 +3,14 @@ import { lstatSync, readFileSync } from 'node:fs';
 import { promisify } from 'node:util';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { SaxesParser } from 'saxes';
+import { parse } from 'yaml';
 
 const root = new URL('../', import.meta.url);
 const schema = JSON.parse(readFileSync(new URL('schema/product.schema.json', root), 'utf8'));
 const ajv = new Ajv2020({ allErrors: true });
 const validateProduct = ajv.compile(schema);
+const validateCategories = ajv.compile(
+  JSON.parse(readFileSync(new URL('schema/categories.schema.json', root), 'utf8')));
 const allowedFiles = new Set([
   '.github/ISSUE_TEMPLATE/product-feedback.md',
   '.github/workflows/validate.yaml',
@@ -15,8 +18,10 @@ const allowedFiles = new Set([
   'AGENTS.md',
   'LICENSE',
   'README.md',
+  'categories.yaml',
   'package-lock.json',
   'package.json',
+  'schema/categories.schema.json',
   'schema/product.schema.json',
   'scripts/check-thing-models.py',
   'scripts/check-thing-models.py.lock',
@@ -103,6 +108,16 @@ function checkThingModels(product, files, allowedFiles, directory, path) {
   }
 }
 
+function checkDefaults({ protocols, defaults }, path) {
+  if (!defaults) return;
+  if (defaults.tcp && !protocols.includes('modbus-tcp')) {
+    throw new Error(`${path}: TCP defaults need the modbus-tcp protocol`);
+  }
+  if (defaults.serial && !protocols.some(protocol => protocol !== 'modbus-tcp')) {
+    throw new Error(`${path}: serial defaults need the modbus-rtu or modbus-ascii protocol`);
+  }
+}
+
 function checkUrl(url, path) {
   const source = URL.parse(url);
   if (!source || source.protocol !== 'https:' || source.username || source.password) {
@@ -114,6 +129,10 @@ try {
     'ls-files', '-z', '--cached', '--others', '--exclude-standard',
   ], { cwd: root });
   const files = new Set(stdout.split('\0').filter(Boolean));
+  const categories = parse(readFileSync(new URL('categories.yaml', root), 'utf8'));
+  if (!validateCategories(categories)) {
+    throw new Error(`categories.yaml: ${ajv.errorsText(validateCategories.errors)}`);
+  }
   const ids = new Set();
   const modelNumbers = new Set();
   for (const path of files) {
@@ -132,6 +151,10 @@ try {
     if (`products/${product.id}/` !== directory) {
       throw new Error(`${path}: product ID must equal its package path ${directory.slice('products/'.length, -1)}`);
     }
+    if (!Object.hasOwn(categories, product.category)) {
+      throw new Error(`${path}: category ${product.category} is not listed in categories.yaml`);
+    }
+    checkDefaults(product.communication, path);
     if (ids.has(product.id)) throw new Error(`${path}: duplicate product ID ${product.id}`);
     ids.add(product.id);
 

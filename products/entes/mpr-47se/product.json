@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "id": "entes/mpr-47se",
   "manufacturer": "ENTES",
   "modelNumber": "MPR-47SE",
@@ -45,7 +45,13 @@
       "modbus-tcp",
       "modbus-rtu"
     ],
-    "firmware": null
+    "firmware": null,
+    "defaults": {
+      "tcp": {
+        "unitId": 247
+      },
+      "reference": "MPR-4 Series installation guide A8327 Rev.4, page 2, Ethernet settings note: Modbus TCP queries use address 247 regardless of the address set in the menu"
+    }
   },
   "documents": [
     {
@@ -55,7 +61,7 @@
       "reference": "English technical specifications and panel mounting dimensions, page 1"
     },
     {
-      "type": "other",
+      "type": "protocol",
       "title": "MPR 3X-4X Series Modbus register table, 2023-10-27",
       "url": "https://www.entes.com.tr/uploads/files/1698403762-20231027%20%20MPR-3_4_Series_Register_Table.pdf",
       "reference": "Measurements, Energy and Device Identification sheets, MPR47-SE column; MODBUS DESCRIPTION, page 14"

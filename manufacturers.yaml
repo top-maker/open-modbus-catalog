@@ -18,6 +18,13 @@ carlo-gavazzi:
   name: Carlo Gavazzi
   website: https://www.gavazziautomation.com
 
+eastron:
+  name: Eastron
+  translations:
+    zh-CN:
+      name: 东瑞
+  website: https://www.eastrongroup.com
+
 entes:
   name: ENTES
   website: https://www.entes.com.tr

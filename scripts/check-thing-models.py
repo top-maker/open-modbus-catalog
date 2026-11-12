@@ -22,7 +22,10 @@ check shows that a Thing Model executes consistently; it does not show that
 its point mappings match real hardware.
 """
 
+import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
+import os
 from pathlib import Path
 import socket
 import struct
@@ -35,10 +38,11 @@ import yaml
 
 from modpoll_wot import load_simulation_data, scaled_raw
 
-from simulation import edge_values, load_presets, preset_data
+from simulation import edge_values, load_presets, preset_data, read_form
 
 ROOT = Path(__file__).resolve().parents[1]
 TIMEOUT = 30
+ATTEMPTS = 3
 
 
 def run(*args):
@@ -53,17 +57,21 @@ def run(*args):
     return result.stdout
 
 
+class ServerStartError(RuntimeError):
+    """Modsim exited before it listened, for example when the port was taken."""
+
+
 def free_port():
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 0))
         return listener.getsockname()[1]
 
 
-def wait_for(port, server):
+def wait_for(port, server, log):
     deadline = time.monotonic() + TIMEOUT
     while time.monotonic() < deadline:
         if server.poll() is not None:
-            raise RuntimeError(f"modsim exited:\n{server.stdout.read()}")
+            raise ServerStartError(f"modsim exited:\n{log.read_text()}")
         try:
             socket.create_connection(("127.0.0.1", port), timeout=0.2).close()
             return
@@ -73,27 +81,48 @@ def wait_for(port, server):
 
 
 def simulated_read(model, data):
+    """Serve `data` with Modsim and read it once with Modpoll.
+
+    The port is chosen before Modsim binds it, so another process can take it in
+    between; a start that fails is retried on a new port.
+    """
+    for attempt in range(ATTEMPTS):
+        try:
+            return _simulated_read(model, data)
+        except ServerStartError:
+            if attempt == ATTEMPTS - 1:
+                raise
+
+
+def _simulated_read(model, data):
     port = free_port()
     with TemporaryDirectory() as directory:
         source = Path(directory) / "model.data.json"
         source.write_text(json.dumps(data))
-        server = subprocess.Popen(
-            [sys.executable, "-m", "modsim", "--config", str(model), "--data", str(source),
-             "--bind", "127.0.0.1", "--port", str(port)],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-        )
-        try:
-            wait_for(port, server)
-            output = Path(directory) / "read.json"
-            run("modpoll", "--config", str(model), "--tcp", "127.0.0.1",
-                "--tcp-port", str(port), "--once", "--export", str(output))
-            (values,) = json.loads(output.read_text()).values()
-            return values
-        finally:
-            server.terminate()
-            server.wait(timeout=TIMEOUT)
+        # A file, not a pipe: Modsim's log can never fill a buffer nobody reads.
+        log = Path(directory) / "modsim.log"
+        with log.open("w") as sink:
+            server = subprocess.Popen(
+                [sys.executable, "-m", "modsim", "--config", str(model), "--data", str(source),
+                 "--bind", "127.0.0.1", "--port", str(port)],
+                stdout=sink,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
+            try:
+                wait_for(port, server, log)
+                output = Path(directory) / "read.json"
+                run("modpoll", "--config", str(model), "--tcp", "127.0.0.1",
+                    "--tcp-port", str(port), "--once", "--export", str(output))
+                (values,) = json.loads(output.read_text()).values()
+                return values
+            finally:
+                server.terminate()
+                try:
+                    server.wait(timeout=TIMEOUT)
+                except subprocess.TimeoutExpired:
+                    server.kill()
+                    server.wait()
 
 
 def compare(expected, actual):
@@ -105,7 +134,7 @@ def compare(expected, actual):
 def as_read(thing_model, name, value):
     """The value Modpoll reads for a static value: float(raw) * multiplier for scaled
     points, and the nearest single-precision value for xsd:float points."""
-    form = thing_model["properties"][name]["forms"][0]
+    form = read_form(thing_model["properties"][name])
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return value
     multiplier = form.get("modpoll:multiplier")
@@ -151,18 +180,59 @@ def check(package, presets):
     return ["profile", origin, f"{len(passes)} decoding passes"]
 
 
+# Files whose change can alter the result of any package.
+SHARED_INPUTS = ("scripts/", "simulation-presets.yaml", "categories.yaml", ".github/workflows/")
+
+
+def packages_to_check(changed_since):
+    """Every package with a Thing Model, or only the changed ones since a Git ref.
+
+    A change to a shared input (the checks, presets or workflow) selects all.
+    """
+    packages = [
+        record.parent for record in sorted(ROOT.glob("products/*/*/product.yaml"))
+        if (record.parent / "model.tm.json").exists()
+    ]
+    if not changed_since:
+        return packages
+    changed = subprocess.run(
+        ["git", "diff", "--name-only", f"{changed_since}...HEAD"],
+        cwd=ROOT, capture_output=True, text=True, check=True,
+    ).stdout.split()
+    if any(path.startswith(SHARED_INPUTS) for path in changed):
+        return packages
+    return [package for package in packages
+            if any(path.startswith(package.relative_to(ROOT).as_posix() + "/") for path in changed)]
+
+
+def check_package(package, presets):
+    label = package.relative_to(ROOT / "products").as_posix()
+    try:
+        return label, ", ".join(check(package, presets)), None
+    except Exception as error:  # noqa: BLE001 - report every model
+        return label, None, error
+
+
 def main():
-    failed = False
+    parser = argparse.ArgumentParser(description="Validate catalog Thing Models and run the simulation check.")
+    parser.add_argument("--changed-since", metavar="REF",
+                        help="check only packages changed since this Git ref (all when shared inputs changed)")
+    parser.add_argument("--jobs", type=int, default=min(4, os.cpu_count() or 1),
+                        help="packages checked in parallel (default: %(default)s)")
+    args = parser.parse_args()
     presets = load_presets()
-    for record in sorted(ROOT.glob("products/*/*/product.yaml")):
-        if not (record.parent / "model.tm.json").exists():
-            continue
-        label = record.parent.relative_to(ROOT / "products").as_posix()
-        try:
-            print(f"✓ {label}: {', '.join(check(record.parent, presets))}")
-        except Exception as error:  # noqa: BLE001 - report every model
-            failed = True
-            print(f"✗ {label}: {error}", file=sys.stderr)
+    packages = packages_to_check(args.changed_since)
+    if not packages:
+        print("No Thing Model changed.")
+        return 0
+    failed = False
+    with ThreadPoolExecutor(max_workers=max(1, args.jobs)) as pool:
+        for label, summary, error in pool.map(lambda package: check_package(package, presets), packages):
+            if error is None:
+                print(f"✓ {label}: {summary}")
+            else:
+                failed = True
+                print(f"✗ {label}: {error}", file=sys.stderr)
     return 1 if failed else 0
 
 

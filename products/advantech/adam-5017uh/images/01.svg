@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="560" viewBox="0 0 560 560" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
   <title id="title">Advantech ADAM-5017UH front-view illustration</title>
   <desc id="desc">Front orthographic view of the analog input module with its terminal block and sixteen screw terminals. Schematic, not to scale.</desc>
-  <rect width="560" height="560" fill="#fffaf0"/>
+  <rect width="512" height="512" fill="#fff"/>
+  <g transform="scale(0.9142857)">
   <g transform="translate(120 0)">
   <g fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
     <path d="M132 56v-9h56v9M139 487v9h42v-9"/>
@@ -41,6 +42,7 @@
     <text x="160" y="116" font-size="12" font-weight="600">ADAM-5017UH</text>
     <text x="160" y="525" font-size="11" letter-spacing="1">FRONT VIEW</text>
     <text x="160" y="541" font-size="9" letter-spacing="0.8">NOT TO SCALE</text>
+  </g>
   </g>
   </g>
 </svg>

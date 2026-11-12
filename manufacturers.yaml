@@ -1,0 +1,19 @@
+# Manufacturers. Each key is a manufacturer ID: the first segment of every
+# product ID and package path under products/. Add a manufacturer here before
+# its first product. Changing a display name keeps the ID.
+#
+# name: the manufacturer's own spelling of its name.
+# translations.<locale>.name: established name in that locale only, such as
+#   研华 for Advantech. Consumers fall back to `name`.
+# website: optional HTTPS address of the manufacturer's main site.
+
+advantech:
+  name: Advantech
+  translations:
+    zh-CN:
+      name: 研华
+  website: https://www.advantech.com
+
+entes:
+  name: ENTES
+  website: https://www.entes.com.tr

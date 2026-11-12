@@ -1,0 +1,33 @@
+# Static simulation values for packages without model.sim.json.
+#
+# Keys are category IDs from categories.yaml. Each rule may match a point by
+# `unit`, `type` (the Thing Model DataSchema type) and `name` (a
+# case-insensitive part of the property name); the first matching rule gives
+# the value. The category's own rules come first, then `default`, which must
+# match every point. Values are adjusted to the nearest one the point can
+# serve exactly: within its minimum and maximum, and exact after its
+# multiplier. Prefer plausible readings of a working device.
+
+network-analyzer:
+  - { unit: V, name: l1_l2, value: 398.7 }
+  - { unit: V, name: l2_l3, value: 398.7 }
+  - { unit: V, name: l3_l1, value: 398.7 }
+  - { unit: V, value: 230.2 }
+  - { unit: A, value: 4.987 }
+  - { unit: Hz, value: 50.01 }
+  - { unit: W, value: 1146.5 }
+  - { unit: var, value: 212.25 }
+  - { unit: VA, value: 1166 }
+  - { unit: "%", value: 1.2 }
+  - { unit: h, value: 1234.5 }
+  - { unit: Wh, value: 123456 }
+  - { unit: varh, value: 23456 }
+  - { unit: VAh, value: 125678 }
+  - { name: pf_, value: 0.983 }
+  - { name: cosphi, value: 0.991 }
+
+default:
+  - { type: boolean, value: true }
+  - { type: string, value: SIM }
+  - { type: integer, value: 4660 }   # 0x1234, an asymmetric byte pattern
+  - { type: number, value: 12.5 }

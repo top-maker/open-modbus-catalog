@@ -1,37 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Open Modbus Catalog product record",
+  "title": "Open Modbus Catalog product record (product.yaml)",
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schemaVersion",
-    "id",
-    "manufacturer",
     "modelNumber",
-    "aliases",
     "category",
     "description",
     "communication",
     "documents"
   ],
   "properties": {
-    "schemaVersion": {
-      "const": 6
-    },
-    "id": {
-      "description": "Stable product ID equal to the package path under products/.",
-      "type": "string",
-      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*/[a-z0-9]+(-[a-z0-9]+)*$"
-    },
-    "manufacturer": {
-      "$ref": "#/$defs/label"
-    },
     "modelNumber": {
       "description": "The manufacturer's model number, such as ADAM-5017UH.",
       "$ref": "#/$defs/label"
     },
     "aliases": {
-      "description": "Other spellings of the model number used in search.",
+      "description": "Other spellings of the model number used in search. Defaults to none.",
       "type": "array",
       "uniqueItems": true,
       "items": {
@@ -59,10 +44,6 @@
         "properties": {
           "description": {
             "$ref": "#/$defs/description"
-          },
-          "manufacturer": {
-            "description": "The manufacturer's established name in this locale, such as 研华 for Advantech. Omit it when there is none.",
-            "$ref": "#/$defs/label"
           }
         }
       }
@@ -92,8 +73,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "protocols",
-        "firmware"
+        "protocols"
       ],
       "properties": {
         "protocols": {
@@ -113,15 +93,8 @@
           "$ref": "#/$defs/label"
         },
         "firmware": {
-          "description": "Documented firmware applicability, or null if unknown.",
-          "anyOf": [
-            {
-              "$ref": "#/$defs/label"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "description": "Documented firmware applicability. Absent when unknown.",
+          "$ref": "#/$defs/label"
         },
         "defaults": {
           "description": "Documented communication settings a new device ships with, per transport. Record only values the cited documents state.",
@@ -298,42 +271,6 @@
           }
         }
       }
-    },
-    "thingModels": {
-      "description": "Executable baseline Thing Models in this package.",
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "path",
-          "scope"
-        ],
-        "properties": {
-          "path": {
-            "type": "string",
-            "pattern": "^models/[a-z0-9]+(-[a-z0-9]+)*\\.tm\\.json$"
-          },
-          "scope": {
-            "description": "Hardware, chassis and firmware the point mappings apply to, and its documentary basis.",
-            "$ref": "#/$defs/label"
-          },
-          "vectors": {
-            "description": "Known raw values per property for the simulation round trip.",
-            "type": "string",
-            "pattern": "^models/[a-z0-9]+(-[a-z0-9]+)*\\.vectors\\.json$"
-          },
-          "scenarios": {
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-              "type": "string",
-              "pattern": "^simulation/[a-z0-9]+(-[a-z0-9]+)*\\.sim\\.json$"
-            }
-          }
-        }
-      }
     }
   },
   "$defs": {
@@ -376,5 +313,6 @@
       "minimum": 0,
       "maximum": 255
     }
-  }
+  },
+  "description": "The product ID is the package path products/<manufacturer ID>/<model number slug>/; the manufacturer is its first segment, listed in manufacturers.yaml. model.tm.json and model.sim.json next to product.yaml are the baseline Thing Model and its simulation scenario."
 }

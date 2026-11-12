@@ -9,7 +9,7 @@
   ],
   "@type": "tm:ThingModel",
   "title": "ENTES MPR-47SE Network Analyzer",
-  "description": "Thing Model for the ENTES MPR-47SE network analyzer over Modbus TCP or RS-485 Modbus RTU. It reads voltages, currents, frequency, power, power factor, unbalance, hour counters, I/O status words, energy counters and identification registers marked available for the MPR47-SE in the ENTES MPR 3X-4X register table (holding registers, base 0, high word first). Phase angles, harmonics, demand, min/max, records, optional I/O module values and L4 power and energy rows are not included. No hardware validation is claimed.",
+  "description": "Thing Model for the ENTES MPR-47SE network analyzer over Modbus TCP or RS-485 Modbus RTU. It reads voltages, currents, frequency, power, power factor, unbalance, hour counters, I/O status words, energy counters and identification registers marked available for the MPR47-SE in the ENTES MPR 3X-4X register table (holding registers, base 0, high word first). Phase angles, harmonics, demand, min/max, records, optional I/O module values and L4 power and energy rows are not included. Firmware is not stated; confirm the connection type setting and CT/VT ratios on the device. No hardware validation is claimed.",
   "modpoll:version": "0.2",
   "properties": {
     "V_L1_N": {

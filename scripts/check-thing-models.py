@@ -14,7 +14,8 @@
 For each package with model.tm.json, check the executable profile, then serve
 its simulation data with Modsim and read it once with Modpoll. The data is
 model.data.json, checked by modpoll-wot, or static data generated from
-simulation-presets.yaml for the product's category. Static values must read back unchanged and changing values
+simulation-presets.yaml for the product's category. Static values must read back unchanged
+(scaled and single-precision values as Modpoll reads them) and changing values
 must stay within their range. Three more passes serve values derived from each
 point's type (bounds, high bit, asymmetric patterns) to check decoding. The
 check shows that a Thing Model executes consistently; it does not show that
@@ -24,6 +25,7 @@ its point mappings match real hardware.
 import json
 from pathlib import Path
 import socket
+import struct
 import subprocess
 import sys
 from tempfile import TemporaryDirectory
@@ -31,7 +33,7 @@ import time
 
 import yaml
 
-from modpoll_wot import load_simulation_data
+from modpoll_wot import load_simulation_data, scaled_raw
 
 from simulation import edge_values, load_presets, preset_data
 
@@ -100,12 +102,26 @@ def compare(expected, actual):
         raise RuntimeError(f"read back differs (expected, actual): {mismatched}")
 
 
+def as_read(thing_model, name, value):
+    """The value Modpoll reads for a static value: float(raw) * multiplier for scaled
+    points, and the nearest single-precision value for xsd:float points."""
+    form = thing_model["properties"][name]["forms"][0]
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return value
+    multiplier = form.get("modpoll:multiplier")
+    if form.get("modv:type") == "xsd:float" and multiplier is None:
+        return struct.unpack(">f", struct.pack(">f", value))[0]
+    if multiplier is None:
+        return value
+    return float(scaled_raw(value, multiplier)) * float(multiplier)
+
+
 def check_data(model, thing_model, data):
     actual = simulated_read(model, data)
     generators = data.get("generators", {})
     static = {name: value for name, value in data.get("initial", {}).items() if name not in generators}
     static |= {name: spec["value"] for name, spec in generators.items() if spec["kind"] == "constant"}
-    compare(static, actual)
+    compare({name: as_read(thing_model, name, value) for name, value in static.items()}, actual)
     for name, prop in thing_model["properties"].items():
         value = actual.get(name)
         if value is None:

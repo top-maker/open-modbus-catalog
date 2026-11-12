@@ -25,6 +25,20 @@ network-analyzer:
   - { unit: VAh, value: 125678 }
   - { name: pf_, value: 0.983 }
   - { name: cosphi, value: 0.991 }
+  - { name: cos_phi, value: 0.991 }
+  - { unit: VAh, value: 130000 }
+
+energy-meter:
+  - { unit: V, value: 230.2 }
+  - { unit: A, value: 4.987 }
+  - { unit: Hz, value: 50.01 }
+  - { unit: W, value: 1146.5 }
+  - { unit: var, value: 212.2 }
+  - { unit: VA, value: 1166.0 }
+  - { unit: kWh, value: 12345.6 }
+  - { unit: kvarh, value: 2345.6 }
+  - { name: power_factor, value: 0.983 }
+  - { name: pf, value: 0.983 }
 
 default:
   - { type: boolean, value: true }

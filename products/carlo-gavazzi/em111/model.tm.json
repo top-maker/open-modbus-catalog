@@ -1,0 +1,437 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "modpoll": "https://top-maker.github.io/modpoll/vocab/wot-modbus#",
+      "modv": "https://www.w3.org/2019/wot/modbus",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "tm:ThingModel",
+  "title": "Carlo Gavazzi EM111 Single-Phase Energy Meter",
+  "description": "Thing Model for the Carlo Gavazzi EM111 single-phase energy meter with the S1 RS-485 Modbus RTU port. It reads voltage, current, active, apparent and reactive power, power factor, frequency, imported and exported energy totals, partial and tariff energies, demand power, the identification code and the firmware version and revision. Addresses follow the EM100 Series and ET100 Series Modbus Communication Protocol v4.0 of 2025-06-20; 32-bit values are low word first, and a request reads at most 50 registers. Table 4.1 lists W dmd at 000Ah over two words while Table 4.7 puts the identification code at 000Bh, so demand power is read from its Table 4.2 copy. Rows marked not available are omitted. Firmware is not stated; the M-Bus versions (M1) are different products. No hardware validation is claimed.",
+  "modpoll:version": "0.2",
+  "properties": {
+    "VOLTAGE": {
+      "type": "number",
+      "description": "Voltage L-N, input registers 300001–300002 (Table 4.1, INT32 low word first, value V×10).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 0,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "CURRENT": {
+      "type": "number",
+      "description": "Current, input registers 300003–300004 (Table 4.1, value A×1000).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 2,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.001"
+        }
+      ]
+    },
+    "ACTIVE_POWER": {
+      "type": "number",
+      "description": "Active power, input registers 300005–300006 (Table 4.1, value W×10); negative when exporting in bidirectional mode.",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 4,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "APPARENT_POWER": {
+      "type": "number",
+      "description": "Apparent power, input registers 300007–300008 (Table 4.1, value VA×10).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 6,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "REACTIVE_POWER": {
+      "type": "number",
+      "description": "Reactive power, input registers 300009–300010 (Table 4.1, value var×10).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 8,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "IDENTIFICATION_CODE": {
+      "type": "integer",
+      "description": "Carlo Gavazzi identification code, input register 300012 (Table 4.7): 103 for EM111-DIN AV8, 101 for AV7, 114 for AV5.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 11,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "POWER_FACTOR": {
+      "type": "number",
+      "description": "Power factor, input register 300015 (Table 4.1, INT16, value PF×1000).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 14,
+          "modv:quantity": 1,
+          "modv:type": "xsd:short",
+          "modpoll:multiplier": "0.001"
+        }
+      ]
+    },
+    "FREQUENCY": {
+      "type": "number",
+      "description": "Frequency, input register 300016 (Table 4.1, INT16, value Hz×10).",
+      "readOnly": true,
+      "unit": "Hz",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 15,
+          "modv:quantity": 1,
+          "modv:type": "xsd:short",
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "KWH_IMPORT_TOTAL": {
+      "type": "number",
+      "description": "Imported active energy total kWh(+), input registers 300017–300018 (Table 4.1, value kWh×10).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 16,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "KVARH_IMPORT_TOTAL": {
+      "type": "number",
+      "description": "Imported reactive energy total kvarh(+), input registers 300019–300020 (Table 4.1, value kvarh×10).",
+      "readOnly": true,
+      "unit": "kvarh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 18,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "KWH_IMPORT_PARTIAL": {
+      "type": "number",
+      "description": "Imported active energy partial kWh(+), input registers 300021–300022 (Table 4.1, value kWh×10).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 20,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "KVARH_IMPORT_PARTIAL": {
+      "type": "number",
+      "description": "Imported reactive energy partial kvarh(+), input registers 300023–300024 (Table 4.1, value kvarh×10).",
+      "readOnly": true,
+      "unit": "kvarh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 22,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "KWH_IMPORT_T1": {
+      "type": "number",
+      "description": "Imported active energy tariff 1, input registers 300025–300026 (Table 4.1, value kWh×10).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 24,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "KWH_IMPORT_T2": {
+      "type": "number",
+      "description": "Imported active energy tariff 2, input registers 300027–300028 (Table 4.1, value kWh×10).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 26,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "KWH_EXPORT_TOTAL": {
+      "type": "number",
+      "description": "Exported active energy total kWh(−), input registers 300033–300034 (Table 4.1, value kWh×10).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 32,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "KVARH_EXPORT_TOTAL": {
+      "type": "number",
+      "description": "Exported reactive energy total kvarh(−), input registers 300035–300036 (Table 4.1, value kvarh×10).",
+      "readOnly": true,
+      "unit": "kvarh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 34,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "DEMAND_POWER": {
+      "type": "number",
+      "description": "Active power demand, input registers 300283–300284 (Table 4.2, value W×10).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 282,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "DEMAND_POWER_PEAK": {
+      "type": "number",
+      "description": "Peak active power demand, input registers 300285–300286 (Table 4.2, value W×10).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 284,
+          "modv:quantity": 2,
+          "modv:type": "xsd:int",
+          "modv:mostSignificantWord": false,
+          "modpoll:multiplier": "0.1"
+        }
+      ]
+    },
+    "VERSION_CODE": {
+      "type": "integer",
+      "description": "Firmware version code, input register 300771 (Table 4.6): 0 is version A, 1 is version B.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 770,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "REVISION_CODE": {
+      "type": "integer",
+      "description": "Firmware revision code, input register 300772 (Table 4.6): 0 is revision 0.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 771,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    }
+  },
+  "modpoll:acquisition": [
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 0,
+      "modv:quantity": 10,
+      "modpoll:members": [
+        "VOLTAGE",
+        "CURRENT",
+        "ACTIVE_POWER",
+        "APPARENT_POWER",
+        "REACTIVE_POWER"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 11,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "IDENTIFICATION_CODE"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 14,
+      "modv:quantity": 14,
+      "modpoll:members": [
+        "POWER_FACTOR",
+        "FREQUENCY",
+        "KWH_IMPORT_TOTAL",
+        "KVARH_IMPORT_TOTAL",
+        "KWH_IMPORT_PARTIAL",
+        "KVARH_IMPORT_PARTIAL",
+        "KWH_IMPORT_T1",
+        "KWH_IMPORT_T2"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 32,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "KWH_EXPORT_TOTAL",
+        "KVARH_EXPORT_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 282,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "DEMAND_POWER",
+        "DEMAND_POWER_PEAK"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 770,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "VERSION_CODE",
+        "REVISION_CODE"
+      ]
+    }
+  ]
+}

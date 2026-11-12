@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: UMG 96-PA
+aliases:
+- UMG96-PA
+- UMG 96PA
+category: network-analyzer
+description: 96 x 96 mm power analyser with RS-485 Modbus RTU, energy class 0.5S, harmonics and add-on modules.
+translations:
+  zh-CN:
+    description: 这款 96×96 mm 电能质量分析仪通过 RS-485 Modbus RTU 通信，测量电压、电流、功率、功率因数、频率和谐波，有功电能精度 0.5S，可加装扩展模块，并配有数字量输入输出。
+specs:
+- label: Voltage inputs
+  value: 3, up to 720 V L-L, 417 V L-N (600 V CAT III)
+- label: Current inputs
+  value: 3, via current transformer, 0.005–6 A
+- label: Active energy accuracy
+  value: Class 0.5S (../5 A), class 1 (../1 A)
+- label: Harmonics
+  value: Odd harmonics 1st to 25th for U L-N and I
+- label: Inputs and outputs
+  value: 3 digital inputs, 3 digital outputs, 1 analog output 0–20 mA
+- label: Communication
+  value: RS-485 Modbus RTU slave, up to 115 kbps
+communication:
+  protocols:
+  - modbus-rtu
+  defaults:
+    serial:
+      unitId: 1
+      dataBits: 8
+      parity: none
+      stopBits: 1
+    reference: 'UMG 96-PA user manual 2.061.015.3d (06/2020), communication settings, page 48: device address 1, data frame 1 stop bit without parity, baud rate Auto; page 49: 8 data bits'
+documents:
+- type: manual
+  title: UMG 96-PA / UMG 96-PA-MID user manual and technical data, document 2.061.015.3d, version 06/2020
+  url: 'https://assets.janitza.com/ce18jq9ih0x6/0c5a496d4d065c49f6fb49/a3cae3ba5bf941ada63160681ddc5112/janitza-bhb-umg96pa-fw1-en.pdf'
+  reference: Product features, chapter 5; communication settings, page 48; §13.12.1 RS485, page 49; §19.1 Modbus address list of frequently required measured values, pages 82–83

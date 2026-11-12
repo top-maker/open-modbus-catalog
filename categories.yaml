@@ -12,17 +12,35 @@ analog-input-module:
     zh-CN:
       name: 模拟量输入模块
 
+analog-output-module:
+  name: Analog output module
+  translations:
+    zh-CN:
+      name: 模拟量输出模块
+
 digital-io-module:
   name: Digital I/O module
   translations:
     zh-CN:
       name: 数字量 I/O 模块
 
+energy-meter:
+  name: Energy meter
+  translations:
+    zh-CN:
+      name: 电能表
+
 network-analyzer:
   name: Network analyzer
   translations:
     zh-CN:
       name: 电力网络分析仪
+
+power-meter:
+  name: Power meter
+  translations:
+    zh-CN:
+      name: 电力仪表
 
 universal-io-module:
   name: Universal I/O module

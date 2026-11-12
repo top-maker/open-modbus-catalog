@@ -1,0 +1,19 @@
+{
+  "version": "1",
+  "initial": {
+    "EMERGENCY_DI0": true,
+    "EMERGENCY_DI1": false,
+    "EMERGENCY_DI2": true,
+    "EMERGENCY_DI3": false,
+    "AO0_RAW": 0,
+    "AO1_RAW": 16384,
+    "AO2_RAW": 32768,
+    "AO3_RAW": 65535,
+    "MODULE_NAME_1": 16420,
+    "MODULE_NAME_2": 0,
+    "VERSION_1": 41472,
+    "VERSION_2": 0,
+    "COMM_SAFETY_ENABLE": 0,
+    "COMM_SAFETY_FLAG": 0
+  }
+}

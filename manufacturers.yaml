@@ -14,6 +14,32 @@ advantech:
       name: 研华
   website: https://www.advantech.com
 
+carlo-gavazzi:
+  name: Carlo Gavazzi
+  website: https://www.gavazziautomation.com
+
+eastron:
+  name: Eastron
+  translations:
+    zh-CN:
+      name: 东鸿
+  website: https://www.eastrongroup.com
+
 entes:
   name: ENTES
   website: https://www.entes.com.tr
+
+janitza:
+  name: Janitza
+  website: https://www.janitza.com
+
+moxa:
+  name: Moxa
+  website: https://www.moxa.com
+
+schneider-electric:
+  name: Schneider Electric
+  translations:
+    zh-CN:
+      name: 施耐德电气
+  website: https://www.se.com

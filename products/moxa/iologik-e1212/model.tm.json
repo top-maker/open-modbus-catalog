@@ -1,0 +1,889 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "modpoll": "https://top-maker.github.io/modpoll/vocab/wot-modbus#",
+      "modv": "https://www.w3.org/2019/wot/modbus",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "tm:ThingModel",
+  "title": "Moxa ioLogik E1212 Ethernet Remote I/O",
+  "description": "Thing Model for the Moxa ioLogik E1212 Ethernet remote I/O with 8 digital inputs and 8 jumper-configurable DIO channels over Modbus TCP. It reads input and output states, input event counters, the status words, the watchdog alarm flag, the model name, uptime and firmware identification. Addresses follow the default Modbus addresses in the ioLogik E1200 Series User Manual v16.2, Appendix A. Outputs are read only. LAN IP and MAC registers and the user-set device name are instance data and are omitted. Firmware applicability is not stated; user-defined Modbus addressing changes these addresses. No hardware validation is claimed.",
+  "modpoll:version": "0.2",
+  "properties": {
+    "DI0": {
+      "type": "boolean",
+      "description": "Input state of DI channel 00 (1 on), discrete input 10001.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 0,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI1": {
+      "type": "boolean",
+      "description": "Input state of DI channel 01 (1 on), discrete input 10002.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 1,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI2": {
+      "type": "boolean",
+      "description": "Input state of DI channel 02 (1 on), discrete input 10003.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 2,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI3": {
+      "type": "boolean",
+      "description": "Input state of DI channel 03 (1 on), discrete input 10004.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 3,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI4": {
+      "type": "boolean",
+      "description": "Input state of DI channel 04 (1 on), discrete input 10005.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 4,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI5": {
+      "type": "boolean",
+      "description": "Input state of DI channel 05 (1 on), discrete input 10006.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 5,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI6": {
+      "type": "boolean",
+      "description": "Input state of DI channel 06 (1 on), discrete input 10007.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 6,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI7": {
+      "type": "boolean",
+      "description": "Input state of DI channel 07 (1 on), discrete input 10008.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 7,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI8": {
+      "type": "boolean",
+      "description": "Input state of DIO channel 08 (1 on), discrete input 10009; the DIO channel reads as input when set to DI by jumper.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 8,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI9": {
+      "type": "boolean",
+      "description": "Input state of DIO channel 09 (1 on), discrete input 10010; the DIO channel reads as input when set to DI by jumper.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 9,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI10": {
+      "type": "boolean",
+      "description": "Input state of DIO channel 10 (1 on), discrete input 10011; the DIO channel reads as input when set to DI by jumper.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 10,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI11": {
+      "type": "boolean",
+      "description": "Input state of DIO channel 11 (1 on), discrete input 10012; the DIO channel reads as input when set to DI by jumper.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 11,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI12": {
+      "type": "boolean",
+      "description": "Input state of DIO channel 12 (1 on), discrete input 10013; the DIO channel reads as input when set to DI by jumper.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 12,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI13": {
+      "type": "boolean",
+      "description": "Input state of DIO channel 13 (1 on), discrete input 10014; the DIO channel reads as input when set to DI by jumper.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 13,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI14": {
+      "type": "boolean",
+      "description": "Input state of DIO channel 14 (1 on), discrete input 10015; the DIO channel reads as input when set to DI by jumper.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 14,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI15": {
+      "type": "boolean",
+      "description": "Input state of DIO channel 15 (1 on), discrete input 10016; the DIO channel reads as input when set to DI by jumper.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 15,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO0": {
+      "type": "boolean",
+      "description": "Output state DO_status of output channel 00 (1 on), coil 1; applies to the DIO channels set to DO.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 0,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO1": {
+      "type": "boolean",
+      "description": "Output state DO_status of output channel 01 (1 on), coil 2; applies to the DIO channels set to DO.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 1,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO2": {
+      "type": "boolean",
+      "description": "Output state DO_status of output channel 02 (1 on), coil 3; applies to the DIO channels set to DO.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 2,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO3": {
+      "type": "boolean",
+      "description": "Output state DO_status of output channel 03 (1 on), coil 4; applies to the DIO channels set to DO.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 3,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO4": {
+      "type": "boolean",
+      "description": "Output state DO_status of output channel 04 (1 on), coil 5; applies to the DIO channels set to DO.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 4,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO5": {
+      "type": "boolean",
+      "description": "Output state DO_status of output channel 05 (1 on), coil 6; applies to the DIO channels set to DO.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 5,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO6": {
+      "type": "boolean",
+      "description": "Output state DO_status of output channel 06 (1 on), coil 7; applies to the DIO channels set to DO.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 6,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO7": {
+      "type": "boolean",
+      "description": "Output state DO_status of output channel 07 (1 on), coil 8; applies to the DIO channels set to DO.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 7,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI0_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 00, input registers 30017–30018 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 16,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI1_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 01, input registers 30019–30020 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 18,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI2_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 02, input registers 30021–30022 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 20,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI3_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 03, input registers 30023–30024 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 22,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI4_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 04, input registers 30025–30026 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 24,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI5_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 05, input registers 30027–30028 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 26,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI6_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 06, input registers 30029–30030 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 28,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI7_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 07, input registers 30031–30032 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 30,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI8_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 08, input registers 30033–30034 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 32,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI9_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 09, input registers 30035–30036 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 34,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI10_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 10, input registers 30037–30038 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 36,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI11_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 11, input registers 30039–30040 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 38,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI12_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 12, input registers 30041–30042 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 40,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI13_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 13, input registers 30043–30044 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 42,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI14_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 14, input registers 30045–30046 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 44,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI15_COUNTER": {
+      "type": "integer",
+      "description": "Event counter value of input channel 15, input registers 30047–30048 (high word first); counts only in counter mode.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 46,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI_ALL_STATUS": {
+      "type": "integer",
+      "description": "All input states as one word, input register 30049; bit n is channel n.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 48,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "DO_ALL_STATUS": {
+      "type": "integer",
+      "description": "All output states as one word, holding register 40033; bit n is output channel n.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 32,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "WATCHDOG_ALARM": {
+      "type": "boolean",
+      "description": "Watchdog alarm flag, coil 04145 (1 when the communication watchdog tripped).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 4144,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "MODEL_NAME": {
+      "type": "string",
+      "description": "Model name in ASCII, input registers 35001–35010, one character per byte.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 5000,
+          "modv:quantity": 10,
+          "modv:type": "xsd:string"
+        }
+      ]
+    },
+    "UPTIME": {
+      "type": "integer",
+      "description": "Device uptime in seconds, input registers 35021–35022.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "s",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 5020,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "FIRMWARE_VERSION": {
+      "type": "integer",
+      "description": "Firmware version, input registers 35030–35031; the first three bytes are the major, minor and patch numbers (V1.2.3 is 0x010203xx).",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 5029,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "FIRMWARE_BUILD_DATE": {
+      "type": "integer",
+      "description": "Firmware build date code, input registers 35032–35033 (Build16051718 reads 16051718).",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 5031,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    }
+  },
+  "modpoll:acquisition": [
+    {
+      "modv:entity": "Coil",
+      "modv:address": 0,
+      "modv:quantity": 8,
+      "modpoll:members": [
+        "DO0",
+        "DO1",
+        "DO2",
+        "DO3",
+        "DO4",
+        "DO5",
+        "DO6",
+        "DO7"
+      ]
+    },
+    {
+      "modv:entity": "Coil",
+      "modv:address": 4144,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "WATCHDOG_ALARM"
+      ]
+    },
+    {
+      "modv:entity": "DiscreteInput",
+      "modv:address": 0,
+      "modv:quantity": 16,
+      "modpoll:members": [
+        "DI0",
+        "DI1",
+        "DI2",
+        "DI3",
+        "DI4",
+        "DI5",
+        "DI6",
+        "DI7",
+        "DI8",
+        "DI9",
+        "DI10",
+        "DI11",
+        "DI12",
+        "DI13",
+        "DI14",
+        "DI15"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 32,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "DO_ALL_STATUS"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 16,
+      "modv:quantity": 33,
+      "modpoll:members": [
+        "DI0_COUNTER",
+        "DI1_COUNTER",
+        "DI2_COUNTER",
+        "DI3_COUNTER",
+        "DI4_COUNTER",
+        "DI5_COUNTER",
+        "DI6_COUNTER",
+        "DI7_COUNTER",
+        "DI8_COUNTER",
+        "DI9_COUNTER",
+        "DI10_COUNTER",
+        "DI11_COUNTER",
+        "DI12_COUNTER",
+        "DI13_COUNTER",
+        "DI14_COUNTER",
+        "DI15_COUNTER",
+        "DI_ALL_STATUS"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 5000,
+      "modv:quantity": 10,
+      "modpoll:members": [
+        "MODEL_NAME"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 5020,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "UPTIME"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 5029,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "FIRMWARE_VERSION",
+        "FIRMWARE_BUILD_DATE"
+      ]
+    }
+  ]
+}

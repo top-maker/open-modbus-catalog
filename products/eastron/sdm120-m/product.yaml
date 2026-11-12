@@ -33,3 +33,14 @@ documents:
   title: Eastron SDM120-M User Manual v1.0, 2025
   url: 'https://www.eastrongroup.com/eastrongroup/2025/03/22/eastronsdm120-musermanualv1.0.pdf'
   reference: Part 1 specification, pages 3–4; set-up menu, pages 7–8; Modbus register map, pages 11–13
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the SDM120-M single-module DIN-rail meter with its raised display front
+  translations:
+    zh-CN:
+      alt: SDM120-M 单模块导轨式电能表的正视线稿，显示凸起的显示面板和两端的接线螺钉
+  view: front-orthographic
+  source:
+    url: 'https://www.eastrongroup.com/eastrongroup/2025/03/22/eastronsdm120-musermanualv1.0.pdf'
+    reference: Dimensions, page 10; mechanics 18 x 118 x 64 mm, page 5
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

@@ -37,3 +37,14 @@ documents:
   title: EM100 Series and ET100 Series Modbus communication protocol, version 4.0, 2025-06-20
   url: 'https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM100_ET100_Series_CPP.pdf'
   reference: §2.1 request size, page 4; §3.1 data format, page 9; Tables 4.1 and 4.2, pages 11–12; Tables 4.6–4.8, page 15
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the EM111 single-module DIN-rail meter with its LCD and end terminals
+  translations:
+    zh-CN:
+      alt: EM111 单模块导轨式电能表的正视线稿，显示液晶窗口和两端的接线端子
+  view: front-orthographic
+  source:
+    url: 'https://www.gavazziautomation.com/fileadmin/images/PIM/DATASHEET/ENG/EM111_DS_ENG.pdf'
+    reference: Front panel description and dimensions (mm), page 13
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

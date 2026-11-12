@@ -1,3 +1,6 @@
+// Validate catalog structure, safety and source traceability. Presentation
+// choices such as description length or illustration style are review rules,
+// not checked here.
 import { execFile } from 'node:child_process';
 import { lstatSync, readFileSync } from 'node:fs';
 import { promisify } from 'node:util';
@@ -6,11 +9,9 @@ import { SaxesParser } from 'saxes';
 import { parse } from 'yaml';
 
 const root = new URL('../', import.meta.url);
-const schema = JSON.parse(readFileSync(new URL('schema/product.schema.json', root), 'utf8'));
+const read = path => readFileSync(new URL(path, root), 'utf8');
 const ajv = new Ajv2020({ allErrors: true });
-const validateProduct = ajv.compile(schema);
-const validateCategories = ajv.compile(
-  JSON.parse(readFileSync(new URL('schema/categories.schema.json', root), 'utf8')));
+const validator = name => ajv.compile(JSON.parse(read(`schema/${name}.schema.json`)));
 const allowedFiles = new Set([
   '.github/ISSUE_TEMPLATE/product-feedback.md',
   '.github/workflows/validate.yaml',
@@ -19,101 +20,59 @@ const allowedFiles = new Set([
   'LICENSE',
   'README.md',
   'categories.yaml',
+  'manufacturers.yaml',
   'package-lock.json',
   'package.json',
   'schema/categories.schema.json',
+  'schema/manufacturers.schema.json',
   'schema/product.schema.json',
+  'schema/simulation-presets.schema.json',
   'scripts/check-thing-models.py',
   'scripts/check-thing-models.py.lock',
+  'scripts/simulation.py',
   'scripts/validate-catalog.mjs',
+  'simulation-presets.yaml',
 ]);
 const slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
-const productPath = new RegExp(`^products/${slug}/${slug}/product\\.json$`);
+const productPath = new RegExp(`^products/(${slug})/(${slug})/product\\.yaml$`);
 const svgTags = new Set(['svg', 'title', 'desc', 'g', 'path', 'rect', 'circle', 'ellipse', 'line', 'polyline', 'polygon', 'text', 'tspan']);
 const svgAttributes = new Set('xmlns width height viewBox role aria-labelledby id fill stroke stroke-width stroke-linejoin stroke-linecap transform d x y rx ry cx cy r x1 x2 y1 y2 points font-family text-anchor font-size font-weight letter-spacing'.split(' '));
+const colour = /^(none|#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6})$/;
 
-function checkIllustration(file, path) {
-  const fail = () => { throw new Error(`${path}: expected a passive 560 × 560 SVG illustration`); };
-  const parser = new SaxesParser();
-  parser.on('doctype', fail);
-  parser.on('processinginstruction', fail);
-  let root = true;
-  let background = false;
-  parser.on('opentag', ({ name, attributes }) => {
-    if (!svgTags.has(name) || Object.keys(attributes).some(key => !svgAttributes.has(key))) fail();
-    if (['fill', 'stroke'].some(key => attributes[key] && !['none', '#000', '#fffaf0'].includes(attributes[key]))) fail();
-    if (!root) {
-      if (name === 'svg' || attributes.xmlns) fail();
-      if (!background && name !== 'title' && name !== 'desc') {
-        if (name !== 'rect' || attributes.fill !== '#fffaf0' || attributes.width !== '560' ||
-            attributes.height !== '560' || attributes.x || attributes.y || attributes.transform) fail();
-        background = true;
-      }
-      return;
-    }
-    root = false;
-    if (name !== 'svg' || attributes.xmlns !== 'http://www.w3.org/2000/svg' ||
-        attributes.width !== '560' || attributes.height !== '560' || attributes.viewBox !== '0 0 560 560') fail();
-  });
-  parser.write(readFileSync(file, 'utf8')).close();
-  if (!background) fail();
-}
-
-function checkDescription(text, locale, path) {
-  const length = [...new Intl.Segmenter(locale, { granularity: 'grapheme' }).segment(text)].length;
-  if (text !== text.normalize('NFC').trim() || length < 90 || length > 100) {
-    throw new Error(`${path}: ${locale} description must contain 90–100 NFC grapheme clusters`);
-  }
-}
-
-function readPackageFile(files, allowedFiles, directory, file, path) {
-  const asset = directory + file;
-  if (!files.has(asset) || allowedFiles.has(asset)) {
-    throw new Error(`${path}: missing or duplicate package file ${file}`);
-  }
-  allowedFiles.add(asset);
-  return readFileSync(new URL(asset, root));
-}
-
-function parseObject(bytes, file, path) {
-  const value = JSON.parse(bytes.toString('utf8'));
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    throw new Error(`${path}: ${file} must contain a JSON object`);
-  }
+function readYaml(path, validate) {
+  const value = parse(read(path));
+  if (!validate(value)) throw new Error(`${path}: ${ajv.errorsText(validate.errors)}`);
   return value;
 }
 
-function checkThingModels(product, files, allowedFiles, directory, path) {
-  for (const entry of product.thingModels ?? []) {
-    const bytes = readPackageFile(files, allowedFiles, directory, entry.path, path);
-    const thingModel = parseObject(bytes, entry.path, path);
-    if (thingModel['@type'] !== 'tm:ThingModel' || !thingModel.properties || typeof thingModel.properties !== 'object') {
-      throw new Error(`${path}: ${entry.path} must be a Thing Model with properties`);
-    }
-    const names = new Set(Object.keys(thingModel.properties));
-    if (entry.vectors) {
-      const vectors = parseObject(readPackageFile(files, allowedFiles, directory, entry.vectors, path), entry.vectors, path);
-      const keys = Object.keys(vectors);
-      if (keys.length === 0 || keys.some(key => !names.has(key) ||
-          !['number', 'boolean', 'string'].includes(typeof vectors[key]))) {
-        throw new Error(`${path}: ${entry.vectors} must map Thing Model properties to scalar values`);
-      }
-    }
-    for (const scenario of entry.scenarios ?? []) {
-      const document = parseObject(readPackageFile(files, allowedFiles, directory, scenario, path), scenario, path);
-      if (Object.hasOwn(document, 'script')) {
-        throw new Error(`${path}: ${scenario} must be declarative without a script`);
-      }
-    }
-  }
+// Illustrations must stay passive: a single SVG root of drawing elements, no
+// scripts, links, styles, external references or entities.
+function checkIllustration(path) {
+  const fail = () => { throw new Error(`${path}: expected a passive SVG illustration`); };
+  const parser = new SaxesParser();
+  parser.on('doctype', fail);
+  parser.on('processinginstruction', fail);
+  let first = true;
+  parser.on('opentag', ({ name, attributes }) => {
+    if (!svgTags.has(name) || Object.keys(attributes).some(key => !svgAttributes.has(key))) fail();
+    if (['fill', 'stroke'].some(key => attributes[key] && !colour.test(attributes[key]))) fail();
+    if (first) {
+      if (name !== 'svg' || attributes.xmlns !== 'http://www.w3.org/2000/svg' || !attributes.viewBox) fail();
+      first = false;
+    } else if (name === 'svg' || attributes.xmlns) fail();
+  });
+  parser.write(read(path)).close();
+}
+
+function checkText(text, path) {
+  if (text !== text.normalize('NFC').trim()) throw new Error(`${path}: text must be trimmed NFC`);
 }
 
 function checkDefaults({ protocols, defaults }, path) {
-  if (!defaults) return;
-  if (defaults.tcp && !protocols.includes('modbus-tcp')) {
+  if (defaults?.tcp && !protocols.includes('modbus-tcp')) {
     throw new Error(`${path}: TCP defaults need the modbus-tcp protocol`);
   }
-  if (defaults.serial && !protocols.some(protocol => protocol !== 'modbus-tcp')) {
+  if (defaults?.serial && !protocols.some(protocol => protocol !== 'modbus-tcp')) {
     throw new Error(`${path}: serial defaults need the modbus-rtu or modbus-ascii protocol`);
   }
 }
@@ -124,48 +83,73 @@ function checkUrl(url, path) {
     throw new Error(`${path}: expected a valid HTTPS URL without credentials`);
   }
 }
-try {
-  const { stdout } = await promisify(execFile)('git', [
-    'ls-files', '-z', '--cached', '--others', '--exclude-standard',
-  ], { cwd: root });
-  const files = new Set(stdout.split('\0').filter(Boolean));
-  const categories = parse(readFileSync(new URL('categories.yaml', root), 'utf8'));
-  if (!validateCategories(categories)) {
-    throw new Error(`categories.yaml: ${ajv.errorsText(validateCategories.errors)}`);
+
+function readJsonObject(path) {
+  const value = JSON.parse(read(path));
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(`${path}: expected a JSON object`);
+  return value;
+}
+
+// The baseline Thing Model and its scenario live at fixed paths next to product.yaml.
+function checkModel(files, directory) {
+  const modelPath = `${directory}model.tm.json`;
+  const scenarioPath = `${directory}model.sim.json`;
+  if (!files.has(modelPath)) {
+    if (files.has(scenarioPath)) throw new Error(`${scenarioPath}: a scenario needs model.tm.json`);
+    return;
   }
-  const ids = new Set();
-  const modelNumbers = new Set();
+  allowedFiles.add(modelPath);
+  const model = readJsonObject(modelPath);
+  if (model['@type'] !== 'tm:ThingModel' || !model.properties || typeof model.properties !== 'object') {
+    throw new Error(`${modelPath}: expected a Thing Model with properties`);
+  }
+  if (!files.has(scenarioPath)) return;
+  allowedFiles.add(scenarioPath);
+  const scenario = readJsonObject(scenarioPath);
+  if (Object.hasOwn(scenario, 'script')) throw new Error(`${scenarioPath}: scenarios must be declarative without a script`);
+  for (const section of ['generators', 'initial']) {
+    const unknown = Object.keys(scenario[section] ?? {}).filter(name => !Object.hasOwn(model.properties, name));
+    if (unknown.length) throw new Error(`${scenarioPath}: unknown properties ${unknown.join(', ')}`);
+  }
+}
+
+try {
+  const { stdout } = await promisify(execFile)('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd: root });
+  const files = new Set(stdout.split('\0').filter(Boolean));
   for (const path of files) {
     if (!lstatSync(new URL(path.split('/').map(encodeURIComponent).join('/'), root)).isFile()) {
       throw new Error(`Expected a regular file: ${path}`);
     }
   }
+  const categories = readYaml('categories.yaml', validator('categories'));
+  const manufacturers = readYaml('manufacturers.yaml', validator('manufacturers'));
+  const presets = readYaml('simulation-presets.yaml', validator('simulation-presets'));
+  const unknownPresets = Object.keys(presets).filter(key => key !== 'default' && !Object.hasOwn(categories, key));
+  if (unknownPresets.length) throw new Error(`simulation-presets.yaml: unknown categories ${unknownPresets.join(', ')}`);
+  const validateProduct = validator('product');
+  const modelNumbers = new Set();
+  let count = 0;
+
   for (const path of files) {
-    if (!productPath.test(path)) continue;
+    const match = path.match(productPath);
+    if (!match) continue;
     allowedFiles.add(path);
-    const directory = path.slice(0, -'product.json'.length);
-    const product = JSON.parse(readFileSync(new URL(path, root), 'utf8'));
-    if (!validateProduct(product)) {
-      throw new Error(`${path}: ${ajv.errorsText(validateProduct.errors)}`);
-    }
-    if (`products/${product.id}/` !== directory) {
-      throw new Error(`${path}: product ID must equal its package path ${directory.slice('products/'.length, -1)}`);
+    const directory = path.slice(0, -'product.yaml'.length);
+    const product = readYaml(path, validateProduct);
+    const [, manufacturer] = match;
+    if (!Object.hasOwn(manufacturers, manufacturer)) {
+      throw new Error(`${path}: manufacturer ${manufacturer} is not listed in manufacturers.yaml`);
     }
     if (!Object.hasOwn(categories, product.category)) {
       throw new Error(`${path}: category ${product.category} is not listed in categories.yaml`);
     }
-    checkDefaults(product.communication, path);
-    if (ids.has(product.id)) throw new Error(`${path}: duplicate product ID ${product.id}`);
-    ids.add(product.id);
-
-    const modelNumber = JSON.stringify([product.manufacturer.toLowerCase(), product.modelNumber.toLowerCase()]);
-    if (modelNumbers.has(modelNumber)) throw new Error(`${path}: duplicate manufacturer and model number`);
+    const modelNumber = `${manufacturer}\0${product.modelNumber.toLowerCase()}`;
+    if (modelNumbers.has(modelNumber)) throw new Error(`${path}: duplicate model number for ${manufacturer}`);
     modelNumbers.add(modelNumber);
 
-    checkDescription(product.description, 'en', path);
-    for (const [locale, { description }] of Object.entries(product.translations ?? {})) {
-      checkDescription(description, locale, path);
-    }
+    checkText(product.description, path);
+    for (const { description } of Object.values(product.translations ?? {})) checkText(description, path);
+    checkDefaults(product.communication, path);
     for (const document of product.documents) {
       if (document.url) {
         checkUrl(document.url, path);
@@ -181,21 +165,19 @@ try {
     for (const [index, image] of (product.images ?? []).entries()) {
       const asset = directory + image.path;
       const expected = `images/${String(index + 1).padStart(2, '0')}.svg`;
-      if (image.path !== expected || !files.has(asset)) {
-        throw new Error(`${path}: expected image ${expected}`);
-      }
+      if (image.path !== expected || !files.has(asset)) throw new Error(`${path}: expected image ${expected}`);
       checkUrl(image.source.url, path);
-      checkIllustration(new URL(asset, root), asset);
+      checkIllustration(asset);
       allowedFiles.add(asset);
     }
-    checkThingModels(product, files, allowedFiles, directory, path);
+    checkModel(files, directory);
+    count++;
   }
   for (const path of files) {
     if (!allowedFiles.has(path)) throw new Error(`Unexpected public file: ${path}`);
   }
-
-  if (ids.size === 0) throw new Error('No product records found');
-  console.log(`Validated ${ids.size} product record(s) and the public file allowlist.`);
+  if (count === 0) throw new Error('No product records found');
+  console.log(`Validated ${count} product record(s), the lists and the public file allowlist.`);
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;

@@ -9,6 +9,7 @@ prerelease-mode = "allow"
 requirements = [
     { name = "modpoll", specifier = "==2.0.0a5" },
     { name = "modsim", specifier = "==2.0.0a6" },
+    { name = "pyyaml", specifier = "==6.0.3" },
 ]
 
 [[package]]

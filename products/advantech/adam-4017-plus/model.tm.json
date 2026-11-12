@@ -9,7 +9,7 @@
   ],
   "@type": "tm:ThingModel",
   "title": "Advantech ADAM-4017+ 8-Channel Analog Input Module",
-  "description": "Thing Model for the Advantech ADAM-4017+ RS-485 analog input module in Modbus RTU mode. It reads eight analog input values, the module name and the firmware version words. Addresses follow the ADAM-4000 Series User Manual Ed. 9, Appendix G.1 (4X holding registers). Values are raw words without engineering-unit conversion. The module must be configured for Modbus RTU rather than ADAM ASCII. No hardware validation is claimed.",
+  "description": "Thing Model for the Advantech ADAM-4017+ RS-485 analog input module in Modbus RTU mode. It reads eight analog input values, the module name and the firmware version words. Addresses follow the ADAM-4000 Series User Manual Ed. 9, Appendix G.1 (4X holding registers). Values are raw words without engineering-unit conversion. The module must be configured for Modbus RTU rather than ADAM ASCII. Firmware is not stated; confirm input ranges and data format on the device. No hardware validation is claimed.",
   "modpoll:version": "0.2",
   "properties": {
     "AI0_RAW": {

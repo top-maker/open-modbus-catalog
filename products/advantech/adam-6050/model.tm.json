@@ -9,7 +9,7 @@
   ],
   "@type": "tm:ThingModel",
   "title": "Advantech ADAM-6050 18-Channel Digital I/O Module",
-  "description": "Thing Model for the Advantech ADAM-6050 Modbus TCP digital I/O module. It reads twelve digital inputs, six digital output states, the input and output words and the module name. Addresses follow the ADAM-6000 User Manual Ed. 12, Appendix B.2 (0X coils and 4X holding registers). Counter, frequency and pulse registers are omitted because their 32-bit word order is not documented. Outputs are read only. No hardware validation is claimed.",
+  "description": "Thing Model for the Advantech ADAM-6050 Modbus TCP digital I/O module. It reads twelve digital inputs, six digital output states, the input and output words and the module name. Addresses follow the ADAM-6000 User Manual Ed. 12, Appendix B.2 (0X coils and 4X holding registers). Counter, frequency and pulse registers are omitted because their 32-bit word order is not documented. Outputs are read only. Firmware is not stated; the D-version diagnostic registers are not included. No hardware validation is claimed.",
   "modpoll:version": "0.2",
   "properties": {
     "DI0": {

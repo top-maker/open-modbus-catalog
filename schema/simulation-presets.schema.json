@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Open Modbus Catalog simulation presets",
+  "description": "Static simulation values per category, matched by point unit, type or name.",
+  "type": "object",
+  "required": [
+    "default"
+  ],
+  "propertyNames": {
+    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+  },
+  "additionalProperties": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "boolean",
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

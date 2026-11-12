@@ -9,7 +9,7 @@
   ],
   "@type": "tm:ThingModel",
   "title": "Advantech ADAM-6024 12-Channel Universal I/O Module",
-  "description": "Thing Model for the Advantech ADAM-6024 Modbus TCP universal I/O module. It reads six analog inputs, two analog outputs, input status, historical extremes, the module name and two digital inputs and outputs. Addresses follow the ADAM-6000 User Manual Ed. 12, Appendix B.2 (0X coils and 4X holding registers); the manual's function code example uses 04, so confirm the data tables on the device. Values are raw words without engineering-unit conversion. Outputs are read only. No hardware validation is claimed.",
+  "description": "Thing Model for the Advantech ADAM-6024 Modbus TCP universal I/O module. It reads six analog inputs, two analog outputs, input status, historical extremes, the module name and two digital inputs and outputs. Addresses follow the ADAM-6000 User Manual Ed. 12, Appendix B.2 (0X coils and 4X holding registers); the manual's function code example uses 04, so confirm the data tables on the device. Values are raw words without engineering-unit conversion. Outputs are read only. Firmware is not stated; confirm input ranges and data format on the device. No hardware validation is claimed.",
   "modpoll:version": "0.2",
   "properties": {
     "AI0_RAW": {

@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="560" viewBox="0 0 560 560" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
   <title id="title">Advantech ADAM-6050 front-view illustration</title>
   <desc id="desc">Front orthographic view of the digital I/O module with its round label panel, two captive screws and plug-in terminal blocks of 9 and 13 screw terminals. Schematic, not to scale.</desc>
-  <rect width="560" height="560" fill="#fffaf0"/>
+  <rect width="512" height="512" fill="#fff"/>
+  <g transform="scale(0.9142857)">
   <g fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
     <path d="M186 92.6H374Q382 92.6 382 100.6V191.1A119 119 0 0 1 382 313.7V404.2Q382 412.2 374 412.2H186Q178 412.2 178 404.2V313.7A119 119 0 0 1 178 191.1V100.6Q178 92.6 186 92.6Z"/>
     <circle cx="280" cy="252.4" r="116" stroke-width="1.7"/>
@@ -63,5 +64,6 @@
     <text x="280" y="262.4" font-size="16" font-weight="600">ADAM-6050</text>
     <text x="280" y="476.8" font-size="11" letter-spacing="1">FRONT VIEW</text>
     <text x="280" y="492.8" font-size="9" letter-spacing="0.8">NOT TO SCALE</text>
+  </g>
   </g>
 </svg>

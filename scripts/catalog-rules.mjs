@@ -79,6 +79,21 @@ export function validateCatalog(root, files = listFiles(root)) {
   const ajv = new Ajv2020({ allErrors: true });
   const validator = name => ajv.compile(JSON.parse(readFileSync(new URL(`schema/${name}.schema.json`, root), 'utf8')));
   const allowedFiles = new Set(allowedRootFiles);
+
+  // The first rule that matches a point gives its value, so a rule whose
+  // conditions an earlier rule of the same list already covers is never used.
+  function checkPresets(presets) {
+    const covers = (earlier, later) =>
+      (earlier.unit === undefined || earlier.unit === later.unit) &&
+      (earlier.type === undefined || earlier.type === later.type) &&
+      (earlier.name === undefined || (later.name !== undefined && later.name.toLowerCase().includes(earlier.name.toLowerCase())));
+    for (const [list, rules] of Object.entries(presets)) {
+      rules.forEach((rule, index) => {
+        const first = rules.slice(0, index).findIndex(earlier => covers(earlier, rule));
+        if (first >= 0) fail('simulation-presets.yaml', `${list}: rule ${index + 1} is never used, rule ${first + 1} matches first`);
+      });
+    }
+  }
   let count = 0;
 
   // Schema errors name the line of the offending YAML node.
@@ -242,6 +257,7 @@ export function validateCatalog(root, files = listFiles(root)) {
     lists.categories = readYaml('categories.yaml', validator('categories'));
     lists.manufacturers = readYaml('manufacturers.yaml', validator('manufacturers'));
     const presets = readYaml('simulation-presets.yaml', validator('simulation-presets'));
+    if (presets) checkPresets(presets);
     if (presets && lists.categories) {
       const unknown = Object.keys(presets).filter(key => key !== 'default' && !Object.hasOwn(lists.categories, key));
       if (unknown.length) fail('simulation-presets.yaml', `unknown categories ${unknown.join(', ')}`);

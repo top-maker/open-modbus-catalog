@@ -167,6 +167,21 @@ describe('rejects active illustrations', () => {
   }
 });
 
+describe('rejects simulation presets that can never apply', () => {
+  const tail = 'default:\n  - { type: boolean, value: true }\n';
+  it('a duplicate rule or a specific rule after a general one', () => {
+    const duplicate = 'network-analyzer:\n  - { unit: VAh, value: 1 }\n  - { unit: VAh, value: 2 }\n' + tail;
+    assert.match(problems(baseProduct(), { 'simulation-presets.yaml': duplicate }), /network-analyzer: rule 2 is never used, rule 1 matches first/);
+    const shadowed = 'network-analyzer:\n  - { unit: V, value: 1 }\n  - { unit: V, name: l1_l2, value: 2 }\n' + tail;
+    assert.match(problems(baseProduct(), { 'simulation-presets.yaml': shadowed }), /rule 2 is never used/);
+  });
+
+  it('accepts a specific rule before a general one', () => {
+    const ordered = 'network-analyzer:\n  - { unit: V, name: l1_l2, value: 2 }\n  - { unit: V, value: 1 }\n' + tail;
+    assert.deepEqual(catalog(baseProduct(), { 'simulation-presets.yaml': ordered }).run().errors, []);
+  });
+});
+
 describe('rejects files that do not belong', () => {
   it('an unexpected public file', () => {
     assert.match(problems(baseProduct(), { 'products/advantech/test-1/notes.txt': 'private' }), /notes\.txt: Unexpected public file/);

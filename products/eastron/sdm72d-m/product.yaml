@@ -1,8 +1,6 @@
 # yaml-language-server: $schema=../../../schema/product.schema.json
 
 modelNumber: SDM72D-M
-aliases:
-- SDM72DM
 category: energy-meter
 description: Three-phase 100 A direct-connected DIN-rail energy meter with RS-485 Modbus RTU and pulse output.
 translations:
@@ -44,6 +42,11 @@ documents:
   url: 'https://www.eastrongroup.com/eastrongroup/2026/04/17/EastronSDM72D-MUsermanualV11.pdf'
   reference: 'Section 2.1 interface table, printed page 6 (PDF page 9); sections 2.2 Dimensions and 2.4 Wiring Diagram, printed pages 7–8 (PDF pages 10–11); setup menu table, printed page 16 (PDF page 19). Contains no Modbus register map'
   sha256: 31b249bdc65c953145d237ee7c80d4accaa34f25d2c72dfb7fa5b5a4c405cbab
+  retrievedAt: '2026-11-13'
+- type: manual
+  title: Eastron SDM72D-M User Manual V1.1, 2019, multi-function version
+  reference: 'Part 3 Modbus Protocol, printed pages 13–16: Input Registers and Holding Registers tables, example start addresses and the 30-parameter request limit. Earlier edition that the manufacturer no longer publishes; copy supplied by a catalog maintainer'
+  sha256: fdeb238c671cebab0b6315235714a80573838214ea497794d58fc1ebd22560ef
   retrievedAt: '2026-11-13'
 images:
 - path: images/01.svg

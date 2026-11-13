@@ -224,6 +224,8 @@ export function validateCatalog(root, files = listFiles(root)) {
         checkUrl(document.url, path);
         continue;
       }
+      // A document that is no longer published is cited by its hash alone.
+      if (!document.path) continue;
       const asset = directory + document.path;
       if (!files.has(asset) || allowedFiles.has(asset) ||
           !readFileSync(fileUrl(asset)).subarray(0, 5).equals(Buffer.from('%PDF-'))) {

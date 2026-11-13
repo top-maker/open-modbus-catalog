@@ -1,0 +1,834 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "modpoll": "https://top-maker.github.io/modpoll/vocab/wot-modbus#",
+      "modv": "https://www.w3.org/2019/wot/modbus",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "tm:ThingModel",
+  "title": "Eastron SDM72D-M Three-Phase Energy Meter",
+  "description": "Baseline model for the Eastron SDM72D-M multi-function three-phase four-wire energy meter, read over RS-485 Modbus RTU. The firmware version is not stated. Register map: Eastron SDM72D-M User Manual V1.1 (2019), Part 3 Modbus Protocol, printed pages 13-16: input registers read with function code 04, each value an IEEE 754 32-bit float in two consecutive registers. Addresses here are zero-based: the manual's own example reads phase 1 current, register 30007, at start address 0006. The manual says the word order is set automatically to normal or reverse and cannot be configured; this model reads the high word first, so confirm it on hardware. A request may cover at most 30 parameters (60 registers). Parameters the manual marks as not valid for the wiring system return zero. Left out: the configuration holding registers (system type, pulse width and constant, key parameter authorization, parity and stop bits, Modbus address, password, baud rate, display scroll and backlight times, pulse energy type), the write-only reset command and the serial number, which is instance data.",
+  "modpoll:version": "0.2",
+  "properties": {
+    "V_L1_N": {
+      "type": "number",
+      "description": "Phase 1 line to neutral voltage. Input register 30001 (start address 0x0000), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 0,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L2_N": {
+      "type": "number",
+      "description": "Phase 2 line to neutral voltage. Input register 30003 (start address 0x0002), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 2,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L3_N": {
+      "type": "number",
+      "description": "Phase 3 line to neutral voltage. Input register 30005 (start address 0x0004), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 4,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_L1": {
+      "type": "number",
+      "description": "Phase 1 current. Input register 30007 (start address 0x0006), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 6,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_L2": {
+      "type": "number",
+      "description": "Phase 2 current. Input register 30009 (start address 0x0008), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 8,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_L3": {
+      "type": "number",
+      "description": "Phase 3 current. Input register 30011 (start address 0x000A), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 10,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_L1": {
+      "type": "number",
+      "description": "Phase 1 active power. Input register 30013 (start address 0x000C), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 12,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_L2": {
+      "type": "number",
+      "description": "Phase 2 active power. Input register 30015 (start address 0x000E), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 14,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_L3": {
+      "type": "number",
+      "description": "Phase 3 active power. Input register 30017 (start address 0x0010), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 16,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "S_L1": {
+      "type": "number",
+      "description": "Phase 1 apparent power. Input register 30019 (start address 0x0012), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 18,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "S_L2": {
+      "type": "number",
+      "description": "Phase 2 apparent power. Input register 30021 (start address 0x0014), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 20,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "S_L3": {
+      "type": "number",
+      "description": "Phase 3 apparent power. Input register 30023 (start address 0x0016), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 22,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "Q_L1": {
+      "type": "number",
+      "description": "Phase 1 reactive power (the manual writes the unit as VAr). Input register 30025 (start address 0x0018), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 24,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "Q_L2": {
+      "type": "number",
+      "description": "Phase 2 reactive power (the manual writes the unit as VAr). Input register 30027 (start address 0x001A), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 26,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "Q_L3": {
+      "type": "number",
+      "description": "Phase 3 reactive power (the manual writes the unit as VAr). Input register 30029 (start address 0x001C), 32-bit float in two registers; Input Registers table, printed page 13 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 28,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_L1": {
+      "type": "number",
+      "description": "Phase 1 power factor; the sign follows the direction of the current, positive for forward. Input register 30031 (start address 0x001E), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 30,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_L2": {
+      "type": "number",
+      "description": "Phase 2 power factor; the sign follows the direction of the current, positive for forward. Input register 30033 (start address 0x0020), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 32,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_L3": {
+      "type": "number",
+      "description": "Phase 3 power factor; the sign follows the direction of the current, positive for forward. Input register 30035 (start address 0x0022), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 34,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_LN_AVG": {
+      "type": "number",
+      "description": "Average line to neutral voltage. Input register 30043 (start address 0x002A), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 42,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_AVG": {
+      "type": "number",
+      "description": "Average line current. Input register 30047 (start address 0x002E), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 46,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_SUM": {
+      "type": "number",
+      "description": "Sum of line currents. Input register 30049 (start address 0x0030), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 48,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_TOTAL": {
+      "type": "number",
+      "description": "Total system active power. Input register 30053 (start address 0x0034), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 52,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "S_TOTAL": {
+      "type": "number",
+      "description": "Total system apparent power. Input register 30057 (start address 0x0038), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 56,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "Q_TOTAL": {
+      "type": "number",
+      "description": "Total system reactive power (the manual writes the unit as VAr). Input register 30061 (start address 0x003C), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 60,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_TOTAL": {
+      "type": "number",
+      "description": "Total system power factor; the sign follows the direction of the current, positive for forward. Input register 30063 (start address 0x003E), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 62,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "FREQUENCY": {
+      "type": "number",
+      "description": "Frequency of the supply voltages. Input register 30071 (start address 0x0046), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "Hz",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 70,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "E_IMPORT": {
+      "type": "number",
+      "description": "Import active energy. Input register 30073 (start address 0x0048), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 72,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "E_EXPORT": {
+      "type": "number",
+      "description": "Export active energy. Input register 30075 (start address 0x004A), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 74,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L1_L2": {
+      "type": "number",
+      "description": "Line 1 to line 2 voltage. Input register 30201 (start address 0x00C8), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 200,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L2_L3": {
+      "type": "number",
+      "description": "Line 2 to line 3 voltage. Input register 30203 (start address 0x00CA), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 202,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L3_L1": {
+      "type": "number",
+      "description": "Line 3 to line 1 voltage. Input register 30205 (start address 0x00CC), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 204,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_LL_AVG": {
+      "type": "number",
+      "description": "Average line to line voltage. Input register 30207 (start address 0x00CE), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 206,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "I_N": {
+      "type": "number",
+      "description": "Neutral current. Input register 30225 (start address 0x00E0), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 224,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "E_TOTAL": {
+      "type": "number",
+      "description": "Total active energy, import plus export. Input register 30343 (start address 0x0156), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 342,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "EQ_TOTAL": {
+      "type": "number",
+      "description": "Total reactive energy (the manual writes the unit as kVArh). Input register 30345 (start address 0x0158), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "kvarh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 344,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "E_TOTAL_RESETTABLE": {
+      "type": "number",
+      "description": "Resettable total active energy. Input register 30385 (start address 0x0180), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 384,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "E_IMPORT_RESETTABLE": {
+      "type": "number",
+      "description": "Resettable import active energy. Input register 30389 (start address 0x0184), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 388,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "E_EXPORT_RESETTABLE": {
+      "type": "number",
+      "description": "Resettable export active energy. Input register 30391 (start address 0x0186), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 390,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "E_NET": {
+      "type": "number",
+      "description": "Net active energy, import minus export. Input register 30397 (start address 0x018C), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "kWh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 396,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_IMPORT_TOTAL": {
+      "type": "number",
+      "description": "Total import active power. Input register 31281 (start address 0x0500), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 1280,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "P_EXPORT_TOTAL": {
+      "type": "number",
+      "description": "Total export active power. Input register 31283 (start address 0x0502), 32-bit float in two registers; Input Registers table, printed page 14 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 1282,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "METER_CODE": {
+      "type": "integer",
+      "description": "Meter code identifying the product: 0x0084 (132) for the SDM72D-M. Holding register 464515 (start address 0xFC02), one 16-bit word, read only; Holding Registers table, printed page 16 of the SDM72D-M User Manual V1.1 (2019).",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 64514,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    }
+  },
+  "modpoll:acquisition": [
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 64514,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "METER_CODE"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 0,
+      "modv:quantity": 36,
+      "modpoll:members": [
+        "V_L1_N",
+        "V_L2_N",
+        "V_L3_N",
+        "I_L1",
+        "I_L2",
+        "I_L3",
+        "P_L1",
+        "P_L2",
+        "P_L3",
+        "S_L1",
+        "S_L2",
+        "S_L3",
+        "Q_L1",
+        "Q_L2",
+        "Q_L3",
+        "POWER_FACTOR_L1",
+        "POWER_FACTOR_L2",
+        "POWER_FACTOR_L3"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 42,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "V_LN_AVG"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 46,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "I_AVG",
+        "I_SUM"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 52,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "P_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 56,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "S_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 60,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "Q_TOTAL",
+        "POWER_FACTOR_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 70,
+      "modv:quantity": 6,
+      "modpoll:members": [
+        "FREQUENCY",
+        "E_IMPORT",
+        "E_EXPORT"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 200,
+      "modv:quantity": 8,
+      "modpoll:members": [
+        "V_L1_L2",
+        "V_L2_L3",
+        "V_L3_L1",
+        "V_LL_AVG"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 224,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "I_N"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 342,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "E_TOTAL",
+        "EQ_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 384,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "E_TOTAL_RESETTABLE"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 388,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "E_IMPORT_RESETTABLE",
+        "E_EXPORT_RESETTABLE"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 396,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "E_NET"
+      ]
+    },
+    {
+      "modv:entity": "InputRegister",
+      "modv:address": 1280,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "P_IMPORT_TOTAL",
+        "P_EXPORT_TOTAL"
+      ]
+    }
+  ]
+}

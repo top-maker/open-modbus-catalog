@@ -186,6 +186,25 @@
             "required": [
               "path"
             ]
+          },
+          {
+            "required": [
+              "sha256"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "url"
+                  ]
+                },
+                {
+                  "required": [
+                    "path"
+                  ]
+                }
+              ]
+            }
           }
         ],
         "properties": {

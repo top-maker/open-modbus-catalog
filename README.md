@@ -53,6 +53,9 @@ with `path` only when it may be redistributed, and record `rights`.
 Record the `sha256` of the file the facts were read from and the date it was
 retrieved (`retrievedAt`, `YYYY-MM-DD`), so a later reader can tell whether the
 manufacturer has replaced the document behind the link.
+A manufacturer document that is no longer published and may not be
+redistributed is listed with its `sha256` alone, without `url` or `path`; say
+in `reference` how it was obtained.
 
 `communication.defaults` holds `tcp` (`port`, `unitId`) and `serial`
 (`unitId`, `baudRate`, `dataBits`, `parity`, `stopBits`), each only for a

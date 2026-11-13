@@ -121,7 +121,8 @@ def edge_values(thing_model):
         elif kind in FLOATS:
             values = [fit(prop, target) for target in (-1024.25, 3.0e38 if kind == "xsd:float" else 1.0e300, 1.5)]
         elif prop["type"] == "string" or kind == "xsd:string":
-            values = ["", "AZ", "Modbus"]
+            size = 2 * form.get("modv:quantity", 1)  # a string holds two characters per register
+            values = ["", "AZ"[:size], "Modbus"[:size]]
         else:
             low, high, factor = bounds(prop, form)
             pattern = min(max(0x1234, low), high)

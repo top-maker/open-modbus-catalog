@@ -1,8 +1,8 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "modpoll==2.0.0a6",
-#     "modsim==2.0.0a8",
+#     "modpoll==2.0.0a10",
+#     "modsim==2.0.0a12",
 #     "pyyaml==6.0.3",
 # ]
 #
@@ -125,8 +125,25 @@ def _simulated_read(model, data):
                     server.wait()
 
 
-def compare(expected, actual):
-    mismatched = {name: (value, actual.get(name)) for name, value in expected.items() if actual.get(name) != value}
+def single(value):
+    """The single-precision value a number names."""
+    return struct.unpack(">f", struct.pack(">f", value))[0]
+
+
+def is_single(thing_model, name):
+    form = read_form(thing_model["properties"][name])
+    return form.get("modv:type") == "xsd:float" and form.get("modpoll:multiplier") is None
+
+
+def compare(thing_model, expected, actual):
+    """Modpoll prints an xsd:float as the shortest decimal that names the register's value
+    (230.2 for 230.1999969482422), so such points are compared as single-precision values."""
+    def same(name, value):
+        read = actual.get(name)
+        if isinstance(read, (int, float)) and not isinstance(read, bool) and is_single(thing_model, name):
+            return single(read) == value
+        return read == value
+    mismatched = {name: (value, actual.get(name)) for name, value in expected.items() if not same(name, value)}
     if mismatched:
         raise RuntimeError(f"read back differs (expected, actual): {mismatched}")
 
@@ -138,8 +155,8 @@ def as_read(thing_model, name, value):
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return value
     multiplier = form.get("modpoll:multiplier")
-    if form.get("modv:type") == "xsd:float" and multiplier is None:
-        return struct.unpack(">f", struct.pack(">f", value))[0]
+    if is_single(thing_model, name):
+        return single(value)
     if multiplier is None:
         return value
     return float(scaled_raw(value, multiplier)) * float(multiplier)
@@ -150,7 +167,7 @@ def check_data(model, thing_model, data):
     generators = data.get("generators", {})
     static = {name: value for name, value in data.get("initial", {}).items() if name not in generators}
     static |= {name: spec["value"] for name, spec in generators.items() if spec["kind"] == "constant"}
-    compare({name: as_read(thing_model, name, value) for name, value in static.items()}, actual)
+    compare(thing_model, {name: as_read(thing_model, name, value) for name, value in static.items()}, actual)
     for name, prop in thing_model["properties"].items():
         value = actual.get(name)
         if value is None:
@@ -176,7 +193,7 @@ def check(package, presets):
     check_data(model, thing_model, data)
     passes = edge_values(thing_model)
     for values in passes:
-        compare(values, simulated_read(model, {"version": "1", "initial": values}))
+        compare(thing_model, values, simulated_read(model, {"version": "1", "initial": values}))
     return ["profile", origin, f"{len(passes)} decoding passes"]
 
 

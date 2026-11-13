@@ -9,7 +9,7 @@
   ],
   "@type": "tm:ThingModel",
   "title": "Eastron SDM72D-M-2 Three-Phase Energy Meter",
-  "description": "Baseline model for the Eastron SDM72D-M-2 multi-function energy meter for three-phase four-wire or single-phase two-wire systems, read over RS-485 Modbus RTU; it applies to meters that report meter code 0x0089 (137) in holding register 0xFC02. The software version is not stated; the meter reports it in holding register 0xFC84. Register map: Eastron SDM72D-M-2 User Manual V1.1.1 (2023), Part 3 Modbus Protocol, pages 13-17: input registers read with function code 04, each value an IEEE 754 32-bit float in two consecutive registers. Addresses here are zero-based: the manual's own example reads phase 1 current, register 30007, at start address 0006. The manual says the word order is set automatically to normal or reverse and cannot be configured; this model reads the high word first, which a catalog maintainer confirmed on an SDM72D-M-2 on 2026-11-13 for 40 of the input register values, together with the meter code; the resettable total reactive energy and the software version were not read on hardware. A request may cover at most 30 parameters (60 registers). The acquisition groups of the input registers follow the requests the maintainer read on hardware, which span addresses the manual does not list within the 0-35, 42-63 and 384-397 ranges. Parameters the manual marks as not valid for the wiring system return zero. Left out: the phase 3 line to neutral voltage, because the register table has no row for register 30005 although the display shows this value; the configuration holding registers (system type, pulse width and constant, key parameter authorization, parity and stop bits, Modbus address, password, baud rate, display scroll and backlight times, pulse energy type), the write-only reset command and the serial number, which is instance data.",
+  "description": "Baseline model for the Eastron SDM72D-M-2 multi-function energy meter for three-phase four-wire or single-phase two-wire systems, read over RS-485 Modbus RTU; it applies to meters that report meter code 0x0089 (137) in holding register 0xFC02. The software version is not stated; the meter reports it in holding register 0xFC84. Register map: Eastron SDM72D-M-2 User Manual V1.1.1 (2023), Part 3 Modbus Protocol, pages 13-17: input registers read with function code 04, each value an IEEE 754 32-bit float in two consecutive registers. Addresses here are zero-based: the manual's own example reads phase 1 current, register 30007, at start address 0006. The manual says the word order is set automatically to normal or reverse and cannot be configured; this model reads the high word first, which a catalog maintainer confirmed on an SDM72D-M-2 on 2026-11-13 for 41 of the input register values, together with the meter code; the resettable total reactive energy and the software version were not read on hardware. A request may cover at most 30 parameters (60 registers). The acquisition groups of the input registers follow the requests the maintainer read on hardware, which span addresses the manual does not list within the 42-63 and 384-397 ranges. Parameters the manual marks as not valid for the wiring system return zero. The register table has no row for register 30005, the phase 3 line to neutral voltage; the point is included at start address 0x0004 by a maintainer decision, because the display shows this value and the maintainer read it there on hardware. Left out: the configuration holding registers (system type, pulse width and constant, key parameter authorization, parity and stop bits, Modbus address, password, baud rate, display scroll and backlight times, pulse energy type), the write-only reset command and the serial number, which is instance data.",
   "modpoll:version": "0.2",
   "properties": {
     "V_L1_N": {
@@ -39,6 +39,22 @@
           "contentType": "application/octet-stream",
           "modv:entity": "InputRegister",
           "modv:address": 2,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "V_L3_N": {
+      "type": "number",
+      "description": "Phase 3 line to neutral voltage. Input register 30005 (start address 0x0004), 32-bit float in two registers. The Input Registers table on page 13 of the SDM72D-M-2 User Manual V1.1.1 (2023) has no row for this register, between 30003 and 30007; the display list on page 6 names Voltage L3-N, and a catalog maintainer read the value at this address on an SDM72D-M-2 on 2026-11-13.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "InputRegister",
+          "modv:address": 4,
           "modv:quantity": 2,
           "modv:type": "xsd:float"
         }
@@ -723,6 +739,7 @@
       "modpoll:members": [
         "V_L1_N",
         "V_L2_N",
+        "V_L3_N",
         "I_L1",
         "I_L2",
         "I_L3",

@@ -1,43 +1,58 @@
 # yaml-language-server: $schema=../../../schema/product.schema.json
-
 modelNumber: ADAM-5017UH
-aliases:
-- ADAM5017UH
 category: analog-input-module
-description: 8-channel high-speed analog input module with programmable voltage and current ranges per channel.
+description: 8-channel differential analog input module for ADAM-5000 bases, 12-bit, ±10 V, 0–10 V and 0/4–20 mA
 translations:
   zh-CN:
-    description: 这款高速模拟量输入模块提供 8 路差分输入，各通道可单独设置电压或电流量程。模块适用于工业数据采集，可接入电压信号和标准电流信号，便于在同一设备上读取多路测量值。输入通道带光电隔离。
+    description: 用于 ADAM-5000 系列底座的 8 通道差分模拟量输入模块，分辨率 12 位，每个通道可分别设置量程，支持 ±10 V、0–10 V、0–20 mA 和 4–20 mA 输入
 specs:
-- label: Differential input channels
-  value: '8'
-- label: Resolution
-  value: 12 bit
+  - label: Channels
+    value: 8 differential
+  - label: Resolution
+    value: 12-bit
+  - label: Input range
+    value: ±10 V, 0–10 V, 0–20 mA, 4–20 mA
+  - label: Sampling rate on ADAM-5000/TCP
+    value: 100 samples/s max. (total)
+  - label: Isolation voltage
+    value: 3,000 V DC
+  - label: Power consumption
+    value: 2.2 W max.
 communication:
   protocols:
-  - modbus-tcp
-  viaChassis: ADAM-5000/TCP
+    - modbus-tcp
+  viaChassis: ADAM-5000/TCP or ADAM-5000L/TCP
+  defaults:
+    tcp:
+      unitId: 1
+    reference: ADAM-5000/TCP Series User Manual, Edition 1, Figure 6.1 (PDF page 69) and section 6.2.3 (PDF page 61) state that the unit identifier is always 1, a fixed value; section 5.3.2 (PDF page 42) gives the default IP address 10.0.0.1. No TCP port is stated.
 documents:
-- type: datasheet
-  title: ADAM-5017UH / ADAM-5018 / ADAM-5018P datasheet
-  url: 'https://advdownload.advantech.com/productfile/PIS/ADAM-5017UH/file/ADAM-5017UH_5018_5018P_DS%28110520%2920201105153458.pdf'
-  reference: 2020-11-05 edition, page 1, ADAM-5017UH column
-- type: manual
-  title: ADAM-5000 Series User Manual, Edition 4
-  url: 'https://advdownload.advantech.com/productfile/Downloadfile4/1-2HXFOVU/ADAM-5000_User_Manual_Ed.4_FINAL.pdf'
-  reference: §1.2.5, printed pages 14–16; Figure 1.16; Tables 1.9 and 1.10
-- type: manual
-  title: ADAM-5000/TCP Series User Manual, Edition 1
-  url: 'https://advdownload.advantech.com/productfile/Downloadfile3/1-21FOSAD/ADAM-5000-TCP_User_Manual_Ed.1-FINAL.pdf'
-  reference: Chapter 2, Table 2.2; Chapter 6, Modbus protocol
+  - type: datasheet
+    title: ADAM-5017UH, ADAM-5018 and ADAM-5018P datasheet
+    reference: Page 1, ADAM-5017UH column, Specifications
+    url: https://advdownload.advantech.com/productfile/PIS/ADAM-5017UH/file/ADAM-5017UH_5018_5018P_DS%28110520%2920201105153458.pdf
+    sha256: 34dd2474ba72b538da5ee539068fda9ad1d48b6b182374952d00de4887763cd8
+    retrievedAt: "2026-11-13"
+  - type: manual
+    title: ADAM-5000/TCP Series User Manual, Edition 1
+    reference: Section 3.5 and Figure 3.10, I/O Modules Address Mapping (PDF page 34, printed page 26); section 5.3.3, analog input data type (PDF page 44); section 6.3 and Table 6.1, command structure and function codes (PDF pages 69–73); Table 4.1, I/O Module Support List (PDF page 36)
+    url: https://advdownload.advantech.com/productfile/Downloadfile3/1-21FOSAD/ADAM-5000-TCP_User_Manual_Ed.1-FINAL.pdf
+    sha256: ff2d39714231b02979853c99ac8b43536eebe20007285a4f39fc1802ade6570c
+    retrievedAt: "2026-11-13"
+  - type: other
+    title: ADAM-5000 Series User Manual, Edition 4
+    reference: Section 1.2.5 and Figure 1.16, ADAM-5017UH Module Front View (PDF page 22, printed page 14)
+    url: https://advdownload.advantech.com/productfile/Downloadfile4/1-2HXFOVU/ADAM-5000_User_Manual_Ed.4_FINAL.pdf
+    sha256: eb915c685f129b399b1d91af1b48ee0c2361224a8b5c144ae9bce82b3e8c7583
+    retrievedAt: "2026-11-13"
 images:
-- path: images/01.svg
-  alt: Front-view line illustration of the ADAM-5017UH analog input module and its 16 screw terminals
-  translations:
-    zh-CN:
-      alt: ADAM-5017UH 模拟量输入模块的正视线稿，显示 16 个螺钉端子
-  view: front-orthographic
-  source:
-    url: 'https://advdownload.advantech.com/productfile/Downloadfile4/1-2HXFOVU/ADAM-5000_User_Manual_Ed.4_FINAL.pdf'
-    reference: §1.2.5, printed pages 14–16; Figure 1.16; Tables 1.9 and 1.10
-  rights: Independently drawn product illustration. Approved for publication in Open Modbus Catalog.
+  - path: images/01.svg
+    alt: Front view of the ADAM-5017UH module with its 16-position screw terminal block
+    translations:
+      zh-CN:
+        alt: ADAM-5017UH 模块正视图，带 16 位螺钉接线端子
+    view: front-orthographic
+    source:
+      url: https://advdownload.advantech.com/productfile/Downloadfile4/1-2HXFOVU/ADAM-5000_User_Manual_Ed.4_FINAL.pdf
+      reference: Figure 1.16, ADAM-5017UH Module Front View (PDF page 22), for the layout and terminal count; the 31.0 mm by 110.0 mm outline is from Figure 1.1 of the ADAM-5000/TCP Series User Manual (PDF page 13)
+    rights: Independently drawn from documented geometry. Pending maintainer release review.

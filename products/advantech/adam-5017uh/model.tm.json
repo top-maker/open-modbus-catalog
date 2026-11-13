@@ -7,23 +7,24 @@
       "xsd": "http://www.w3.org/2001/XMLSchema#"
     }
   ],
-  "title": "Advantech ADAM-5017UH 8-Channel Analog Input Module",
-  "description": "Thing Model for the Advantech ADAM-5017UH eight-channel analog input module. It describes eight read-only Modbus input-register values as raw 16-bit words. The register mapping is derived from the ADAM-5000L/TCP manual and assumes the documented slot word offset; verify rack, slot, firmware, channel range and wire format for the installation. No engineering-unit conversion or hardware validation is claimed.",
+  "@type": "tm:ThingModel",
+  "title": "Advantech ADAM-5017UH",
+  "description": "Baseline model for an Advantech ADAM-5017UH 8-channel analog input module in slot 0 of an ADAM-5000/TCP or ADAM-5000L/TCP base, read over Modbus TCP. The firmware version is not stated. Register map: ADAM-5000/TCP Series User Manual, Edition 1 (part no. 2003M50020), section 3.5 and Figure 3.10 (PDF page 34), which assign 40001-40008 to the analog module in slot 0; for another slot add 8 times the slot number to every address. Addresses here are zero-based, so 40001 is address 0. The example frames in section 6.3 (PDF pages 69-73) instead put the reference number itself in the address field (00 01 for 40001) and use function code 04; this model follows the mapping table, and a catalog maintainer confirmed that reading on an ADAM-5017UH on 2026-11-13. Each register is one 16-bit word (section 5.3.3, PDF page 44); the manual does not state how a word maps to volts or milliamps for the range set on each channel, so values stay raw. Left out: input range, data format, channel enable and calibration settings, which the manual documents only as ASCII commands (Table 6.6, PDF page 103), and the module name and firmware version, which have no documented Modbus register.",
   "modpoll:version": "0.2",
   "properties": {
     "AI0_RAW": {
       "type": "integer",
-      "description": "Analog input channel 0 raw Modbus word. Exposes the 16-bit register value without scaling or engineering-unit conversion; signedness and configured range require device-specific verification.",
-      "unit": "count",
+      "description": "Analog input channel 0 as a raw 16-bit word; its meaning depends on the range and data format set for the channel. Mapping from Figure 3.10 of the ADAM-5000/TCP Series User Manual (PDF page 34), register 40001 with the module in slot 0. Check the scaling on hardware.",
+      "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
-      "readOnly": true,
+      "unit": "count",
       "forms": [
         {
           "op": "readproperty",
-          "contentType": "application/octet-stream;length=2;signed=false;byteSeq=BIG_ENDIAN",
-          "modv:entity": "InputRegister",
-          "modv:address": 1,
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 0,
           "modv:quantity": 1,
           "modv:type": "xsd:unsignedShort"
         }
@@ -31,17 +32,17 @@
     },
     "AI1_RAW": {
       "type": "integer",
-      "description": "Analog input channel 1 raw Modbus word. Exposes the 16-bit register value without scaling or engineering-unit conversion; signedness and configured range require device-specific verification.",
-      "unit": "count",
+      "description": "Analog input channel 1 as a raw 16-bit word; its meaning depends on the range and data format set for the channel. Mapping from Figure 3.10 of the ADAM-5000/TCP Series User Manual (PDF page 34), register 40002 with the module in slot 0. Check the scaling on hardware.",
+      "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
-      "readOnly": true,
+      "unit": "count",
       "forms": [
         {
           "op": "readproperty",
-          "contentType": "application/octet-stream;length=2;signed=false;byteSeq=BIG_ENDIAN",
-          "modv:entity": "InputRegister",
-          "modv:address": 2,
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 1,
           "modv:quantity": 1,
           "modv:type": "xsd:unsignedShort"
         }
@@ -49,17 +50,17 @@
     },
     "AI2_RAW": {
       "type": "integer",
-      "description": "Analog input channel 2 raw Modbus word. Exposes the 16-bit register value without scaling or engineering-unit conversion; signedness and configured range require device-specific verification.",
-      "unit": "count",
+      "description": "Analog input channel 2 as a raw 16-bit word; its meaning depends on the range and data format set for the channel. Mapping from Figure 3.10 of the ADAM-5000/TCP Series User Manual (PDF page 34), register 40003 with the module in slot 0. Check the scaling on hardware.",
+      "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
-      "readOnly": true,
+      "unit": "count",
       "forms": [
         {
           "op": "readproperty",
-          "contentType": "application/octet-stream;length=2;signed=false;byteSeq=BIG_ENDIAN",
-          "modv:entity": "InputRegister",
-          "modv:address": 3,
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 2,
           "modv:quantity": 1,
           "modv:type": "xsd:unsignedShort"
         }
@@ -67,17 +68,17 @@
     },
     "AI3_RAW": {
       "type": "integer",
-      "description": "Analog input channel 3 raw Modbus word. Exposes the 16-bit register value without scaling or engineering-unit conversion; signedness and configured range require device-specific verification.",
-      "unit": "count",
+      "description": "Analog input channel 3 as a raw 16-bit word; its meaning depends on the range and data format set for the channel. Mapping from Figure 3.10 of the ADAM-5000/TCP Series User Manual (PDF page 34), register 40004 with the module in slot 0. Check the scaling on hardware.",
+      "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
-      "readOnly": true,
+      "unit": "count",
       "forms": [
         {
           "op": "readproperty",
-          "contentType": "application/octet-stream;length=2;signed=false;byteSeq=BIG_ENDIAN",
-          "modv:entity": "InputRegister",
-          "modv:address": 4,
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3,
           "modv:quantity": 1,
           "modv:type": "xsd:unsignedShort"
         }
@@ -85,17 +86,17 @@
     },
     "AI4_RAW": {
       "type": "integer",
-      "description": "Analog input channel 4 raw Modbus word. Exposes the 16-bit register value without scaling or engineering-unit conversion; signedness and configured range require device-specific verification.",
-      "unit": "count",
+      "description": "Analog input channel 4 as a raw 16-bit word; its meaning depends on the range and data format set for the channel. Mapping from Figure 3.10 of the ADAM-5000/TCP Series User Manual (PDF page 34), register 40005 with the module in slot 0. Check the scaling on hardware.",
+      "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
-      "readOnly": true,
+      "unit": "count",
       "forms": [
         {
           "op": "readproperty",
-          "contentType": "application/octet-stream;length=2;signed=false;byteSeq=BIG_ENDIAN",
-          "modv:entity": "InputRegister",
-          "modv:address": 5,
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4,
           "modv:quantity": 1,
           "modv:type": "xsd:unsignedShort"
         }
@@ -103,17 +104,17 @@
     },
     "AI5_RAW": {
       "type": "integer",
-      "description": "Analog input channel 5 raw Modbus word. Exposes the 16-bit register value without scaling or engineering-unit conversion; signedness and configured range require device-specific verification.",
-      "unit": "count",
+      "description": "Analog input channel 5 as a raw 16-bit word; its meaning depends on the range and data format set for the channel. Mapping from Figure 3.10 of the ADAM-5000/TCP Series User Manual (PDF page 34), register 40006 with the module in slot 0. Check the scaling on hardware.",
+      "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
-      "readOnly": true,
+      "unit": "count",
       "forms": [
         {
           "op": "readproperty",
-          "contentType": "application/octet-stream;length=2;signed=false;byteSeq=BIG_ENDIAN",
-          "modv:entity": "InputRegister",
-          "modv:address": 6,
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 5,
           "modv:quantity": 1,
           "modv:type": "xsd:unsignedShort"
         }
@@ -121,17 +122,17 @@
     },
     "AI6_RAW": {
       "type": "integer",
-      "description": "Analog input channel 6 raw Modbus word. Exposes the 16-bit register value without scaling or engineering-unit conversion; signedness and configured range require device-specific verification.",
-      "unit": "count",
+      "description": "Analog input channel 6 as a raw 16-bit word; its meaning depends on the range and data format set for the channel. Mapping from Figure 3.10 of the ADAM-5000/TCP Series User Manual (PDF page 34), register 40007 with the module in slot 0. Check the scaling on hardware.",
+      "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
-      "readOnly": true,
+      "unit": "count",
       "forms": [
         {
           "op": "readproperty",
-          "contentType": "application/octet-stream;length=2;signed=false;byteSeq=BIG_ENDIAN",
-          "modv:entity": "InputRegister",
-          "modv:address": 7,
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 6,
           "modv:quantity": 1,
           "modv:type": "xsd:unsignedShort"
         }
@@ -139,17 +140,17 @@
     },
     "AI7_RAW": {
       "type": "integer",
-      "description": "Analog input channel 7 raw Modbus word. Exposes the 16-bit register value without scaling or engineering-unit conversion; signedness and configured range require device-specific verification.",
-      "unit": "count",
+      "description": "Analog input channel 7 as a raw 16-bit word; its meaning depends on the range and data format set for the channel. Mapping from Figure 3.10 of the ADAM-5000/TCP Series User Manual (PDF page 34), register 40008 with the module in slot 0. Check the scaling on hardware.",
+      "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
-      "readOnly": true,
+      "unit": "count",
       "forms": [
         {
           "op": "readproperty",
-          "contentType": "application/octet-stream;length=2;signed=false;byteSeq=BIG_ENDIAN",
-          "modv:entity": "InputRegister",
-          "modv:address": 8,
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 7,
           "modv:quantity": 1,
           "modv:type": "xsd:unsignedShort"
         }
@@ -158,8 +159,8 @@
   },
   "modpoll:acquisition": [
     {
-      "modv:entity": "InputRegister",
-      "modv:address": 1,
+      "modv:entity": "HoldingRegister",
+      "modv:address": 0,
       "modv:quantity": 8,
       "modpoll:members": [
         "AI0_RAW",
@@ -172,6 +173,5 @@
         "AI7_RAW"
       ]
     }
-  ],
-  "@type": "tm:ThingModel"
+  ]
 }

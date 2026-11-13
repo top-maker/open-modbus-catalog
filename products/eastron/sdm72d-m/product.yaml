@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: SDM72D-M
+category: energy-meter
+description: Three-phase 100 A direct-connected DIN-rail energy meter with RS-485 Modbus RTU and pulse output.
+translations:
+  zh-CN:
+    description: 三相导轨式电能表，直接接入最大 100 A，有功电能精度 1 级，可测量各相电压、电流和功率，双向计量有功电能，带可清零电能计数、可配置脉冲输出和 RS-485 Modbus RTU 通信。
+specs:
+- label: Nominal voltage
+  value: 3 × 230/400 V AC
+- label: Current
+  value: 0.5–10(100) A, direct connection
+- label: Active energy accuracy
+  value: Class 1 / Class B (EN 50470-3:2022)
+- label: Communication
+  value: RS-485 Modbus RTU, 2400–38400 bps
+- label: Operating temperature
+  value: −40 °C to +70 °C
+- label: Dimensions
+  value: 72 × 100 × 66 mm (W × H × D), 4 modules, DIN rail
+communication:
+  protocols:
+  - modbus-rtu
+  defaults:
+    serial:
+      unitId: 1
+      baudRate: 9600
+      dataBits: 8
+      parity: none
+      stopBits: 1
+    reference: 'SDM72D-M User Manual V1.1: setup menu table, printed page 16 (PDF page 19), address 001, baud rate 9.6 kbps, parity NONE, stop bit 1; interface table, printed page 6 (PDF page 9). Datasheet page 1, Modbus table: data bit 8, fixed'
+documents:
+- type: datasheet
+  title: Eastron SDM72D-M / -2T datasheet, DIN Rail Mounted / Three Phase / (100A)
+  url: 'https://www.eastrongroup.com/eastrongroup/2026/05/19/rand/9533/eastron%20sdm72d-m;%20-2t%20din%20rail%20mounted;%20three%20phase;%20100a%20datasheet.pdf'
+  reference: 'Page 1: features, performance criteria, Modbus and pulse output tables. Page 2: wiring configuration, dimension drawing, ordering options (SDM72D-M row)'
+  sha256: 6047fc38ba100b0fba52c5963574fbbacb24ed8afef8b412c0e1c6103eeb43d5
+  retrievedAt: '2026-11-13'
+- type: other
+  title: Eastron SDM72D-M User Manual V1.1, 2026
+  url: 'https://www.eastrongroup.com/eastrongroup/2026/04/17/EastronSDM72D-MUsermanualV11.pdf'
+  reference: 'Section 2.1 interface table, printed page 6 (PDF page 9); sections 2.2 Dimensions and 2.4 Wiring Diagram, printed pages 7–8 (PDF pages 10–11); setup menu table, printed page 16 (PDF page 19). Contains no Modbus register map'
+  sha256: 31b249bdc65c953145d237ee7c80d4accaa34f25d2c72dfb7fa5b5a4c405cbab
+  retrievedAt: '2026-11-13'
+- type: manual
+  title: Eastron SDM72D-M User Manual V1.1, 2019, multi-function version
+  reference: 'Part 3 Modbus Protocol, printed pages 13–16: Input Registers and Holding Registers tables, example start addresses and the 30-parameter request limit. Earlier edition that the manufacturer no longer publishes; copy supplied by a catalog maintainer'
+  sha256: fdeb238c671cebab0b6315235714a80573838214ea497794d58fc1ebd22560ef
+  retrievedAt: '2026-11-13'
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the SDM72D-M four-module DIN-rail meter with terminal screws above and below the display
+  translations:
+    zh-CN:
+      alt: SDM72D-M 四模数导轨式电能表的正视线稿，显示屏上下两端各有四个接线螺钉
+  view: front-orthographic
+  source:
+    url: 'https://www.eastrongroup.com/eastrongroup/2026/04/17/EastronSDM72D-MUsermanualV11.pdf'
+    reference: 'Section 2.4 Wiring Diagram, 3P4W front view, printed page 8 (PDF page 11); section 2.2 Dimensions, 72 × 100 mm, printed page 7 (PDF page 10)'
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

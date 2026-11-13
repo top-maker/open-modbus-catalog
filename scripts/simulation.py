@@ -13,7 +13,7 @@ which Modsim serves exactly and Modpoll reads back unchanged.
 Run it on a package to print the preset simulation data, for example to start
 a model.data.json:
 
-    uv run scripts/simulation.py products/advantech/adam-6024
+    uv run scripts/simulation.py <package directory>
 """
 
 import json

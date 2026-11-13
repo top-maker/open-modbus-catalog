@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Eastron SDM72D-M-2 front-view illustration</title>
+  <desc id="desc">Front orthographic view of the four-module DIN-rail three-phase energy meter: four measurement terminal screws at the top and four at the bottom, a row of five small terminals above the raised front, which carries the display window, two buttons and two indicators. Schematic, not to scale.</desc>
+  <rect width="512" height="512" fill="#fff"/>
+  <g fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="123" y="40" width="266" height="370"/>
+  </g>
+  <g fill="none" stroke="#000" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M123 130H389M123 319H389"/>
+    <rect x="139" y="69" width="234" height="41" rx="20.5"/>
+    <circle cx="167" cy="89.5" r="13"/>
+    <path d="M154 89.5H180M167 76.5V102.5"/>
+    <circle cx="224" cy="89.5" r="13"/>
+    <path d="M211 89.5H237M224 76.5V102.5"/>
+    <circle cx="286" cy="89.5" r="13"/>
+    <path d="M273 89.5H299M286 76.5V102.5"/>
+    <circle cx="343" cy="89.5" r="13"/>
+    <path d="M330 89.5H356M343 76.5V102.5"/>
+    <circle cx="224" cy="144" r="4"/>
+    <circle cx="238" cy="144" r="4"/>
+    <circle cx="253" cy="144" r="4"/>
+    <circle cx="267" cy="144" r="4"/>
+    <circle cx="281" cy="144" r="4"/>
+    <rect x="127" y="156" width="258" height="144" rx="6"/>
+    <rect x="146" y="177" width="185" height="66"/>
+    <rect x="153" y="259" width="36" height="21"/>
+    <rect x="199" y="259" width="36" height="21"/>
+    <circle cx="296" cy="252" r="2.5"/>
+    <circle cx="316" cy="252" r="2.5"/>
+    <rect x="139" y="340" width="234" height="41" rx="20.5"/>
+    <circle cx="167" cy="360.5" r="13"/>
+    <path d="M154 360.5H180M167 347.5V373.5"/>
+    <circle cx="224" cy="360.5" r="13"/>
+    <path d="M211 360.5H237M224 347.5V373.5"/>
+    <circle cx="286" cy="360.5" r="13"/>
+    <path d="M273 360.5H299M286 347.5V373.5"/>
+    <circle cx="343" cy="360.5" r="13"/>
+    <path d="M330 360.5H356M343 347.5V373.5"/>
+  </g>
+  <g fill="#000" font-family="sans-serif" text-anchor="middle">
+    <text x="310" y="276" font-size="11" font-weight="600">SDM72D-M-2</text>
+    <text x="256" y="476" font-size="11" letter-spacing="1">FRONT VIEW</text>
+    <text x="256" y="492" font-size="9" letter-spacing="0.8">NOT TO SCALE</text>
+  </g>
+</svg>

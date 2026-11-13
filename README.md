@@ -50,6 +50,9 @@ completion and checks in editors.
 document that holds the Modbus register map, `manual` when the map lives
 inside a user manual, or `other`. Link documents with `url`; commit a copy
 with `path` only when it may be redistributed, and record `rights`.
+Record the `sha256` of the file the facts were read from and the date it was
+retrieved (`retrievedAt`, `YYYY-MM-DD`), so a later reader can tell whether the
+manufacturer has replaced the document behind the link.
 
 `communication.defaults` holds `tcp` (`port`, `unitId`) and `serial`
 (`unitId`, `baudRate`, `dataBits`, `parity`, `stopBits`), each only for a

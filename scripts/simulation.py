@@ -103,6 +103,9 @@ def preset_data(thing_model, category, presets=None):
     rules = presets.get(category, []) + presets["default"]
     initial = {}
     for name, prop in thing_model["properties"].items():
+        if "const" in prop:  # an identity point serves its documented value
+            initial[name] = prop["const"]
+            continue
         value = fit(prop, preset_value(name, prop, rules))
         if value is None:
             raise ValueError(f"{name}: no exact value fits the point")
@@ -111,12 +114,17 @@ def preset_data(thing_model, category, presets=None):
 
 
 def edge_values(thing_model):
-    """Decoding passes: lower bound, upper bound, then high-bit and asymmetric patterns."""
+    """Decoding passes: lower bound, upper bound, then high-bit and asymmetric patterns.
+
+    An identity point (`const`) cannot hold any other value, so it serves its constant in every pass.
+    """
     passes = [{}, {}, {}]
     for name, prop in thing_model["properties"].items():
         form = read_form(prop)
         kind = form["modv:type"]
-        if prop["type"] == "boolean" or kind == "xsd:boolean":
+        if "const" in prop:
+            values = [prop["const"]] * 3
+        elif prop["type"] == "boolean" or kind == "xsd:boolean":
             values = [False, True, True]
         elif kind in FLOATS:
             values = [fit(prop, target) for target in (-1024.25, 3.0e38 if kind == "xsd:float" else 1.0e300, 1.5)]

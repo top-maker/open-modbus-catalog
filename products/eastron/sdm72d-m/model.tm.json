@@ -668,6 +668,7 @@
       "type": "integer",
       "description": "Meter code identifying the product: 0x0084 (132) for the SDM72D-M. Holding register 464515 (start address 0xFC02), one 16-bit word, read only; Holding Registers table, printed page 16 of the SDM72D-M User Manual V1.1 (2019).",
       "readOnly": true,
+      "const": 132,
       "minimum": 0,
       "maximum": 65535,
       "forms": [

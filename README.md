@@ -4,7 +4,7 @@ The public product catalog and feedback repository for ModioHub.
 
 The catalog holds product packages. A product is one manufacturer model, such as Advantech ADAM-5017UH, covering every device of that model. Each package holds the product's identity, communication metadata and public source links, and, where available, approved illustrations and an executable baseline Thing Model with its simulation data. [ModioHub](https://github.com/top-maker/modiohub), [Modpoll](https://github.com/top-maker/modpoll) and [Modsim](https://github.com/top-maker/modpoll/tree/v2/packages/modsim) read packages from a pinned commit.
 
-Contribute through [GitHub Issues](https://github.com/top-maker/open-modbus-catalog/issues/new/choose) to request a product, report a correction, or suggest a public source. Include the manufacturer, exact model number or part number, and firmware or hardware version when relevant. Share a public source link and page reference when available.
+Contribute through [GitHub Issues](https://github.com/top-maker/open-modbus-catalog/issues/new/choose) to request a product, report a correction, or suggest a public source. Include the manufacturer, exact model number or part number, and firmware or hardware version when relevant. Share a public source link and page reference when available. Requests that attach a verification report from `modpoll --report` are handled first.
 
 ## Product packages
 

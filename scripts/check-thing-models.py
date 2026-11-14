@@ -17,7 +17,8 @@ model.data.json, checked by modpoll-wot, or static data generated from
 simulation-presets.yaml for the product's category. Static values must read back unchanged
 (scaled and single-precision values as Modpoll reads them) and changing values
 must stay within their range. Three more passes serve values derived from each
-point's type (bounds, high bit, asymmetric patterns) to check decoding. The
+point's type (bounds, high bit, asymmetric patterns) to check decoding; an
+identity point (`const`) serves its constant in every pass. The
 check shows that a Thing Model executes consistently; it does not show that
 its point mappings match real hardware.
 """

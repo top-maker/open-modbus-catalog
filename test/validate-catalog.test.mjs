@@ -14,6 +14,24 @@ const documentUrl = 'https://example.com/datasheet.pdf';
 const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="none" stroke="#000"/></svg>';
 const directories = [];
 
+/** A WebP container with the given chunks, enough for the structure rules. */
+function webp(...chunks) {
+  const body = Buffer.concat(chunks.map(([id, size]) => {
+    const payload = Buffer.alloc(size + (size & 1));
+    const head = Buffer.alloc(8);
+    head.write(id, 0, 'latin1');
+    head.writeUInt32LE(size, 4);
+    return Buffer.concat([head, payload]);
+  }));
+  const head = Buffer.alloc(12);
+  head.write('RIFF', 0, 'latin1');
+  head.writeUInt32LE(body.length + 4, 4);
+  head.write('WEBP', 8, 'latin1');
+  return Buffer.concat([head, body]);
+}
+const photo = webp(['VP8L', 11]);
+const photoSource = { url: 'https://example.com/photo.jpg', reference: 'product page' };
+
 function baseProduct() {
   return {
     modelNumber: 'TEST-1',
@@ -139,8 +157,30 @@ describe('rejects unsafe or untraceable sources', () => {
   });
 
   it('an illustration that is missing or numbered out of order', () => {
-    assert.match(problems({ ...baseProduct(), images: [image()] }), /expected image images\/01\.svg/);
-    assert.match(problems({ ...baseProduct(), images: [image({ path: 'images/02.svg' })] }, { 'products/advantech/test-1/images/02.svg': svg }), /expected image images\/01\.svg/);
+    assert.match(problems({ ...baseProduct(), images: [image()] }), /expected image images\/01\.svg or images\/01\.webp/);
+    assert.match(problems({ ...baseProduct(), images: [image({ path: 'images/02.svg' })] }, { 'products/advantech/test-1/images/02.svg': svg }), /expected image images\/01\.svg or images\/01\.webp/);
+  });
+});
+
+describe('photographs', () => {
+  const key = 'products/advantech/test-1/images/01.webp';
+  const product = (overrides = {}) => ({ ...baseProduct(), images: [image({ path: 'images/01.webp', source: photoSource, rights: 'Manufacturer photo.', ...overrides })] });
+  it('accepts a still WebP photo from an address that is not a listed document', () => {
+    assert.deepEqual(catalog(product(), { [key]: photo }).run().errors, []);
+  });
+  it('rejects a photo that is not a WebP file', () => {
+    assert.match(problems(product(), { [key]: Buffer.from('\xff\xd8\xff\xe0 jpeg') }), /images\/01\.webp: expected a WebP photo/);
+  });
+  it('rejects metadata, animation data and unknown chunks', () => {
+    for (const id of ['EXIF', 'XMP ', 'ICCP', 'ANIM']) {
+      assert.match(problems(product(), { [key]: webp(['VP8L', 11], [id, 8]) }), new RegExp(`photo has a ${id.trim()} chunk`));
+    }
+  });
+  it('rejects a photo that is too large', () => {
+    assert.match(problems(product(), { [key]: webp(['VP8L', 600 * 1024]) }), /photo larger than 512 KiB/);
+  });
+  it('rejects a photo whose source is not an HTTPS address', () => {
+    assert.match(problems(product({ source: { url: 'http://example.com/photo.jpg', reference: 'page' } }), { [key]: photo }), /source\/url must match pattern/);
   });
 });
 

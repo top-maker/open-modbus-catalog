@@ -20,6 +20,7 @@ products/<manufacturer>/<model-number>/
   product.yaml      required: identity, communication and sources
   model.tm.json     optional: baseline Thing Model
   model.data.json   optional: simulation data for the Thing Model
+  images/NN.webp    optional: product photographs listed in product.yaml
   images/NN.svg     optional: illustrations listed in product.yaml
   documents/*.pdf   optional: PDFs cleared for redistribution, listed in product.yaml
 ```
@@ -44,7 +45,7 @@ completion and checks in editors.
 | `communication.firmware` | no | Documented firmware applicability; absent when unknown |
 | `communication.defaults` | no | Settings a new device ships with, see below |
 | `documents` | yes | Official sources with exact references |
-| `images` | no | Illustrations in display order, `images/01.svg` first |
+| `images` | no | Photographs and illustrations in display order, a photograph first; each file is `images/NN.webp` or `images/NN.svg` with `NN` its position |
 
 `documents[].type` is `datasheet` for the specification, `protocol` for a
 document that holds the Modbus register map, `manual` when the map lives
@@ -64,8 +65,15 @@ needed before Modbus is available, such as switching from a proprietary protocol
 Record only stated values. Consumers assume port 502 when `tcp.port` is
 absent and ask the user for anything else that is missing.
 
-Illustrations are passive SVGs drawn from documented geometry, never
-manufacturer photos or logos. Record their source and publication rights.
+Images are either a product photograph or a line illustration, and a
+photograph is preferred. A photograph is a still WebP of at most 512 KiB, without
+metadata (no EXIF, XMP or colour profile), taken from a manufacturer whose
+pages and documents state no restriction on images; `source.url` is the
+address of the photo and `rights` says which pages were checked and when. A
+manufacturer that restricts image use, or whose photo has no clear
+rights, gets an illustration instead: a passive SVG drawn from documented
+geometry, whose `source` is a listed document. Logos are never published.
+If a manufacturer asks for a photograph to be removed, it is removed.
 Consumers fall back to the default language when a translation is missing.
 
 ## Thing Models and simulation
@@ -120,4 +128,5 @@ sets the parallelism.
 
 The catalog, including product records, Thing Models and illustrations, is
 available under the [MIT License](LICENSE). Linked manufacturer documents remain
-under their publishers' terms.
+under their publishers' terms, and so do manufacturer product photographs,
+which are included without a transfer of the manufacturers' rights.

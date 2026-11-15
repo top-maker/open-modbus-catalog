@@ -40,6 +40,9 @@ const slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 const productPath = new RegExp(`^products/(${slug})/(${slug})/product\\.yaml$`);
 const svgTags = new Set(['svg', 'title', 'desc', 'g', 'path', 'rect', 'circle', 'ellipse', 'line', 'polyline', 'polygon', 'text', 'tspan']);
 const svgAttributes = new Set('xmlns width height viewBox role aria-labelledby id fill stroke stroke-width stroke-linejoin stroke-linecap transform d x y rx ry cx cy r x1 x2 y1 y2 points font-family text-anchor font-size font-weight letter-spacing'.split(' '));
+const maxPhotoBytes = 512 * 1024;
+const webpChunks = new Set(['VP8 ', 'VP8L', 'VP8X', 'ALPH']);
+const imagePath = /^images\/(0[1-9]|[1-9][0-9])\.(svg|webp)$/;
 const colour = /^(none|#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6})$/;
 const ignoredDirectories = new Set(['.git', 'node_modules', '__pycache__']);
 
@@ -133,6 +136,21 @@ export function validateCatalog(root, files = listFiles(root)) {
       } else if (name === 'svg' || attributes.xmlns) reject();
     });
     parser.write(read(path)).close();
+  }
+
+  // A photograph is a still WebP of bounded size whose chunks hold picture data
+  // only, so it carries no EXIF, XMP or colour profile.
+  function checkPhoto(path) {
+    const data = readFileSync(fileUrl(path));
+    if (data.length > maxPhotoBytes) throw new Error(`photo larger than ${maxPhotoBytes / 1024} KiB`);
+    if (data.length < 20 || data.toString('latin1', 0, 4) !== 'RIFF' || data.toString('latin1', 8, 12) !== 'WEBP' || data.readUInt32LE(4) + 8 !== data.length) {
+      throw new Error('expected a WebP photo');
+    }
+    for (let offset = 12; offset < data.length;) {
+      const id = data.toString('latin1', offset, offset + 4);
+      if (offset + 8 > data.length || !webpChunks.has(id)) throw new Error(`photo has a ${id.trim()} chunk; expected a still picture without metadata`);
+      offset += 8 + data.readUInt32LE(offset + 4) + (data.readUInt32LE(offset + 4) & 1);
+    }
   }
 
   // Every string a record carries is trimmed NFC, so equal text compares equal.
@@ -236,13 +254,19 @@ export function validateCatalog(root, files = listFiles(root)) {
     }
     for (const [index, image] of (product.images ?? []).entries()) {
       const asset = directory + image.path;
-      const expected = `images/${String(index + 1).padStart(2, '0')}.svg`;
-      if (image.path !== expected || !files.has(asset)) {
-        fail(path, `expected image ${expected}`);
+      const number = String(index + 1).padStart(2, '0');
+      const kind = imagePath.exec(image.path);
+      if (!kind || kind[1] !== number || !files.has(asset)) {
+        fail(path, `expected image images/${number}.svg or images/${number}.webp`);
         continue;
       }
       allowedFiles.add(asset);
       checkUrl(image.source.url, path);
+      if (kind[2] === 'webp') {
+        // A photograph comes from a page or file of the manufacturer, named by its address.
+        guard(asset, () => checkPhoto(asset));
+        continue;
+      }
       // An illustration is drawn from a listed document, so its source is traceable.
       if (!documentUrls.has(image.source.url)) fail(path, `image ${image.path} source is not one of the documents`);
       guard(asset, () => checkIllustration(asset));

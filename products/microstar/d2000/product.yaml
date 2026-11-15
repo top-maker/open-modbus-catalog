@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: D2000
+category: energy-meter
+description: Two-phase direct-connected smart meter, class 1.0 or 0.5, 120/208 or 120/240 V, optional Modbus.
+translations:
+  zh-CN:
+    description: 两相三线直接接入智能电表，精度 1.0 级或 0.5 级，额定电压 120/208 V 或 120/240 V，额定电流 5(60) A 至 10(100) A，协议可选 Modbus。
+specs:
+- label: Measurement modes
+  value: Direct connected, 2-phase 3-wire
+- label: Accuracy class
+  value: Class 1.0 or Class 0.5
+- label: Rated voltage
+  value: 120/208 V or 120/240 V
+- label: Rated current
+  value: 5 (60) A, 5 (100) A or 10 (100) A
+- label: Communication
+  value: DLMS/COSEM, Modbus and IEC 62056-21 protocols over optical, RS232, RS485, RF and BLE; Modbus is a protocol option
+- label: Dimensions
+  value: 198 × 139 × 83.5 mm (H × W × D)
+communication:
+  protocols:
+  - modbus-rtu
+documents:
+- type: datasheet
+  title: Microstar D2000 Two Phase Smart Meter Datasheet
+  url: https://www.microstarelectric.com/wp-content/uploads/2026/08/Microstar-D2000-Two-Phase-Smart-Meter-Datasheet.pdf
+  reference: 'Page 1: features and application. Page 2: technical specifications, communication options and outline dimension drawing'
+  sha256: edecf2faa4d3e67654df563d0b907262ff2e1a0c8e19dc42ce992df0b12aff14
+  retrievedAt: '2026-11-15'
+images:
+- path: images/01.webp
+  alt: Photograph of the Microstar D2000 two-phase smart meter, side view and front view
+  translations:
+    zh-CN:
+      alt: Microstar D2000 两相智能电表实物照片，含侧视和正视
+  view: front-and-side
+  source:
+    url: https://www.microstarelectric.com/wp-content/uploads/2024/04/Two-Phase-Smart-Meter-new.jpg
+    reference: Product photograph on the manufacturer's D2000 product page, https://www.microstarelectric.com/products/smart-meters/d2000-two-phase-smart-meter/
+  rights: Manufacturer product photograph, re-encoded as WebP. Its product pages, privacy policy and download center state no restriction on images and carry only a general site copyright notice; checked 2026-11-15.

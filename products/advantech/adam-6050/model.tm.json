@@ -1,0 +1,567 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "modpoll": "https://top-maker.github.io/modpoll/vocab/wot-modbus#",
+      "modv": "https://www.w3.org/2019/wot/modbus",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "tm:ThingModel",
+  "title": "Advantech ADAM-6050 18-Channel Isolated Digital I/O Module",
+  "description": "Baseline model for the Advantech ADAM-6050 18-channel isolated digital I/O module (12 digital inputs, 6 digital outputs) read over Modbus TCP. Register map: ADAM-6000 User Manual Ed. 12, Appendix B.2 'ADAM-6000 I/O Modbus Mapping Tables', ADAM-6050 tables, PDF pages 214-218 (printed pages 204-208); function codes in section 7.3.2, PDF pages 106-108. The 0X and 4X reference numbers are converted to zero-based addresses (00001 is address 0, 40001 is address 0), which the register tables imply. BLOCKING CONFLICT to settle on hardware: the manual's own example frames (section 7.3.2, PDF pages 107-108) use the reference number as the start address on the wire (coils 00001-00008 read with start address 0x0001, analog inputs 40001-40002 with start address 0x0001), which would be one higher than this model; the model follows the register tables. Digital inputs 00001-00012 are read as discrete inputs (function code 02, example on PDF page 107) and digital outputs 00017-00022 as coils (function code 01, same page). The 32-bit counters read the low word first: the manual gives counter = (value of 40002) x 65536 + (value of 40001) (remark 1, PDF page 218), so these points set the word order to low first. They are valid only for a channel configured as a counter. In frequency mode the low word holds the frequency in units of 0.1 Hz and the points are not meaningful. Left out: the counter start, clear, overflow and latch bits and the pulse settings, which are configuration or control; the all-channel DI and DO words (40301, 40303), whose bit layout the manual does not state; the diagnostic words and the GCL flag and counters; and the module name words, whose value for this module is not documented.",
+  "modpoll:version": "0.2",
+  "properties": {
+    "DI0": {
+      "type": "boolean",
+      "description": "State of digital input channel 0 (1 when the input is active), read only. Address 00001 (zero-based address 0); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 0,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI1": {
+      "type": "boolean",
+      "description": "State of digital input channel 1 (1 when the input is active), read only. Address 00002 (zero-based address 1); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 1,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI2": {
+      "type": "boolean",
+      "description": "State of digital input channel 2 (1 when the input is active), read only. Address 00003 (zero-based address 2); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 2,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI3": {
+      "type": "boolean",
+      "description": "State of digital input channel 3 (1 when the input is active), read only. Address 00004 (zero-based address 3); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 3,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI4": {
+      "type": "boolean",
+      "description": "State of digital input channel 4 (1 when the input is active), read only. Address 00005 (zero-based address 4); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 4,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI5": {
+      "type": "boolean",
+      "description": "State of digital input channel 5 (1 when the input is active), read only. Address 00006 (zero-based address 5); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 5,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI6": {
+      "type": "boolean",
+      "description": "State of digital input channel 6 (1 when the input is active), read only. Address 00007 (zero-based address 6); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 6,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI7": {
+      "type": "boolean",
+      "description": "State of digital input channel 7 (1 when the input is active), read only. Address 00008 (zero-based address 7); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 7,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI8": {
+      "type": "boolean",
+      "description": "State of digital input channel 8 (1 when the input is active), read only. Address 00009 (zero-based address 8); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 8,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI9": {
+      "type": "boolean",
+      "description": "State of digital input channel 9 (1 when the input is active), read only. Address 00010 (zero-based address 9); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 9,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI10": {
+      "type": "boolean",
+      "description": "State of digital input channel 10 (1 when the input is active), read only. Address 00011 (zero-based address 10); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 10,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI11": {
+      "type": "boolean",
+      "description": "State of digital input channel 11 (1 when the input is active), read only. Address 00012 (zero-based address 11); ADAM-6050 table 'DI value', PDF page 214 of the ADAM-6000 User Manual Ed. 12. Read with function code 02.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "DiscreteInput",
+          "modv:address": 11,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO0": {
+      "type": "boolean",
+      "description": "Output state of digital output channel 0, read only. Address 00017 (zero-based address 16); ADAM-6050 table 'DO value', PDF page 215. Read with function code 01.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 16,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO1": {
+      "type": "boolean",
+      "description": "Output state of digital output channel 1, read only. Address 00018 (zero-based address 17); ADAM-6050 table 'DO value', PDF page 215. Read with function code 01.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 17,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO2": {
+      "type": "boolean",
+      "description": "Output state of digital output channel 2, read only. Address 00019 (zero-based address 18); ADAM-6050 table 'DO value', PDF page 215. Read with function code 01.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 18,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO3": {
+      "type": "boolean",
+      "description": "Output state of digital output channel 3, read only. Address 00020 (zero-based address 19); ADAM-6050 table 'DO value', PDF page 215. Read with function code 01.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 19,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO4": {
+      "type": "boolean",
+      "description": "Output state of digital output channel 4, read only. Address 00021 (zero-based address 20); ADAM-6050 table 'DO value', PDF page 215. Read with function code 01.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 20,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DO5": {
+      "type": "boolean",
+      "description": "Output state of digital output channel 5, read only. Address 00022 (zero-based address 21); ADAM-6050 table 'DO value', PDF page 215. Read with function code 01.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "Coil",
+          "modv:address": 21,
+          "modv:quantity": 1,
+          "modv:type": "xsd:boolean"
+        }
+      ]
+    },
+    "DI0_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 0: unsigned 32-bit count in two registers, low word first. Addresses 40001-40002 (zero-based address 0); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 0,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI1_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 1: unsigned 32-bit count in two registers, low word first. Addresses 40003-40004 (zero-based address 2); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 2,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI2_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 2: unsigned 32-bit count in two registers, low word first. Addresses 40005-40006 (zero-based address 4); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI3_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 3: unsigned 32-bit count in two registers, low word first. Addresses 40007-40008 (zero-based address 6); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 6,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI4_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 4: unsigned 32-bit count in two registers, low word first. Addresses 40009-40010 (zero-based address 8); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI5_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 5: unsigned 32-bit count in two registers, low word first. Addresses 40011-40012 (zero-based address 10); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 10,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI6_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 6: unsigned 32-bit count in two registers, low word first. Addresses 40013-40014 (zero-based address 12); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 12,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI7_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 7: unsigned 32-bit count in two registers, low word first. Addresses 40015-40016 (zero-based address 14); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 14,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI8_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 8: unsigned 32-bit count in two registers, low word first. Addresses 40017-40018 (zero-based address 16); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 16,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI9_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 9: unsigned 32-bit count in two registers, low word first. Addresses 40019-40020 (zero-based address 18); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 18,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI10_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 10: unsigned 32-bit count in two registers, low word first. Addresses 40021-40022 (zero-based address 20); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 20,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    },
+    "DI11_COUNTER": {
+      "type": "integer",
+      "description": "Counter value of digital input channel 11: unsigned 32-bit count in two registers, low word first. Addresses 40023-40024 (zero-based address 22); ADAM-6050 table 'Counter/Frequency value', PDF page 217, remark 1 on PDF page 218. Valid only when the channel is configured as a counter.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 22,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt",
+          "modv:mostSignificantWord": false
+        }
+      ]
+    }
+  },
+  "modpoll:acquisition": [
+    {
+      "modv:entity": "Coil",
+      "modv:address": 16,
+      "modv:quantity": 6,
+      "modpoll:members": [
+        "DO0",
+        "DO1",
+        "DO2",
+        "DO3",
+        "DO4",
+        "DO5"
+      ]
+    },
+    {
+      "modv:entity": "DiscreteInput",
+      "modv:address": 0,
+      "modv:quantity": 12,
+      "modpoll:members": [
+        "DI0",
+        "DI1",
+        "DI2",
+        "DI3",
+        "DI4",
+        "DI5",
+        "DI6",
+        "DI7",
+        "DI8",
+        "DI9",
+        "DI10",
+        "DI11"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 0,
+      "modv:quantity": 24,
+      "modpoll:members": [
+        "DI0_COUNTER",
+        "DI1_COUNTER",
+        "DI2_COUNTER",
+        "DI3_COUNTER",
+        "DI4_COUNTER",
+        "DI5_COUNTER",
+        "DI6_COUNTER",
+        "DI7_COUNTER",
+        "DI8_COUNTER",
+        "DI9_COUNTER",
+        "DI10_COUNTER",
+        "DI11_COUNTER"
+      ]
+    }
+  ]
+}

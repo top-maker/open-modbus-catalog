@@ -1,0 +1,1041 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "modpoll": "https://top-maker.github.io/modpoll/vocab/wot-modbus#",
+      "modv": "https://www.w3.org/2019/wot/modbus",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "tm:ThingModel",
+  "title": "Siemens SENTRON PAC3200 Power Monitoring Device",
+  "description": "Baseline model for the Siemens SENTRON PAC3200 power monitoring device (Ethernet Modbus TCP; Modbus RTU through the optional PAC RS485 expansion module), read over Modbus. Register map: SENTRON PAC3200 Manual 02/2008 A5E01168664B-04, section 3.9.3 'Modbus measured variables with the function codes 0x03 and 0x04', Table 3-6, PDF pages 42-45. The manual lists each value by an 'offset' and does not state the address on the wire. The Siemens application example 'Data Exchange between S7-1200 and SENTRON PAC via MODBUS TCP (Set 22)', Entry ID 40614428 V14.0, Table 3-12 on PDF page 26, reads the PAC3200 total active power (offset 65) with MB_DATA_ADDR 40001 + 65 = 40066, and the Siemens document 'Modbus/TCP with MB_CLIENT and MB_SERVER', Entry ID 102020340, Table 4-5, PDF pages 23-24, maps MB_DATA_ADDR 40001 to the holding register at remote address 0. So the offset is the zero-based address on the wire: offset 1 (the voltage Va-n) is address 1, and address 0 is not used. The LOGO! application example, Entry ID 109779762, PDF page 13, enters 'Register 2' for the offset 1 value, which agrees with a one-based register display. Registers are read with function code 03 (04 returns the same data); a read must start on the first register of a value. Float values are IEEE 754 in two registers, unsigned long values in two registers and double values in four registers; the manuals do not state the word order, and the Set 22 example reads the two registers of the active power directly as an S7 Real, which means the first register holds the high word. The model reads the high word first for every multi-register value, and no device was read on hardware. Left out: the maximum and minimum values, the parameter change counters and the limit violation counter, the settings and the command parameters, and the device information blocks.",
+  "modpoll:version": "0.2",
+  "properties": {
+    "VOLTAGE_L1_N": {
+      "type": "number",
+      "description": "Voltage phase a to neutral. Offset 1, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 1,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L2_N": {
+      "type": "number",
+      "description": "Voltage phase b to neutral. Offset 3, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L3_N": {
+      "type": "number",
+      "description": "Voltage phase c to neutral. Offset 5, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 5,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L1_L2": {
+      "type": "number",
+      "description": "Voltage between phases a and b. Offset 7, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 7,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L2_L3": {
+      "type": "number",
+      "description": "Voltage between phases b and c. Offset 9, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 9,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L3_L1": {
+      "type": "number",
+      "description": "Voltage between phases c and a. Offset 11, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 11,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_L1": {
+      "type": "number",
+      "description": "Current of phase a. Offset 13, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 13,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_L2": {
+      "type": "number",
+      "description": "Current of phase b. Offset 15, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 15,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_L3": {
+      "type": "number",
+      "description": "Current of phase c. Offset 17, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 17,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_L1": {
+      "type": "number",
+      "description": "Apparent power of phase a. Offset 19, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 19,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_L2": {
+      "type": "number",
+      "description": "Apparent power of phase b. Offset 21, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_L3": {
+      "type": "number",
+      "description": "Apparent power of phase c. Offset 23, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 23,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_L1": {
+      "type": "number",
+      "description": "Active power of phase a. Offset 25, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 25,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_L2": {
+      "type": "number",
+      "description": "Active power of phase b. Offset 27, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 27,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_L3": {
+      "type": "number",
+      "description": "Active power of phase c. Offset 29, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 29,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_L1": {
+      "type": "number",
+      "description": "Reactive power of phase a. Offset 31, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 31,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_L2": {
+      "type": "number",
+      "description": "Reactive power of phase b. Offset 33, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 33,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_L3": {
+      "type": "number",
+      "description": "Reactive power of phase c. Offset 35, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 35,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_L1": {
+      "type": "number",
+      "description": "Power factor of phase a, range 0 to 1. Offset 37, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 37,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_L2": {
+      "type": "number",
+      "description": "Power factor of phase b, range 0 to 1. Offset 39, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 39,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_L3": {
+      "type": "number",
+      "description": "Power factor of phase c, range 0 to 1. Offset 41, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 41,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_L1": {
+      "type": "number",
+      "description": "Total harmonic distortion (THD-R) of the voltage of phase a, range 0 to 100. Offset 43, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 43,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_L2": {
+      "type": "number",
+      "description": "Total harmonic distortion (THD-R) of the voltage of phase b, range 0 to 100. Offset 45, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 45,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_L3": {
+      "type": "number",
+      "description": "Total harmonic distortion (THD-R) of the voltage of phase c, range 0 to 100. Offset 47, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 47,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_CURRENT_L1": {
+      "type": "number",
+      "description": "Total harmonic distortion (THD-R) of the current of phase a, range 0 to 100. Offset 49, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 49,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_CURRENT_L2": {
+      "type": "number",
+      "description": "Total harmonic distortion (THD-R) of the current of phase b, range 0 to 100. Offset 51, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 51,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_CURRENT_L3": {
+      "type": "number",
+      "description": "Total harmonic distortion (THD-R) of the current of phase c, range 0 to 100. Offset 53, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 53,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "FREQUENCY": {
+      "type": "number",
+      "description": "Frequency, range 45 to 65. Offset 55, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "Hz",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 55,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_LN_AVG": {
+      "type": "number",
+      "description": "Average phase to neutral voltage. Offset 57, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 57,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_LL_AVG": {
+      "type": "number",
+      "description": "Average phase to phase voltage. Offset 59, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 59,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_AVG": {
+      "type": "number",
+      "description": "Average current. Offset 61, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 61,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_TOTAL": {
+      "type": "number",
+      "description": "Total apparent power. Offset 63, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "VA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 63,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_TOTAL": {
+      "type": "number",
+      "description": "Total active power. Offset 65, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 65,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_TOTAL": {
+      "type": "number",
+      "description": "Total reactive power. Offset 67, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 67,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_TOTAL": {
+      "type": "number",
+      "description": "Total power factor. Offset 69, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 69,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE": {
+      "type": "number",
+      "description": "Amplitude unbalance of the voltage, range 0 to 100. Offset 71, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 71,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_UNBALANCE": {
+      "type": "number",
+      "description": "Amplitude unbalance of the current, range 0 to 200. Offset 73, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 73,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "LIMIT_VIOLATIONS_RAW": {
+      "type": "integer",
+      "description": "Limit violation word: byte 3 bits 0 to 5 flag limits 0 to 5 (1 is a violation) and byte 0 bit 0 the limit logic; the bit layout is in Tables 3-8 and 3-9, PDF page 47. Kept raw. Offset 203, Unsigned long in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 203,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DEVICE_STATUS_RAW": {
+      "type": "integer",
+      "description": "Device diagnostics and device status word: byte 0 system status, byte 1 module slot and pulse rate, byte 2 saved events; the bit layout is in Table 3-8, PDF page 47. Kept raw. Offset 205, Unsigned long in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 205,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DIGITAL_OUTPUT_STATUS_RAW": {
+      "type": "integer",
+      "description": "Status of the digital output: byte 3 bit 0 is the output (Table 3-7, PDF page 46). Kept raw. Offset 207, Unsigned long in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 207,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DIGITAL_INPUT_STATUS_RAW": {
+      "type": "integer",
+      "description": "Status of the digital input: byte 3 bit 0 is input 0 (Table 3-7, PDF page 46). Kept raw. Offset 209, Unsigned long in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 209,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "ACTIVE_TARIFF": {
+      "type": "integer",
+      "description": "Active tariff: 0 is tariff 1, 1 is tariff 2. Offset 211, Unsigned long in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 211,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "WORKING_HOURS": {
+      "type": "integer",
+      "description": "Working hours counter in seconds, range 0 to 999999999. Offset 213, Unsigned long in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "s",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 213,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "UNIVERSAL_COUNTER": {
+      "type": "integer",
+      "description": "Universal counter, range 0 to 999999999. Offset 215, Unsigned long in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 215,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DEMAND_ACTIVE_POWER_IMPORT": {
+      "type": "number",
+      "description": "Demand active power import. Offset 501, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 501,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_REACTIVE_POWER_IMPORT": {
+      "type": "number",
+      "description": "Demand reactive power import. Offset 503, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 503,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_ACTIVE_POWER_EXPORT": {
+      "type": "number",
+      "description": "Demand active power export. Offset 505, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "W",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 505,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_REACTIVE_POWER_EXPORT": {
+      "type": "number",
+      "description": "Demand reactive power export. Offset 507, Float in two registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "var",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 507,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_T1": {
+      "type": "number",
+      "description": "Active energy import tariff 1, overflow at 1.0e+12. Offset 801, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 801,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_T2": {
+      "type": "number",
+      "description": "Active energy import tariff 2, overflow at 1.0e+12. Offset 805, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 805,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_EXPORT_T1": {
+      "type": "number",
+      "description": "Active energy export tariff 1, overflow at 1.0e+12. Offset 809, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 809,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_EXPORT_T2": {
+      "type": "number",
+      "description": "Active energy export tariff 2, overflow at 1.0e+12. Offset 813, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 813,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_IMPORT_T1": {
+      "type": "number",
+      "description": "Reactive energy import tariff 1, overflow at 1.0e+12. Offset 817, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 817,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_IMPORT_T2": {
+      "type": "number",
+      "description": "Reactive energy import tariff 2, overflow at 1.0e+12. Offset 821, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 821,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_EXPORT_T1": {
+      "type": "number",
+      "description": "Reactive energy export tariff 1, overflow at 1.0e+12. Offset 825, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 825,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_EXPORT_T2": {
+      "type": "number",
+      "description": "Reactive energy export tariff 2, overflow at 1.0e+12. Offset 829, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 829,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_T1": {
+      "type": "number",
+      "description": "Apparent energy tariff 1, overflow at 1.0e+12. Offset 833, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 833,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_T2": {
+      "type": "number",
+      "description": "Apparent energy tariff 2, overflow at 1.0e+12. Offset 837, Double in four registers, read only; Table 3-6, section 3.9.3, PDF pages 42-45 of the SENTRON PAC3200 Manual 02/2008 A5E01168664B-04.",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 837,
+          "modv:quantity": 4,
+          "modv:type": "xsd:double"
+        }
+      ]
+    }
+  },
+  "modpoll:acquisition": [
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 1,
+      "modv:quantity": 74,
+      "modpoll:members": [
+        "VOLTAGE_L1_N",
+        "VOLTAGE_L2_N",
+        "VOLTAGE_L3_N",
+        "VOLTAGE_L1_L2",
+        "VOLTAGE_L2_L3",
+        "VOLTAGE_L3_L1",
+        "CURRENT_L1",
+        "CURRENT_L2",
+        "CURRENT_L3",
+        "APPARENT_POWER_L1",
+        "APPARENT_POWER_L2",
+        "APPARENT_POWER_L3",
+        "ACTIVE_POWER_L1",
+        "ACTIVE_POWER_L2",
+        "ACTIVE_POWER_L3",
+        "REACTIVE_POWER_L1",
+        "REACTIVE_POWER_L2",
+        "REACTIVE_POWER_L3",
+        "POWER_FACTOR_L1",
+        "POWER_FACTOR_L2",
+        "POWER_FACTOR_L3",
+        "THD_VOLTAGE_L1",
+        "THD_VOLTAGE_L2",
+        "THD_VOLTAGE_L3",
+        "THD_CURRENT_L1",
+        "THD_CURRENT_L2",
+        "THD_CURRENT_L3",
+        "FREQUENCY",
+        "VOLTAGE_LN_AVG",
+        "VOLTAGE_LL_AVG",
+        "CURRENT_AVG",
+        "APPARENT_POWER_TOTAL",
+        "ACTIVE_POWER_TOTAL",
+        "REACTIVE_POWER_TOTAL",
+        "POWER_FACTOR_TOTAL",
+        "VOLTAGE_UNBALANCE",
+        "CURRENT_UNBALANCE"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 203,
+      "modv:quantity": 14,
+      "modpoll:members": [
+        "LIMIT_VIOLATIONS_RAW",
+        "DEVICE_STATUS_RAW",
+        "DIGITAL_OUTPUT_STATUS_RAW",
+        "DIGITAL_INPUT_STATUS_RAW",
+        "ACTIVE_TARIFF",
+        "WORKING_HOURS",
+        "UNIVERSAL_COUNTER"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 501,
+      "modv:quantity": 8,
+      "modpoll:members": [
+        "DEMAND_ACTIVE_POWER_IMPORT",
+        "DEMAND_REACTIVE_POWER_IMPORT",
+        "DEMAND_ACTIVE_POWER_EXPORT",
+        "DEMAND_REACTIVE_POWER_EXPORT"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 801,
+      "modv:quantity": 40,
+      "modpoll:members": [
+        "ACTIVE_ENERGY_IMPORT_T1",
+        "ACTIVE_ENERGY_IMPORT_T2",
+        "ACTIVE_ENERGY_EXPORT_T1",
+        "ACTIVE_ENERGY_EXPORT_T2",
+        "REACTIVE_ENERGY_IMPORT_T1",
+        "REACTIVE_ENERGY_IMPORT_T2",
+        "REACTIVE_ENERGY_EXPORT_T1",
+        "REACTIVE_ENERGY_EXPORT_T2",
+        "APPARENT_ENERGY_T1",
+        "APPARENT_ENERGY_T2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: PM5560
+category: power-meter
+description: Panel-mount 96 × 96 mm power meter, class 0.2S, harmonics to the 63rd, Modbus RTU and Modbus TCP.
+translations:
+  zh-CN:
+    description: 96 × 96 mm 面板安装电力仪表，带显示屏，精度 0.2S 级，测量到 63 次谐波，具备 RS-485 和以太网口，支持 Modbus RTU 与 Modbus TCP 通信。
+specs:
+- label: Form factor
+  value: Front panel mount, integrated display, 96 × 96 mm, fits a 1/4 DIN hole
+- label: Accuracy
+  value: IEC 62053-22 Class 0.5S / 0.2S; IEC 61557-12 PMD/S/K70/0.2
+- label: Voltage inputs
+  value: 20–400 V L-N / 20–690 V L-L (wye), 50 or 60 Hz
+- label: Control power
+  value: 100–480 V AC ±10% or 125–250 V DC ±20%
+- label: Harmonics
+  value: Up to the 63rd harmonic on all voltage and current inputs
+- label: Communication
+  value: RS-485 Modbus RTU; Ethernet Modbus TCP/IP, EtherNet/IP and BACnet/IP
+communication:
+  protocols:
+  - modbus-rtu
+  - modbus-tcp
+  firmware: 4.1.8 (Modbus register list Rev 1.4)
+documents:
+- type: protocol
+  title: PowerLogic PM5500/PM5600/PM5700 series Modbus register list, PM556x public edition of 10 August 2023
+  url: https://se.my.site.com/ckmContent/sfc/servlet.shepherd/document/download/069Kj00000TH2DFIA1
+  reference: 'Sheet Register List: the rows marked Y in the PM5560 column (register, units, size, data type, access, range); the points come from the 1 s metering, energy, demand, power quality, multi-tariff and digital input and output rows. Sheet Data Types: type definitions, N/A values and the four-quadrant power factor coding. Sheet Revision: firmware 4.1.8 for the PM5560 (revision 1.4)'
+  sha256: 312c48592d204d41a259743c6d94acb94dcc8d1ab2cb2f77522f7c8dccb2423b
+  retrievedAt: '2026-11-14'
+- type: manual
+  title: PowerLogic PM5500/PM5600/PM5700 series user guide HRB1684301-18
+  url: https://download.se.com/files?p_enDocType=User+guide&p_File_Name=HRB1684301-18.pdf&p_Doc_Ref=HRB1684301
+  reference: Features and compliance, PDF pages 18-20; Device specifications, PDF page 237 (accuracy, voltage inputs, control power)
+  sha256: 5fc9be72ef9787001b38ea9fd41b6b52c77f0498acc66a4212f39eac05ce3e79
+  retrievedAt: '2026-11-14'
+- type: other
+  title: PowerLogic PM5560 / PM5580 / PM5650 instruction sheet GDE41422-05
+  url: https://download.se.com/files?p_enDocType=Instruction+sheet&p_File_Name=GDE41422-05.pdf&p_Doc_Ref=GDE41422
+  reference: 'Section 3 Dimensions, PDF page 2: 96 x 96 mm front, 91.5 mm and 77 mm body dimensions, 112 mm depth'
+  sha256: 1ed0810445f297b3d79a747cd26170d8f1c190f3cdc8934e3ece4fcff0ef5888
+  retrievedAt: '2026-11-14'
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the PM5560 square panel meter with a large display above a row of four buttons
+  translations:
+    zh-CN:
+      alt: PM5560 方形面板电力仪表的正视线稿，上方为大显示屏，下方一排四个按键
+  view: front-orthographic
+  source:
+    url: https://download.se.com/files?p_enDocType=Instruction+sheet&p_File_Name=GDE41422-05.pdf&p_Doc_Ref=GDE41422
+    reference: 'Section 3 Dimensions, PDF page 2: 96 x 96 mm front; viewable display area 67 x 62.5 mm from the Device specifications of the user guide, PDF page 237'
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

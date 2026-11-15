@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: P2000-T
+category: energy-meter
+description: Transformer-operated three-phase smart meter, class 0.2S/0.5S/1.0, 57.7/100–240/415 V, Modbus.
+translations:
+  zh-CN:
+    description: 互感器接入三相智能电表，精度 0.2S、0.5S 或 1.0 级，额定电压 57.7/100 V 至 240/415 V，额定电流 1(5) A 至 5(20) A，协议可选 Modbus。
+specs:
+- label: Measurement modes
+  value: Transformer operated, 3-phase 4-wire 3-element or 3-phase 3-wire 2-element
+- label: Accuracy class
+  value: Class 0.2S, Class 0.5S or Class 1.0
+- label: Rated voltage
+  value: 57.7/100 V to 240/415 V
+- label: Rated current
+  value: 1 (10) A, 5 (10) A, 1 (5) A or 5 (20) A
+- label: Communication
+  value: DLMS/COSEM, Modbus and IEC 62056-21 protocols over optical, RS232, RS485, RF and BLE; Modbus is a protocol option
+- label: Dimensions
+  value: 255 × 200 × 84.5 mm (H × W × D)
+communication:
+  protocols:
+  - modbus-rtu
+documents:
+- type: datasheet
+  title: Microstar P2000-T Three Phase Transformer Operated Smart Meter Datasheet (CT/CTVT)
+  url: https://www.microstarelectric.com/wp-content/uploads/2026/08/Microstar-P2000-T-Three-Phase-Transformer-Operated-Smart-Meter-Datasheet-CTCTVT.pdf
+  reference: 'Page 1: features and application. Page 2: technical specifications, communication options and outline dimension drawing'
+  sha256: 0bbef2d13b8b6fdebc59bfeec0538b5a80b0ed62f2728ef004d204524a5ee935
+  retrievedAt: '2026-11-15'
+images:
+- path: images/01.webp
+  alt: Photograph of the Microstar P2000-T three-phase transformer-operated smart meter, side view and front view
+  translations:
+    zh-CN:
+      alt: Microstar P2000-T 三相互感器接入智能电表实物照片，含侧视和正视
+  view: front-and-side
+  source:
+    url: https://www.microstarelectric.com/wp-content/uploads/2017/11/P2000-T-New.jpg
+    reference: Product photograph on the manufacturer's P2000-T product page, https://www.microstarelectric.com/products/smart-meters/p2000-t/
+  rights: Manufacturer product photograph, re-encoded as WebP. Its product pages, privacy policy and download center state no restriction on images and carry only a general site copyright notice; checked 2026-11-15.

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">PAC2200 front-view illustration</title>
+  <desc id="desc">Front orthographic outline of the PAC2200 device, 97 mm high and 108 mm wide, drawn from the frame dimension drawing of its equipment manual; the panel details are approximate.</desc>
+  <rect width="512" height="512" fill="#fff"/>
+  <g fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="50" y="30" width="412" height="370" rx="11.4"/>
+  </g>
+  <g fill="none" stroke="#000" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M50 117.7L462 117.7"/>
+    <path d="M50 308.5L462 308.5"/>
+    <rect x="80.5" y="136.8" width="183.1" height="122.1" rx="7.6"/>
+    <path d="M328.5 117.7L328.5 308.5"/>
+    <rect x="286.5" y="136.8" width="38.1" height="22.9" rx="3.8"/>
+    <rect x="286.5" y="171.1" width="38.1" height="22.9" rx="3.8"/>
+    <rect x="286.5" y="205.5" width="38.1" height="22.9" rx="3.8"/>
+    <rect x="286.5" y="239.8" width="38.1" height="22.9" rx="3.8"/>
+  </g>
+  <g fill="#000" font-family="sans-serif" text-anchor="middle">
+    <text x="256" y="436" font-size="13" font-weight="600">PAC2200</text>
+    <text x="256" y="456" font-size="11">FRONT VIEW</text>
+    <text x="256" y="474" font-size="11">NOT TO SCALE</text>
+  </g>
+</svg>

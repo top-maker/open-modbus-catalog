@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">iEM3255 front-view illustration</title>
+  <desc id="desc">Front orthographic outline of the iEM3255 meter, 101.5 mm high and 90 mm wide with communications, drawn from the dimension drawing of its installation sheet; the panel details are approximate.</desc>
+  <rect width="512" height="512" fill="#fff"/>
+  <g fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="92" y="30" width="328.1" height="370" rx="10.9"/>
+  </g>
+  <g fill="none" stroke="#000" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M92 114L420 114"/>
+    <path d="M92 142.9L420 142.9"/>
+    <path d="M92 255.7L420 255.7"/>
+    <rect x="262.5" y="166.7" width="132.5" height="72.7" rx="3.6"/>
+    <rect x="229.9" y="155.4" width="13.1" height="11.7"/>
+    <rect x="229.9" y="178" width="13.1" height="11.7"/>
+    <rect x="228.8" y="260.7" width="39.1" height="17.6" rx="5.5"/>
+    <rect x="282.1" y="260.7" width="40.2" height="17.6" rx="5.5"/>
+    <rect x="360.3" y="260.7" width="36.9" height="17.6" rx="5.5"/>
+  </g>
+  <g fill="#000" font-family="sans-serif" text-anchor="middle">
+    <text x="256" y="436" font-size="13" font-weight="600">iEM3255</text>
+    <text x="256" y="456" font-size="11">FRONT VIEW</text>
+    <text x="256" y="474" font-size="11">NOT TO SCALE</text>
+  </g>
+</svg>

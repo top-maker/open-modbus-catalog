@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: iEM3255
+category: energy-meter
+description: 3-phase CT-connected energy meter, MID/MIR, multi-tariff, pulse and digital I/O, RS-485 Modbus RTU.
+translations:
+  zh-CN:
+    description: 三相互感器接入电能表，通过 MID/MIR 认证，额定电流 1 A 或 5 A，支持多费率，带脉冲输出和数字量输入输出，RS-485 接口支持 Modbus RTU，波特率 9600 至 38400。
+specs:
+- label: Wiring
+  value: 3-phase 4-wire, 3-phase 3-wire (delta) or 1-phase 4-wire
+- label: Voltage inputs
+  value: 100/173…277/480 V ±20% (wye), 173…480 V L-L (delta), 50/60 Hz
+- label: Current inputs
+  value: 1 A or 5 A nominal CT, measured 20 mA to 6 A
+- label: Active energy accuracy
+  value: Class 1 / B (1 A CT), Class 0.5S / C (5 A CT); reactive energy Class 2
+- label: Communication
+  value: RS-485 Modbus RTU, 9600, 19200 or 38400 baud, address 1–247
+- label: Dimensions
+  value: 90 × 101.5 mm (W × H) front, version with communications
+communication:
+  protocols:
+  - modbus-rtu
+  defaults:
+    serial:
+      stopBits: 1
+    reference: 'iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16, Modbus communications settings, PDF pages 53-55: the number of stop bits is 1 and fixed; address, baud rate and parity are set on the display and the guide states no factory values for them'
+documents:
+- type: datasheet
+  title: iEM3210 / iEM3215 / iEM3235 / iEM3255 / iEM3265 / iEM3275 installation sheet NHA15801-08 (specifications section)
+  url: https://download.se.com/files?p_enDocType=Instruction+sheet&p_File_Name=NHA15801-08.pdf&p_Doc_Ref=NHA15801
+  reference: 'Section 2 Dimensions, PDF page 1: front view and outline of the meters with communications. Section 12 Specifications, PDF page 11: voltage and current inputs, accuracy, digital input and output, pulse output, environment. The sheet is the manufacturer''s multilingual installation sheet and stands in for a datasheet; its specification table is in English'
+  sha256: a2a79e44416b5d98c4d3142841403093740c5a519d2260723e0082d7fe5f680a
+  retrievedAt: '2026-11-14'
+- type: manual
+  title: iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16
+  url: https://download.se.com/files?p_enDocType=User+guide&p_File_Name=DOCA0005EN-16.pdf&p_Doc_Ref=DOCA0005EN
+  reference: 'Communications using Modbus, PDF pages 55-56 (settings, functions, table format); Modbus register list, PDF pages 62-69: System, Meter Data, Energy and energy by tariff, PF firmware updates. Meter setup, PDF pages 39-41 (factory settings); Communication settings table, PDF pages 53-54'
+  sha256: 43f3fc74197f97eb0a7bee08eb39c8927ff2c5b054cf10f3350c6cc2f1e1c301
+  retrievedAt: '2026-11-14'
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the iEM3255 meter with a terminal cover above a display panel with a screen, two indicators and three buttons
+  translations:
+    zh-CN:
+      alt: iEM3255 电能表的正视线稿，上方为端子盖，下方的面板上有显示屏、两个指示灯和三个按键
+  view: front-orthographic
+  source:
+    url: https://download.se.com/files?p_enDocType=Instruction+sheet&p_File_Name=NHA15801-08.pdf&p_Doc_Ref=NHA15801
+    reference: 'Section 2 Dimensions, PDF page 1: 90 mm wide and 101.5 mm high for the version with communications; front view layout'
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

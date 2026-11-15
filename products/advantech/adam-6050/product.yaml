@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: ADAM-6050
+category: digital-io-module
+description: '18-channel isolated digital I/O module: 12 inputs, 6 sink outputs, 3 kHz counters, Modbus TCP.'
+translations:
+  zh-CN:
+    description: 18 通道隔离数字量 I/O 模块，12 路数字输入、6 路集电极开路输出，输入可作 3 kHz 计数器，隔离电压 2000 V，10/100 Mbps 以太网口，支持 Modbus TCP 协议。
+specs:
+- label: Digital inputs
+  value: 12 channels, dry or wet contact, 3 kHz counter and frequency input
+- label: Digital outputs
+  value: 6 channels, sink type, open collector to 30 V, 100 mA, 5 kHz pulse output
+- label: Isolation
+  value: 2000 VDC
+- label: Communication
+  value: 10/100 Mbps Ethernet; Modbus/TCP, MQTT, SNMP, RESTful
+- label: Power
+  value: 10–30 VDC unregulated, 2 W maximum at 24 VDC
+- label: Dimensions
+  value: 112 × 60 × 27 mm (H × W × D) with terminal blocks
+communication:
+  protocols:
+  - modbus-tcp
+documents:
+- type: datasheet
+  title: ADAM-6000/6200/6300 series datasheet, Modbus TCP Ethernet I/O modules (2026)
+  url: https://advdownload.advantech.com/productfile/PIS/ADAM-6050/file/ADAM-60_62_63_DS(030926)20260310135433.pdf
+  reference: 'Page 5: ADAM-6050 digital input and output specifications and ordering information. Page 12: common specifications of the ADAM-6050 to ADAM-6066 (interface, isolation, protocols)'
+  sha256: af2657f22fc7b6772dacb835c52749aa084316375d4716583d70e2344168ca2f
+  retrievedAt: '2026-11-14'
+- type: manual
+  title: ADAM-6000 User Manual, Ed. 12
+  url: https://advdownload.advantech.com/productfile/Downloadfile4/1-2B6FKTG/ADAM-6000_User_Manaul_Ed.12-FINAL.pdf
+  reference: Appendix B.2 ADAM-6000 I/O Modbus Mapping Tables, ADAM-6050 tables and remarks, PDF pages 214-218 (printed pages 204-208). Section 7.3.2 Modbus function codes, PDF pages 106-108. Section 5.2 ADAM-6050 specifications, PDF pages 44-45. Section 1.4 module dimensions, PDF page 14
+  sha256: c171dde578f01adb992c20c72591bb3cad35ccc47a43aa9dfeaa8af51dfadd8d
+  retrievedAt: '2026-11-14'
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the ADAM-6050 module with a round label cover and a terminal block at the top and the bottom
+  translations:
+    zh-CN:
+      alt: ADAM-6050 模块的正视线稿，圆形标签盖，上下两端各有一排接线端子
+  view: front-orthographic
+  source:
+    url: https://advdownload.advantech.com/productfile/Downloadfile4/1-2B6FKTG/ADAM-6000_User_Manaul_Ed.12-FINAL.pdf
+    reference: 'Section 1.4 Dimensions, Figure 1.2, PDF page 14: 60 mm wide, 112 mm high with terminal blocks, round cover R35, screws 56 mm apart, terminal blocks 52 mm wide and 10 mm high'
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

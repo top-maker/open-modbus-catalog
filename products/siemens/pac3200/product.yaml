@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: PAC3200
+category: power-meter
+description: Panel-mount 96 × 96 mm power monitoring device, class 0.5S, Ethernet Modbus TCP, optional RS485.
+translations:
+  zh-CN:
+    description: 96 × 96 mm 面板安装电力监测仪表，电压 400/690 V，电流经 1 A 或 5 A 互感器，精度 0.5S 级，内置以太网口，Modbus TCP，可选 RS485 模块。
+specs:
+- label: Form factor
+  value: Panel mount, 96 × 96 mm front, 1 expansion module slot
+- label: Voltage inputs
+  value: 3~ 400 V AC L-N / 690 V AC L-L (+20%), 50/60 Hz
+- label: Current inputs
+  value: 1 A or 5 A via external current transformers
+- label: Accuracy
+  value: Active energy class 0.5S (IEC 62053-22), reactive energy class 2 (IEC 62053-23)
+- label: Digital I/O
+  value: 1 digital input, 1 digital output
+- label: Communication
+  value: Ethernet Modbus TCP; optional PAC RS485 module (Modbus RTU) or PROFIBUS DP module
+communication:
+  protocols:
+  - modbus-tcp
+  - modbus-rtu
+  defaults:
+    tcp:
+      port: 502
+    serial:
+      baudRate: 19200
+    reference: 'SENTRON PAC3200 Manual 02/2008, section 3.9.2 Modbus TCP, PDF page 40: the SEAbus TCP protocol is the default and must be changed to MODBUS TCP with F4 > SETTINGS > COMMUNICATION > PROTOCOL before Modbus answers; port 502 is established on the server side. Section 3.9.9 communication parameters, PDF pages 60-61: baud rate default value 2 (19,200 bit/s) for the optional PAC RS485 expansion module only'
+documents:
+- type: manual
+  title: SENTRON PAC3200 Manual, 02/2008, A5E01168664B-04
+  url: https://cache.industry.siemens.com/dl/files/150/26504150/att_906558/v1/A5E01168664B-04_EN-US_122016_201612221316360495.pdf
+  reference: Modbus measured variables with the function codes 0x03 and 0x04, section 3.9.3, Table 3-6, PDF pages 42-45; status structures, Tables 3-7 to 3-9, PDF pages 46-47. Technical data, PDF pages 159-166. Dimension drawings, PDF page 170. The manual stands in for a datasheet and holds the Modbus tables
+  sha256: b9efef1f28f8588d3f9b9ba04754e4914850fb0ec74373955d199d8f6b3de187
+  retrievedAt: '2026-11-14'
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the PAC3200 square panel device with a display above a row of four round function keys
+  translations:
+    zh-CN:
+      alt: PAC3200 方形面板仪表的正视线稿，上方为显示屏，下方一排四个圆形功能键
+  view: front-orthographic
+  source:
+    url: https://cache.industry.siemens.com/dl/files/150/26504150/att_906558/v1/A5E01168664B-04_EN-US_122016_201612221316360495.pdf
+    reference: 'Chapter 12 Dimension drawings, frame dimensions, PDF page 170: 96 mm by 96 mm front'
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

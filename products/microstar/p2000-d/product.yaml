@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: P2000-D
+category: energy-meter
+description: Three-phase direct-connected smart meter, class 1.0 or 0.5, 90/155–240/415 V, RS485, Modbus option.
+translations:
+  zh-CN:
+    description: 三相直接接入智能电表，精度 1.0 级或 0.5 级，额定电压 90/155 V 至 240/415 V，额定电流 5(80) A 至 5(120) A，具备 RS485，协议可选 Modbus。
+specs:
+- label: Measurement modes
+  value: Direct connected, 3-phase 4-wire 3-element or 3-phase 3-wire 2-element
+- label: Accuracy class
+  value: Class 1.0 or Class 0.5
+- label: Rated voltage
+  value: 90/155 V to 240/415 V
+- label: Rated current
+  value: 5 (80) A, 5 (100) A or 5 (120) A
+- label: Communication
+  value: DLMS/COSEM, Modbus and IEC 62056-21 protocols over optical, RS232, RS485, RF and BLE; Modbus is a protocol option
+- label: Dimensions
+  value: 280 × 175 × 109.8 mm (H × W × D)
+communication:
+  protocols:
+  - modbus-rtu
+documents:
+- type: datasheet
+  title: Microstar P2000-D Three Phase Direct Connected Smart Meter Datasheet
+  url: https://www.microstarelectric.com/wp-content/uploads/2026/08/Microstar-P2000-D-Three-Phase-Direct-Connected-Smart-Meter-Datasheet.pdf
+  reference: 'Page 1: features and application. Page 2: technical specifications, communication options and outline dimension drawing'
+  sha256: 868e9bcb7bd5e793756cd2141ed86a3d46748e4e286c54b90c29c8f3e1705d11
+  retrievedAt: '2026-11-15'
+images:
+- path: images/01.webp
+  alt: Photograph of the Microstar P2000-D three-phase direct-connected smart meter, side view and front view
+  translations:
+    zh-CN:
+      alt: Microstar P2000-D 三相直接接入智能电表实物照片，含侧视和正视
+  view: front-and-side
+  source:
+    url: https://www.microstarelectric.com/wp-content/uploads/2017/11/P2000-D-New.jpg
+    reference: Product photograph on the manufacturer's P2000-D product page, https://www.microstarelectric.com/products/smart-meters/p2000-d/
+  rights: Manufacturer product photograph, re-encoded as WebP. Its product pages, privacy policy and download center state no restriction on images and carry only a general site copyright notice; checked 2026-11-15.

@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: SDM630-Modbus V2
+category: energy-meter
+description: Three-phase 100 A DIN-rail energy meter, class 1, MID, 2 pulse outputs, RS-485 Modbus RTU.
+translations:
+  zh-CN:
+    description: 导轨式三相电能表，支持三相四线、三相三线和单相两线，直接接入 100 A，有功电能精度 1 级，带两路脉冲输出和 RS-485 Modbus RTU 通信，波特率 2400 至 38400。
+specs:
+- label: Measurement modes
+  value: 3-phase 4-wire, 3-phase 3-wire or single-phase 2-wire
+- label: Nominal voltage
+  value: 3 × 230/400 V AC
+- label: Current
+  value: 0.5–10(100) A, direct connection
+- label: Active energy accuracy
+  value: Class 1 / Class B (IEC 62053-21 / EN 50470-1/3)
+- label: Communication
+  value: RS-485 Modbus RTU, 2400–38400 bps, address 1–247
+- label: Dimensions
+  value: 72 × 100 × 66 mm (W × H × D), 4 modules, DIN rail
+communication:
+  protocols:
+  - modbus-rtu
+documents:
+- type: datasheet
+  title: Eastron SDM630 series datasheet, DIN Rail Mounted / Three Phase / (100A)
+  url: https://www.eastrongroup.com/eastrongroup/2024/08/10/eastronsdm630seriesdinrailmounted;threephase;100adatasheet.pdf
+  reference: 'Page 1: specification table and Modbus table. Page 2: dimensions and the meter type table (SDM630-Modbus row)'
+  sha256: 5bf0fb2c959bd795be4d1e16c22571a05b77019feec2a828bf011ac71ab72c54
+  retrievedAt: '2026-11-14'
+- type: manual
+  title: Eastron SDM630-Modbus V2 User Manual V1.4 (file of 2023)
+  url: https://www.eastrongroup.com/eastrongroup/2024/12/25/eastronsdm630modbusv2usermanual2023v1.5.pdf
+  reference: 'Pages 14-16: RS485 communication set-up menu. Pages 17-19: measured parameters and specifications. Page 20: dimensions and wiring guide. The manual has no Modbus register table'
+  sha256: 074a81469108507d5dfd3e58467bec152dcf1e2f0835022e7e39d5631e385d55
+  retrievedAt: '2026-11-14'
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the SDM630-Modbus V2 four-module DIN-rail meter with four terminals above and below a display window
+  translations:
+    zh-CN:
+      alt: SDM630-Modbus V2 四模数导轨式电能表的正视线稿，显示窗口上下各有四个接线端子
+  view: front-orthographic
+  source:
+    url: https://www.eastrongroup.com/eastrongroup/2024/12/25/eastronsdm630modbusv2usermanual2023v1.5.pdf
+    reference: Dimensions, 72 × 100 mm, and Wiring Guide with terminals 1-4 and 5-8, page 20
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

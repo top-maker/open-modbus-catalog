@@ -1,0 +1,846 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "modpoll": "https://top-maker.github.io/modpoll/vocab/wot-modbus#",
+      "modv": "https://www.w3.org/2019/wot/modbus",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "tm:ThingModel",
+  "title": "Schneider iEM3255 Energy Meter",
+  "description": "Baseline model for the Schneider iEM3255 three-phase CT-connected energy meter with Modbus RTU, multi-tariff, digital input and output, MID/MIR (ordering reference A9MEM3255), read over RS-485 Modbus RTU. Register map: iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16, Communications using Modbus, Modbus register list, PDF pages 62-69 (PDF page numbers equal the printed ones); only rows that apply to the iEM3255 are used: rows noted 'not applicable for iEM3150/iEM3250/iEM3350' do apply, and rows for other models (the neutral current, iEM3555 only) are left out. The document gives each register as a hexadecimal address and as a register number equal to the address plus 1 (PDF page 56); the model uses the address column, so register 3000 is address 0x0BB7 (2999). Registers are read with function code 03 (PDF page 56). Float32 values take two registers and 64-bit values four; the guide does not state the word order, and no meter was read on hardware: the model reads the high word first, the Modbus default, and the first reading on a real meter must confirm it. Energy is exposed in the 64-bit integer format (Wh, varh); the guide calls it signed 64-bit integer in its introduction and lists a type table that describes Int64 with an unsigned range, so the model reads it as signed, which gives the same values for any energy below 2^63. The 32-bit float copies of the same energy values (addresses 0xB02B onward) are left out. The firmware version word is in the manufacturer's DLF format, which the model leaves raw. Left out: configuration (power system, ratios, nominal values, pulse and tariff settings, communication settings, date and time), the command interface, the reset dates, serial number, hardware revision, manufacturer and meter name strings, the digital input status bitmap (two registers with only bit 1 used, the register holding it is not stated), the phase reactive energy and phase name registers for the 1PH4W multi-line wiring, and the neutral current of the iEM3555.",
+  "modpoll:version": "0.2",
+  "properties": {
+    "METER_MODEL": {
+      "type": "string",
+      "description": "Meter model name text. Register 50 (address 0x0031), UTF-8 text in 20 registers, read only; Modbus register list, System, PDF page 62 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 49,
+          "modv:quantity": 20,
+          "modv:type": "xsd:string"
+        }
+      ]
+    },
+    "FIRMWARE_VERSION_RAW": {
+      "type": "integer",
+      "description": "Present firmware version word in the manufacturer's DLF format X.Y.ZTT; the model keeps it raw. Register 1637 (address 0x0664), one 16-bit word, read only; Modbus register list, System, PDF page 62 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 1636,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "DIAGNOSTIC_STATUS_RAW": {
+      "type": "integer",
+      "description": "Diagnostics error status bitmap: bit 0 code 101, bit 1 code 102, bit 2 code 201 and so on to bit 7 code 206, 1 when active. Register 45000 (address 0xafc7), one 16-bit word, read only; Modbus register list, System, PDF page 63 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 44999,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "CURRENT_L1": {
+      "type": "number",
+      "description": "Phase 1 current. Register 3000 (address 0x0bb7), Float32 in two registers, read only; Modbus register list, Meter Data, Current, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 2999,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_L2": {
+      "type": "number",
+      "description": "Phase 2 current. Register 3002 (address 0x0bb9), Float32 in two registers, read only; Modbus register list, Meter Data, Current, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3001,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_L3": {
+      "type": "number",
+      "description": "Phase 3 current. Register 3004 (address 0x0bbb), Float32 in two registers, read only; Modbus register list, Meter Data, Current, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3003,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_AVG": {
+      "type": "number",
+      "description": "Average of the phase currents. Register 3010 (address 0x0bc1), Float32 in two registers, read only; Modbus register list, Meter Data, Current, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3009,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L1_L2": {
+      "type": "number",
+      "description": "Voltage between phases 1 and 2. Register 3020 (address 0x0bcb), Float32 in two registers, read only; Modbus register list, Meter Data, Voltage, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3019,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L2_L3": {
+      "type": "number",
+      "description": "Voltage between phases 2 and 3. Register 3022 (address 0x0bcd), Float32 in two registers, read only; Modbus register list, Meter Data, Voltage, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3021,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L3_L1": {
+      "type": "number",
+      "description": "Voltage between phases 3 and 1. Register 3024 (address 0x0bcf), Float32 in two registers, read only; Modbus register list, Meter Data, Voltage, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3023,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_LL_AVG": {
+      "type": "number",
+      "description": "Average line to line voltage. Register 3026 (address 0x0bd1), Float32 in two registers, read only; Modbus register list, Meter Data, Voltage, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3025,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L1_N": {
+      "type": "number",
+      "description": "Phase 1 to neutral voltage. Register 3028 (address 0x0bd3), Float32 in two registers, read only; Modbus register list, Meter Data, Voltage, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3027,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L2_N": {
+      "type": "number",
+      "description": "Phase 2 to neutral voltage. Register 3030 (address 0x0bd5), Float32 in two registers, read only; Modbus register list, Meter Data, Voltage, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3029,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_L3_N": {
+      "type": "number",
+      "description": "Phase 3 to neutral voltage. Register 3032 (address 0x0bd7), Float32 in two registers, read only; Modbus register list, Meter Data, Voltage, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3031,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_LN_AVG": {
+      "type": "number",
+      "description": "Average line to neutral voltage. Register 3036 (address 0x0bdb), Float32 in two registers, read only; Modbus register list, Meter Data, Voltage, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3035,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_L1": {
+      "type": "number",
+      "description": "Active power of phase 1. Register 3054 (address 0x0bed), Float32 in two registers, read only; Modbus register list, Meter Data, Power, PDF page 66 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3053,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_L2": {
+      "type": "number",
+      "description": "Active power of phase 2. Register 3056 (address 0x0bef), Float32 in two registers, read only; Modbus register list, Meter Data, Power, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3055,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_L3": {
+      "type": "number",
+      "description": "Active power of phase 3. Register 3058 (address 0x0bf1), Float32 in two registers, read only; Modbus register list, Meter Data, Power, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3057,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_TOTAL": {
+      "type": "number",
+      "description": "Total active power. Register 3060 (address 0x0bf3), Float32 in two registers, read only; Modbus register list, Meter Data, Power, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3059,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_TOTAL": {
+      "type": "number",
+      "description": "Total reactive power. Register 3068 (address 0x0bfb), Float32 in two registers, read only; Modbus register list, Meter Data, Power, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3067,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_TOTAL": {
+      "type": "number",
+      "description": "Total apparent power. Register 3076 (address 0x0c03), Float32 in two registers, read only; Modbus register list, Meter Data, Power, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3075,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_TOTAL": {
+      "type": "number",
+      "description": "Total power factor with the quadrant encoding of the guide: -1 to 0 quadrant 2 (active power negative, capacitive), -2 to -1 quadrant 3 (negative, inductive), 0 to 1 quadrant 1 (positive, inductive), 1 to 2 quadrant 4 (positive, capacitive). Register 3084 (address 0x0c0b), Float32 in two registers, read only; Modbus register list, Meter Data, Power Factor, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3083,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "FREQUENCY": {
+      "type": "number",
+      "description": "Frequency. Register 3110 (address 0x0c25), Float32 in two registers, read only; Modbus register list, Meter Data, Frequency, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Hz",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3109,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_TOTAL_IEC": {
+      "type": "number",
+      "description": "Total power factor in the IEC convention, from -1 to +1. Register 3192 (address 0x0c77), Float32 in two registers, read only; Modbus register list, PF firmware updates, PDF page 65 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3191,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_TOTAL_LEAD_LAG": {
+      "type": "number",
+      "description": "Total power factor in the lead and lag convention, from -1 to +1. Register 3194 (address 0x0c79), Float32 in two registers, read only; Modbus register list, PF firmware updates, PDF page 65 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3193,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_TOTAL": {
+      "type": "integer",
+      "description": "Total active energy import, cannot be reset. Register 3204 (address 0x0c83), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Total Energy, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3203,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_EXPORT_TOTAL": {
+      "type": "integer",
+      "description": "Total active energy export, cannot be reset. Register 3208 (address 0x0c87), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Total Energy, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3207,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_IMPORT_TOTAL": {
+      "type": "integer",
+      "description": "Total reactive energy import, cannot be reset. Register 3220 (address 0x0c93), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Total Energy, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3219,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_EXPORT_TOTAL": {
+      "type": "integer",
+      "description": "Total reactive energy export, cannot be reset. Register 3224 (address 0x0c97), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Total Energy, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3223,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_PARTIAL": {
+      "type": "integer",
+      "description": "Partial active energy import, resettable. Register 3256 (address 0x0cb7), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Partial Energy, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3255,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_IMPORT_PARTIAL": {
+      "type": "integer",
+      "description": "Partial reactive energy import, resettable. Register 3272 (address 0x0cc7), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Partial Energy, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3271,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_L1": {
+      "type": "integer",
+      "description": "Active energy import of phase 1. Register 3518 (address 0x0dbd), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Phase Energy, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3517,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_L2": {
+      "type": "integer",
+      "description": "Active energy import of phase 2. Register 3522 (address 0x0dc1), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Phase Energy, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3521,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_L3": {
+      "type": "integer",
+      "description": "Active energy import of phase 3. Register 3526 (address 0x0dc5), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Phase Energy, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3525,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "INPUT_METERING_ACCUMULATION": {
+      "type": "integer",
+      "description": "Input metering accumulation of the digital input, in the pulse unit set by the input metering setup (the guide lists the unit as 'Unit'). Register 3558 (address 0x0de5), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Input Metering Counter, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3557,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "MULTI_TARIFF_ACTIVE_RATE": {
+      "type": "integer",
+      "description": "Active tariff rate: 0 multi-tariff disabled, 1 to 4 rate A to rate D. Register 4191 (address 0x105e), one 16-bit word, read only; Modbus register list, Energy reset and active tariff information, PDF page 67 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4190,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_RATE_A": {
+      "type": "integer",
+      "description": "Rate A active energy import. Register 4196 (address 0x1063), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Energy by Tariff, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4195,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_RATE_B": {
+      "type": "integer",
+      "description": "Rate B active energy import. Register 4200 (address 0x1067), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Energy by Tariff, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4199,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_RATE_C": {
+      "type": "integer",
+      "description": "Rate C active energy import. Register 4204 (address 0x106b), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Energy by Tariff, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4203,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_IMPORT_RATE_D": {
+      "type": "integer",
+      "description": "Rate D active energy import. Register 4208 (address 0x106f), signed 64-bit integer in four registers, read only; Modbus register list, Energy values - 64-bit integer, Energy by Tariff, PDF page 68 of the iEM3100/iEM3200/iEM3300 series user guide DOCA0005EN-16.",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4207,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    }
+  },
+  "modpoll:acquisition": [
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 49,
+      "modv:quantity": 20,
+      "modpoll:members": [
+        "METER_MODEL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 1636,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "FIRMWARE_VERSION_RAW"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 2999,
+      "modv:quantity": 6,
+      "modpoll:members": [
+        "CURRENT_L1",
+        "CURRENT_L2",
+        "CURRENT_L3"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3009,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "CURRENT_AVG"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3019,
+      "modv:quantity": 14,
+      "modpoll:members": [
+        "VOLTAGE_L1_L2",
+        "VOLTAGE_L2_L3",
+        "VOLTAGE_L3_L1",
+        "VOLTAGE_LL_AVG",
+        "VOLTAGE_L1_N",
+        "VOLTAGE_L2_N",
+        "VOLTAGE_L3_N"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3035,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "VOLTAGE_LN_AVG"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3053,
+      "modv:quantity": 8,
+      "modpoll:members": [
+        "ACTIVE_POWER_L1",
+        "ACTIVE_POWER_L2",
+        "ACTIVE_POWER_L3",
+        "ACTIVE_POWER_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3067,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "REACTIVE_POWER_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3075,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "APPARENT_POWER_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3083,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "POWER_FACTOR_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3109,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "FREQUENCY"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3191,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "POWER_FACTOR_TOTAL_IEC",
+        "POWER_FACTOR_TOTAL_LEAD_LAG"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3203,
+      "modv:quantity": 8,
+      "modpoll:members": [
+        "ACTIVE_ENERGY_IMPORT_TOTAL",
+        "ACTIVE_ENERGY_EXPORT_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3219,
+      "modv:quantity": 8,
+      "modpoll:members": [
+        "REACTIVE_ENERGY_IMPORT_TOTAL",
+        "REACTIVE_ENERGY_EXPORT_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3255,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "ACTIVE_ENERGY_IMPORT_PARTIAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3271,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "REACTIVE_ENERGY_IMPORT_PARTIAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3517,
+      "modv:quantity": 12,
+      "modpoll:members": [
+        "ACTIVE_ENERGY_IMPORT_L1",
+        "ACTIVE_ENERGY_IMPORT_L2",
+        "ACTIVE_ENERGY_IMPORT_L3"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3557,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "INPUT_METERING_ACCUMULATION"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4190,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "MULTI_TARIFF_ACTIVE_RATE"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4195,
+      "modv:quantity": 16,
+      "modpoll:members": [
+        "ACTIVE_ENERGY_IMPORT_RATE_A",
+        "ACTIVE_ENERGY_IMPORT_RATE_B",
+        "ACTIVE_ENERGY_IMPORT_RATE_C",
+        "ACTIVE_ENERGY_IMPORT_RATE_D"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 44999,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "DIAGNOSTIC_STATUS_RAW"
+      ]
+    }
+  ]
+}

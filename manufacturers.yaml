@@ -33,6 +33,10 @@ janitza:
   name: Janitza
   website: https://www.janitza.com
 
+microstar:
+  name: Microstar Electric
+  website: https://www.microstarelectric.com
+
 moxa:
   name: Moxa
   website: https://www.moxa.com
@@ -43,3 +47,10 @@ schneider-electric:
     zh-CN:
       name: 施耐德电气
   website: https://www.se.com
+
+siemens:
+  name: Siemens
+  translations:
+    zh-CN:
+      name: 西门子
+  website: https://www.siemens.com

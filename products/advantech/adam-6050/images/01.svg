@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">ADAM-6050 front-view illustration</title>
+  <desc id="desc">Front orthographic outline of the ADAM-6050 module, 112 mm high and 60 mm wide with its two terminal blocks, drawn from the module dimension drawing in the ADAM-6000 User Manual; the details are approximate.</desc>
+  <rect width="512" height="512" fill="#fff"/>
+  <g fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="156.9" y="30" width="198.2" height="370" rx="19.8"/>
+  </g>
+  <g fill="none" stroke="#000" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="170.1" y="30" width="171.8" height="33" rx="3.3"/>
+    <path d="M178.7 35v23.1M195.9 35v23.1M213.1 35v23.1M230.2 35v23.1M247.4 35v23.1M264.6 35v23.1M281.8 35v23.1M298.9 35v23.1M316.1 35v23.1M333.3 35v23.1"/>
+    <rect x="156.9" y="63" width="198.2" height="303.9" rx="19.8"/>
+    <circle cx="256" cy="215" r="115.6"/>
+    <circle cx="163.5" cy="215" r="8.6"/>
+    <circle cx="348.5" cy="215" r="8.6"/>
+    <rect x="170.1" y="367" width="171.8" height="33" rx="3.3"/>
+    <path d="M178.7 371.9v23.1M195.9 371.9v23.1M213.1 371.9v23.1M230.2 371.9v23.1M247.4 371.9v23.1M264.6 371.9v23.1M281.8 371.9v23.1M298.9 371.9v23.1M316.1 371.9v23.1M333.3 371.9v23.1"/>
+  </g>
+  <g fill="#000" font-family="sans-serif" text-anchor="middle">
+    <text x="256" y="436" font-size="13" font-weight="600">ADAM-6050</text>
+    <text x="256" y="456" font-size="11">FRONT VIEW</text>
+    <text x="256" y="474" font-size="11">NOT TO SCALE</text>
+  </g>
+</svg>

@@ -1,0 +1,3132 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "modpoll": "https://top-maker.github.io/modpoll/vocab/wot-modbus#",
+      "modv": "https://www.w3.org/2019/wot/modbus",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "tm:ThingModel",
+  "title": "Schneider PowerLogic PM5560 Power Meter",
+  "description": "Baseline model for the Schneider PowerLogic PM5560 power meter (METSEPM5560), read over Modbus RTU (RS-485) and Modbus TCP (Ethernet); it applies to meters that report the text PM5560 in the meter model registers 50-69. Register map: PM556x public Modbus register list of 10 August 2023 (sheet Register List, rows marked Y in the PM5560 column; its revision sheet gives firmware 4.1.8 for the PM5560), with the 4Q FP PF and data type definitions of its Data Types sheet. BLOCKING CONFLICT to settle on hardware: the register list and the user guide HRB1684301-18 give a 'Register' number and do not state whether the request carries that number or one less, and no example frame settles it. The model reads the number as a register number and subtracts 1 for the zero-based address (register 3000 is address 2999), because the same manufacturer's iEM3100/iEM3200/iEM3300 user guide DOCA0005EN-16 (PDF page 56) lists the same register numbers for the same quantities (3000 current, 3204 total active energy import, 4196 rate A energy) and states 'register = address + 1', and because Schneider's FAQ FA332210 says that some meters publish lists that need a shift of one. A read of the meter model text at address 49 (register 50) against address 50 settles it. Registers are read with function code 03 (holding registers; the manual's examples and FAQ FA241856 use holding registers). 32-bit and 64-bit values take consecutive registers with the high-order register first: Schneider's FAQ FA275749 states that PM5000 series meters store data most significant register first (big endian). Values the meter cannot supply read as the N/A value of their type (a float NaN 0xFFC00000). Left out: configuration and setup, the command interface, alarms and alarm logs, minimum and maximum values, per-harmonic magnitudes and angles, K-factor, crest factor, the second set of THD values (rows named 'thd'), data logs, timekeeping, serial number, manufacturer, meter name and hardware revision strings, the float copies of the energy values, the per-rate energy of the input metering channels, and the IEC 61000-4-30 data.",
+  "modpoll:version": "0.2",
+  "properties": {
+    "METER_MODEL": {
+      "type": "string",
+      "description": "Meter Model. The documented value for the PM5560 is the text \"PM5560\". Register 50 (zero-based address 49), UTF-8 text in 20 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 5, category System Setup & Status.",
+      "readOnly": true,
+      "const": "PM5560",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 49,
+          "modv:quantity": 20,
+          "modv:type": "xsd:string"
+        }
+      ]
+    },
+    "FIRMWARE_VERSION_RAW": {
+      "type": "integer",
+      "description": "Present Firmware Version (DLF Format) X.Y.T in DLF format X.Y.T; kept raw. Register 1637 (zero-based address 1636), uint16 in 1 register, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 15, category System Setup & Status.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 1636,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "CURRENT_A": {
+      "type": "number",
+      "description": "Current A. Register 3000 (zero-based address 2999), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 184, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 2999,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_B": {
+      "type": "number",
+      "description": "Current B. Register 3002 (zero-based address 3001), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 185, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3001,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_C": {
+      "type": "number",
+      "description": "Current C. Register 3004 (zero-based address 3003), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 186, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3003,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_N": {
+      "type": "number",
+      "description": "Current N. Register 3006 (zero-based address 3005), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 187, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3005,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_G": {
+      "type": "number",
+      "description": "Current G. Register 3008 (zero-based address 3007), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 188, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3007,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_AVG": {
+      "type": "number",
+      "description": "Current Avg. Register 3010 (zero-based address 3009), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 189, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3009,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_UNBALANCE_A": {
+      "type": "number",
+      "description": "Current Unbalance A. Register 3012 (zero-based address 3011), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 191, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3011,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_UNBALANCE_B": {
+      "type": "number",
+      "description": "Current Unbalance B. Register 3014 (zero-based address 3013), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 192, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3013,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_UNBALANCE_C": {
+      "type": "number",
+      "description": "Current Unbalance C. Register 3016 (zero-based address 3015), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 193, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3015,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "CURRENT_UNBALANCE_WORST": {
+      "type": "number",
+      "description": "Current Unbalance Worst. Register 3018 (zero-based address 3017), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 194, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3017,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_A_B": {
+      "type": "number",
+      "description": "Voltage A-B. Register 3020 (zero-based address 3019), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 196, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3019,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_B_C": {
+      "type": "number",
+      "description": "Voltage B-C. Register 3022 (zero-based address 3021), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 197, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3021,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_C_A": {
+      "type": "number",
+      "description": "Voltage C-A. Register 3024 (zero-based address 3023), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 198, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3023,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_LL_AVG": {
+      "type": "number",
+      "description": "Voltage L-L Avg. Register 3026 (zero-based address 3025), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 199, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3025,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_A_N": {
+      "type": "number",
+      "description": "Voltage A-N. Register 3028 (zero-based address 3027), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 200, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3027,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_B_N": {
+      "type": "number",
+      "description": "Voltage B-N. Register 3030 (zero-based address 3029), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 201, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3029,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_C_N": {
+      "type": "number",
+      "description": "Voltage C-N. Register 3032 (zero-based address 3031), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 202, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3031,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_LN_AVG": {
+      "type": "number",
+      "description": "Voltage L-N Avg. Register 3036 (zero-based address 3035), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 203, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "V",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3035,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE_A_B": {
+      "type": "number",
+      "description": "Voltage Unbalance A-B. Register 3038 (zero-based address 3037), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 205, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3037,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE_B_C": {
+      "type": "number",
+      "description": "Voltage Unbalance B-C. Register 3040 (zero-based address 3039), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 206, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3039,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE_C_A": {
+      "type": "number",
+      "description": "Voltage Unbalance C-A. Register 3042 (zero-based address 3041), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 207, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3041,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE_LL_WORST": {
+      "type": "number",
+      "description": "Voltage Unbalance L-L Worst. Register 3044 (zero-based address 3043), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 208, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3043,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE_A_N": {
+      "type": "number",
+      "description": "Voltage Unbalance A-N. Register 3046 (zero-based address 3045), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 209, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3045,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE_B_N": {
+      "type": "number",
+      "description": "Voltage Unbalance B-N. Register 3048 (zero-based address 3047), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 210, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3047,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE_C_N": {
+      "type": "number",
+      "description": "Voltage Unbalance C-N. Register 3050 (zero-based address 3049), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 211, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3049,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "VOLTAGE_UNBALANCE_LN_WORST": {
+      "type": "number",
+      "description": "Voltage Unbalance L-N Worst. Register 3052 (zero-based address 3051), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 212, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3051,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_A": {
+      "type": "number",
+      "description": "Active Power A. Register 3054 (zero-based address 3053), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 214, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3053,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_B": {
+      "type": "number",
+      "description": "Active Power B. Register 3056 (zero-based address 3055), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 215, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3055,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_C": {
+      "type": "number",
+      "description": "Active Power C. Register 3058 (zero-based address 3057), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 216, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3057,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_POWER_TOTAL": {
+      "type": "number",
+      "description": "Active Power Total. Register 3060 (zero-based address 3059), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 217, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3059,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_A": {
+      "type": "number",
+      "description": "Reactive Power A. Register 3062 (zero-based address 3061), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 218, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3061,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_B": {
+      "type": "number",
+      "description": "Reactive Power B. Register 3064 (zero-based address 3063), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 219, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3063,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_C": {
+      "type": "number",
+      "description": "Reactive Power C. Register 3066 (zero-based address 3065), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 220, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3065,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "REACTIVE_POWER_TOTAL": {
+      "type": "number",
+      "description": "Reactive Power Total. Register 3068 (zero-based address 3067), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 221, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3067,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_A": {
+      "type": "number",
+      "description": "Apparent Power A. Register 3070 (zero-based address 3069), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 222, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3069,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_B": {
+      "type": "number",
+      "description": "Apparent Power B. Register 3072 (zero-based address 3071), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 223, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3071,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_C": {
+      "type": "number",
+      "description": "Apparent Power C. Register 3074 (zero-based address 3073), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 224, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3073,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "APPARENT_POWER_TOTAL": {
+      "type": "number",
+      "description": "Apparent Power Total. Register 3076 (zero-based address 3075), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 225, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3075,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_A": {
+      "type": "number",
+      "description": "Power Factor A. Four-quadrant encoded value: the angle of the complex power maps to 0 degrees = 1, 90 = 0, 180 = -1, 270 = 2 (Data Types sheet, 4Q FP PF), range -2 to 2. Register 3078 (zero-based address 3077), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 227, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3077,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_B": {
+      "type": "number",
+      "description": "Power Factor B. Four-quadrant encoded value: the angle of the complex power maps to 0 degrees = 1, 90 = 0, 180 = -1, 270 = 2 (Data Types sheet, 4Q FP PF), range -2 to 2. Register 3080 (zero-based address 3079), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 228, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3079,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_C": {
+      "type": "number",
+      "description": "Power Factor C. Four-quadrant encoded value: the angle of the complex power maps to 0 degrees = 1, 90 = 0, 180 = -1, 270 = 2 (Data Types sheet, 4Q FP PF), range -2 to 2. Register 3082 (zero-based address 3081), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 229, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3081,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_TOTAL": {
+      "type": "number",
+      "description": "Power Factor Total. Four-quadrant encoded value: the angle of the complex power maps to 0 degrees = 1, 90 = 0, 180 = -1, 270 = 2 (Data Types sheet, 4Q FP PF), range -2 to 2. Register 3084 (zero-based address 3083), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 230, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3083,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DISPLACEMENT_POWER_FACTOR_A": {
+      "type": "number",
+      "description": "Displacement Power Factor A. Four-quadrant encoded value: the angle of the complex power maps to 0 degrees = 1, 90 = 0, 180 = -1, 270 = 2 (Data Types sheet, 4Q FP PF), range -2 to 2. Register 3086 (zero-based address 3085), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 231, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3085,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DISPLACEMENT_POWER_FACTOR_B": {
+      "type": "number",
+      "description": "Displacement Power Factor B. Four-quadrant encoded value: the angle of the complex power maps to 0 degrees = 1, 90 = 0, 180 = -1, 270 = 2 (Data Types sheet, 4Q FP PF), range -2 to 2. Register 3088 (zero-based address 3087), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 232, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3087,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DISPLACEMENT_POWER_FACTOR_C": {
+      "type": "number",
+      "description": "Displacement Power Factor C. Four-quadrant encoded value: the angle of the complex power maps to 0 degrees = 1, 90 = 0, 180 = -1, 270 = 2 (Data Types sheet, 4Q FP PF), range -2 to 2. Register 3090 (zero-based address 3089), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 233, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3089,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DISPLACEMENT_POWER_FACTOR_TOTAL": {
+      "type": "number",
+      "description": "Displacement Power Factor Total. Four-quadrant encoded value: the angle of the complex power maps to 0 degrees = 1, 90 = 0, 180 = -1, 270 = 2 (Data Types sheet, 4Q FP PF), range -2 to 2. Register 3092 (zero-based address 3091), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 234, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3091,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "FREQUENCY": {
+      "type": "number",
+      "description": "Frequency. Register 3110 (zero-based address 3109), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 239, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Hz",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3109,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "TEMPERATURE": {
+      "type": "number",
+      "description": "Temperature. Register 3132 (zero-based address 3131), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 245, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "°C",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3131,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "PHASE_ROTATION": {
+      "type": "integer",
+      "description": "Phase Rotation. For the PM55xx models 1 is ABC and 0 is CBA. Register 3134 (zero-based address 3133), uint16 in 1 register, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 247, category Meter Data (Basic).",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3133,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "INPUT_METERING_RATE_CH1": {
+      "type": "number",
+      "description": "Input Metering Rate Channel 01. Register 3112 (zero-based address 3111), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 241, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3111,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "INPUT_METERING_RATE_CH2": {
+      "type": "number",
+      "description": "Input Metering Rate Channel 02. Register 3114 (zero-based address 3113), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 242, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3113,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "INPUT_METERING_RATE_CH3": {
+      "type": "number",
+      "description": "Input Metering Rate Channel 03. Register 3116 (zero-based address 3115), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 243, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3115,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "INPUT_METERING_RATE_CH4": {
+      "type": "number",
+      "description": "Input Metering Rate Channel 04. Register 3118 (zero-based address 3117), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 244, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3117,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_TOTAL_IEC": {
+      "type": "number",
+      "description": "Power Factor Total IEC. Range -1 to 1. Register 3192 (zero-based address 3191), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 248, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3191,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "POWER_FACTOR_TOTAL_LEAD_LAG": {
+      "type": "number",
+      "description": "Power Factor Total Lead Lag. Range -1 to 1. Register 3194 (zero-based address 3193), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 249, category Meter Data (Basic).",
+      "readOnly": true,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3193,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED": {
+      "type": "integer",
+      "description": "Active Energy Delivered (Into Load). Register 3204 (zero-based address 3203), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 255, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3203,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED": {
+      "type": "integer",
+      "description": "Active Energy Received (Out of Load). Register 3208 (zero-based address 3207), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 256, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3207,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_PLUS_RECEIVED": {
+      "type": "integer",
+      "description": "Active Energy Delivered + Received. Register 3212 (zero-based address 3211), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 257, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3211,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_MINUS_RECEIVED": {
+      "type": "integer",
+      "description": "Active Energy Delivered- Received. Register 3216 (zero-based address 3215), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 258, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3215,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered. Register 3220 (zero-based address 3219), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 259, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3219,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED": {
+      "type": "integer",
+      "description": "Reactive Energy Received. Register 3224 (zero-based address 3223), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 260, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3223,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_PLUS_RECEIVED": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered + Received. Register 3228 (zero-based address 3227), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 261, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3227,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_MINUS_RECEIVED": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered - Received. Register 3232 (zero-based address 3231), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 262, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3231,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered. Register 3236 (zero-based address 3235), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 263, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3235,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED": {
+      "type": "integer",
+      "description": "Apparent Energy Received. Register 3240 (zero-based address 3239), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 264, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3239,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_PLUS_RECEIVED": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered + Received. Register 3244 (zero-based address 3243), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 265, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3243,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_MINUS_RECEIVED": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered - Received. Register 3248 (zero-based address 3247), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 266, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3247,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "INPUT_METERING_ACCUMULATION_CH1": {
+      "type": "integer",
+      "description": "Input Metering Accumulation Channel 01. Register 3570 (zero-based address 3569), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 272, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3569,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "INPUT_METERING_ACCUMULATION_CH2": {
+      "type": "integer",
+      "description": "Input Metering Accumulation Channel 02. Register 3574 (zero-based address 3573), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 273, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3573,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "INPUT_METERING_ACCUMULATION_CH3": {
+      "type": "integer",
+      "description": "Input Metering Accumulation Channel 03. Register 3578 (zero-based address 3577), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 274, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3577,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "INPUT_METERING_ACCUMULATION_CH4": {
+      "type": "integer",
+      "description": "Input Metering Accumulation Channel 04. Register 3582 (zero-based address 3581), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 275, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3581,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_ACTIVE_POWER": {
+      "type": "number",
+      "description": "Present Demand of demand channel 1 (Active Power). Register 3766 (zero-based address 3765), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 303, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3765,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_REACTIVE_POWER": {
+      "type": "number",
+      "description": "Present Demand of demand channel 2 (Reactive Power). Register 3782 (zero-based address 3781), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 312, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3781,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_APPARENT_POWER": {
+      "type": "number",
+      "description": "Present Demand of demand channel 3 (Apparent Power). Register 3798 (zero-based address 3797), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 321, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3797,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_CURRENT_A": {
+      "type": "number",
+      "description": "Present Demand of demand channel 4 (Current A). Register 3814 (zero-based address 3813), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 330, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3813,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_CURRENT_B": {
+      "type": "number",
+      "description": "Present Demand of demand channel 5 (Current B). Register 3830 (zero-based address 3829), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 339, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3829,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_CURRENT_C": {
+      "type": "number",
+      "description": "Present Demand of demand channel 6 (Current C). Register 3846 (zero-based address 3845), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 348, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3845,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_CURRENT_N": {
+      "type": "number",
+      "description": "Present Demand of demand channel 7 (Current N). Register 3862 (zero-based address 3861), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 357, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3861,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_CURRENT_AVG": {
+      "type": "number",
+      "description": "Present Demand of demand channel 8 (Current Avg). Register 3878 (zero-based address 3877), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 366, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3877,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_CURRENT_G": {
+      "type": "number",
+      "description": "Present Demand of demand channel 9 (Current G). Register 3894 (zero-based address 3893), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 375, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "A",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3893,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_ACTIVE_POWER_PHASE_A": {
+      "type": "number",
+      "description": "Present Demand of demand channel 14 (Active Power Phase A). Register 3974 (zero-based address 3973), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 420, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3973,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_REACTIVE_POWER_PHASE_A": {
+      "type": "number",
+      "description": "Present Demand of demand channel 15 (Reactive Power Phase A). Register 3990 (zero-based address 3989), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 429, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 3989,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_APPARENT_POWER_PHASE_A": {
+      "type": "number",
+      "description": "Present Demand of demand channel 16 (Apparent Power Phase A). Register 4006 (zero-based address 4005), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 438, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4005,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_ACTIVE_POWER_PHASE_B": {
+      "type": "number",
+      "description": "Present Demand of demand channel 17 (Active Power Phase B). Register 4022 (zero-based address 4021), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 447, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kW",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4021,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_REACTIVE_POWER_PHASE_B": {
+      "type": "number",
+      "description": "Present Demand of demand channel 18 (Reactive Power Phase B). Register 4038 (zero-based address 4037), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 456, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4037,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_APPARENT_POWER_PHASE_B": {
+      "type": "number",
+      "description": "Present Demand of demand channel 19 (Apparent Power Phase B). Register 4054 (zero-based address 4053), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 465, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4053,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_REACTIVE_POWER_PHASE_C": {
+      "type": "number",
+      "description": "Present Demand of demand channel 21 (Reactive Power Phase C). Register 4086 (zero-based address 4085), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 482, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kvar",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4085,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "DEMAND_PRESENT_APPARENT_POWER_PHASE_C": {
+      "type": "number",
+      "description": "Present Demand of demand channel 22 (Apparent Power Phase C). Register 4102 (zero-based address 4101), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 491, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "kVA",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4101,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_CURRENT_A": {
+      "type": "number",
+      "description": "THD Current A. Register 21300 (zero-based address 21299), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2723, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21299,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_CURRENT_B": {
+      "type": "number",
+      "description": "THD Current B. Register 21302 (zero-based address 21301), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2724, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21301,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_CURRENT_C": {
+      "type": "number",
+      "description": "THD Current C. Register 21304 (zero-based address 21303), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2725, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21303,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_CURRENT_N": {
+      "type": "number",
+      "description": "THD Current N. Register 21306 (zero-based address 21305), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2726, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21305,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_CURRENT_G": {
+      "type": "number",
+      "description": "THD Current G. Register 21308 (zero-based address 21307), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2727, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21307,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_A_B": {
+      "type": "number",
+      "description": "THD Voltage A-B. Register 21322 (zero-based address 21321), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2735, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21321,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_B_C": {
+      "type": "number",
+      "description": "THD Voltage B-C. Register 21324 (zero-based address 21323), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2736, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21323,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_C_A": {
+      "type": "number",
+      "description": "THD Voltage C-A. Register 21326 (zero-based address 21325), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2737, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21325,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_LL": {
+      "type": "number",
+      "description": "THD Voltage L-L. Register 21328 (zero-based address 21327), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2738, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21327,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_A_N": {
+      "type": "number",
+      "description": "THD Voltage A-N. Register 21330 (zero-based address 21329), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2739, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21329,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_B_N": {
+      "type": "number",
+      "description": "THD Voltage B-N. Register 21332 (zero-based address 21331), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2740, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21331,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_C_N": {
+      "type": "number",
+      "description": "THD Voltage C-N. Register 21334 (zero-based address 21333), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2741, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21333,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "THD_VOLTAGE_LN": {
+      "type": "number",
+      "description": "THD Voltage L-N. Register 21338 (zero-based address 21337), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2742, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21337,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "TDD": {
+      "type": "number",
+      "description": "Total Demand Distortion. Register 21320 (zero-based address 21319), float32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 2733, category Meter Data (Advanced).",
+      "readOnly": true,
+      "unit": "%",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 21319,
+          "modv:quantity": 2,
+          "modv:type": "xsd:float"
+        }
+      ]
+    },
+    "TARIFF_ACTIVE_RATE": {
+      "type": "integer",
+      "description": "TOU/MT Energy Active Rate. Active multi-tariff rate. Register 4191 (zero-based address 4190), uint16 in 1 register, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 498, category Meter Data (Basic).",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4190,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_RATE_1": {
+      "type": "integer",
+      "description": "Active Energy Delivered Rate 1. Register 4196 (zero-based address 4195), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 501, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4195,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_RATE_2": {
+      "type": "integer",
+      "description": "Active Energy Delivered Rate 2. Register 4200 (zero-based address 4199), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 502, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4199,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_RATE_3": {
+      "type": "integer",
+      "description": "Active Energy Delivered Rate 3. Register 4204 (zero-based address 4203), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 503, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4203,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_RATE_4": {
+      "type": "integer",
+      "description": "Active Energy Delivered Rate 4. Register 4208 (zero-based address 4207), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 504, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4207,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_RATE_5": {
+      "type": "integer",
+      "description": "Active Energy Delivered Rate 5. Register 4212 (zero-based address 4211), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 505, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4211,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_RATE_6": {
+      "type": "integer",
+      "description": "Active Energy Delivered Rate 6. Register 4216 (zero-based address 4215), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 506, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4215,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_RATE_7": {
+      "type": "integer",
+      "description": "Active Energy Delivered Rate 7. Register 4220 (zero-based address 4219), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 507, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4219,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_DELIVERED_RATE_8": {
+      "type": "integer",
+      "description": "Active Energy Delivered Rate 8. Register 4224 (zero-based address 4223), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 508, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4223,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED_RATE_1": {
+      "type": "integer",
+      "description": "Active Energy Received Rate 1. Register 4228 (zero-based address 4227), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 510, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4227,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED_RATE_2": {
+      "type": "integer",
+      "description": "Active Energy Received Rate 2. Register 4232 (zero-based address 4231), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 511, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4231,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED_RATE_3": {
+      "type": "integer",
+      "description": "Active Energy Received Rate 3. Register 4236 (zero-based address 4235), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 512, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4235,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED_RATE_4": {
+      "type": "integer",
+      "description": "Active Energy Received Rate 4. Register 4240 (zero-based address 4239), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 513, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4239,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED_RATE_5": {
+      "type": "integer",
+      "description": "Active Energy Received Rate 5. Register 4244 (zero-based address 4243), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 514, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4243,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED_RATE_6": {
+      "type": "integer",
+      "description": "Active Energy Received Rate 6. Register 4248 (zero-based address 4247), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 515, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4247,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED_RATE_7": {
+      "type": "integer",
+      "description": "Active Energy Received Rate 7. Register 4252 (zero-based address 4251), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 516, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4251,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "ACTIVE_ENERGY_RECEIVED_RATE_8": {
+      "type": "integer",
+      "description": "Active Energy Received Rate 8. Register 4256 (zero-based address 4255), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 517, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "Wh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4255,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_RATE_1": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered Rate 1. Register 4260 (zero-based address 4259), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 519, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4259,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_RATE_2": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered Rate 2. Register 4264 (zero-based address 4263), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 520, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4263,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_RATE_3": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered Rate 3. Register 4268 (zero-based address 4267), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 521, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4267,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_RATE_4": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered Rate 4. Register 4272 (zero-based address 4271), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 522, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4271,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_RATE_5": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered Rate 5. Register 4276 (zero-based address 4275), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 523, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4275,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_RATE_6": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered Rate 6. Register 4280 (zero-based address 4279), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 524, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4279,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_RATE_7": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered Rate 7. Register 4284 (zero-based address 4283), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 525, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4283,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_DELIVERED_RATE_8": {
+      "type": "integer",
+      "description": "Reactive Energy Delivered Rate 8. Register 4288 (zero-based address 4287), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 526, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4287,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED_RATE_1": {
+      "type": "integer",
+      "description": "Reactive Energy Received Rate 1. Register 4292 (zero-based address 4291), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 528, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4291,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED_RATE_2": {
+      "type": "integer",
+      "description": "Reactive Energy Received Rate 2. Register 4296 (zero-based address 4295), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 529, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4295,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED_RATE_3": {
+      "type": "integer",
+      "description": "Reactive Energy Received Rate 3. Register 4300 (zero-based address 4299), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 530, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4299,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED_RATE_4": {
+      "type": "integer",
+      "description": "Reactive Energy Received Rate 4. Register 4304 (zero-based address 4303), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 531, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4303,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED_RATE_5": {
+      "type": "integer",
+      "description": "Reactive Energy Received Rate 5. Register 4308 (zero-based address 4307), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 532, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4307,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED_RATE_6": {
+      "type": "integer",
+      "description": "Reactive Energy Received Rate 6. Register 4312 (zero-based address 4311), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 533, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4311,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED_RATE_7": {
+      "type": "integer",
+      "description": "Reactive Energy Received Rate 7. Register 4316 (zero-based address 4315), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 534, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4315,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "REACTIVE_ENERGY_RECEIVED_RATE_8": {
+      "type": "integer",
+      "description": "Reactive Energy Received Rate 8. Register 4320 (zero-based address 4319), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 535, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "varh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4319,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_RATE_1": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered Rate 1. Register 4324 (zero-based address 4323), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 537, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4323,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_RATE_2": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered Rate 2. Register 4328 (zero-based address 4327), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 538, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4327,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_RATE_3": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered Rate 3. Register 4332 (zero-based address 4331), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 539, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4331,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_RATE_4": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered Rate 4. Register 4336 (zero-based address 4335), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 540, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4335,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_RATE_5": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered Rate 5. Register 4340 (zero-based address 4339), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 541, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4339,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_RATE_6": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered Rate 6. Register 4344 (zero-based address 4343), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 542, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4343,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_RATE_7": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered Rate 7. Register 4348 (zero-based address 4347), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 543, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4347,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_DELIVERED_RATE_8": {
+      "type": "integer",
+      "description": "Apparent Energy Delivered Rate 8. Register 4352 (zero-based address 4351), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 544, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4351,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED_RATE_1": {
+      "type": "integer",
+      "description": "Apparent Energy Received Rate 1. Register 4356 (zero-based address 4355), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 546, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4355,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED_RATE_2": {
+      "type": "integer",
+      "description": "Apparent Energy Received Rate 2. Register 4360 (zero-based address 4359), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 547, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4359,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED_RATE_3": {
+      "type": "integer",
+      "description": "Apparent Energy Received Rate 3. Register 4364 (zero-based address 4363), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 548, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4363,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED_RATE_4": {
+      "type": "integer",
+      "description": "Apparent Energy Received Rate 4. Register 4368 (zero-based address 4367), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 549, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4367,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED_RATE_5": {
+      "type": "integer",
+      "description": "Apparent Energy Received Rate 5. Register 4372 (zero-based address 4371), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 550, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4371,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED_RATE_6": {
+      "type": "integer",
+      "description": "Apparent Energy Received Rate 6. Register 4376 (zero-based address 4375), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 551, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4375,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED_RATE_7": {
+      "type": "integer",
+      "description": "Apparent Energy Received Rate 7. Register 4380 (zero-based address 4379), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 552, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4379,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "APPARENT_ENERGY_RECEIVED_RATE_8": {
+      "type": "integer",
+      "description": "Apparent Energy Received Rate 8. Register 4384 (zero-based address 4383), int64 in 4 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 553, category Meter Data (Basic).",
+      "readOnly": true,
+      "unit": "VAh",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 4383,
+          "modv:quantity": 4,
+          "modv:type": "xsd:long"
+        }
+      ]
+    },
+    "DIGITAL_INPUT_STATUS_RAW": {
+      "type": "integer",
+      "description": "Digital Input Status – Base Unit of the base unit inputs; kept raw. Register 8905 (zero-based address 8904), uint16 in 1 register, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1444, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8904,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "DIGITAL_OUTPUT_STATUS_RAW": {
+      "type": "integer",
+      "description": "Digital Output Status – Base Unit of the base unit outputs; kept raw. Register 9667 (zero-based address 9666), uint16 in 1 register, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1470, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 65535,
+      "unit": "count",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 9666,
+          "modv:quantity": 1,
+          "modv:type": "xsd:unsignedShort"
+        }
+      ]
+    },
+    "DI1_COUNT": {
+      "type": "integer",
+      "description": "Count of Digital Input DI1. Register 8915 (zero-based address 8914), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1446, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8914,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI1_ON_TIME": {
+      "type": "integer",
+      "description": "On Time of Digital Input DI1. Register 8917 (zero-based address 8916), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1447, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "s",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8916,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI2_COUNT": {
+      "type": "integer",
+      "description": "Count of Digital Input DI2. Register 8919 (zero-based address 8918), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1449, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8918,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI2_ON_TIME": {
+      "type": "integer",
+      "description": "On Time of Digital Input DI2. Register 8921 (zero-based address 8920), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1450, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "s",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8920,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI3_COUNT": {
+      "type": "integer",
+      "description": "Count of Digital Input DI3. Register 8923 (zero-based address 8922), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1452, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8922,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI3_ON_TIME": {
+      "type": "integer",
+      "description": "On Time of Digital Input DI3. Register 8925 (zero-based address 8924), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1453, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "s",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8924,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI4_COUNT": {
+      "type": "integer",
+      "description": "Count of Digital Input DI4. Register 8927 (zero-based address 8926), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1455, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8926,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DI4_ON_TIME": {
+      "type": "integer",
+      "description": "On Time of Digital Input DI4. Register 8929 (zero-based address 8928), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1456, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "s",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 8928,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DO1_COUNT": {
+      "type": "integer",
+      "description": "Count of Digital Output DO1. Register 9675 (zero-based address 9674), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1475, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 9674,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DO1_ON_TIME": {
+      "type": "integer",
+      "description": "On Time of Digital Output DO1. Register 9677 (zero-based address 9676), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1476, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "s",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 9676,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DO2_COUNT": {
+      "type": "integer",
+      "description": "Count of Digital Output DO2. Register 9683 (zero-based address 9682), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1481, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 9682,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    },
+    "DO2_ON_TIME": {
+      "type": "integer",
+      "description": "On Time of Digital Output DO2. Register 9685 (zero-based address 9684), uint32 in 2 registers, read only; PM556x public Modbus register list, 10 August 2023 (file PM556x_PublicModbusRegisterList_10th_August-23), sheet Register List, row 1482, category Inputs & Outputs.",
+      "readOnly": true,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "unit": "s",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/octet-stream",
+          "modv:entity": "HoldingRegister",
+          "modv:address": 9684,
+          "modv:quantity": 2,
+          "modv:type": "xsd:unsignedInt"
+        }
+      ]
+    }
+  },
+  "modpoll:acquisition": [
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 49,
+      "modv:quantity": 20,
+      "modpoll:members": [
+        "METER_MODEL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 1636,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "FIRMWARE_VERSION_RAW"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 2999,
+      "modv:quantity": 34,
+      "modpoll:members": [
+        "CURRENT_A",
+        "CURRENT_B",
+        "CURRENT_C",
+        "CURRENT_N",
+        "CURRENT_G",
+        "CURRENT_AVG",
+        "CURRENT_UNBALANCE_A",
+        "CURRENT_UNBALANCE_B",
+        "CURRENT_UNBALANCE_C",
+        "CURRENT_UNBALANCE_WORST",
+        "VOLTAGE_A_B",
+        "VOLTAGE_B_C",
+        "VOLTAGE_C_A",
+        "VOLTAGE_LL_AVG",
+        "VOLTAGE_A_N",
+        "VOLTAGE_B_N",
+        "VOLTAGE_C_N"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3035,
+      "modv:quantity": 58,
+      "modpoll:members": [
+        "VOLTAGE_LN_AVG",
+        "VOLTAGE_UNBALANCE_A_B",
+        "VOLTAGE_UNBALANCE_B_C",
+        "VOLTAGE_UNBALANCE_C_A",
+        "VOLTAGE_UNBALANCE_LL_WORST",
+        "VOLTAGE_UNBALANCE_A_N",
+        "VOLTAGE_UNBALANCE_B_N",
+        "VOLTAGE_UNBALANCE_C_N",
+        "VOLTAGE_UNBALANCE_LN_WORST",
+        "ACTIVE_POWER_A",
+        "ACTIVE_POWER_B",
+        "ACTIVE_POWER_C",
+        "ACTIVE_POWER_TOTAL",
+        "REACTIVE_POWER_A",
+        "REACTIVE_POWER_B",
+        "REACTIVE_POWER_C",
+        "REACTIVE_POWER_TOTAL",
+        "APPARENT_POWER_A",
+        "APPARENT_POWER_B",
+        "APPARENT_POWER_C",
+        "APPARENT_POWER_TOTAL",
+        "POWER_FACTOR_A",
+        "POWER_FACTOR_B",
+        "POWER_FACTOR_C",
+        "POWER_FACTOR_TOTAL",
+        "DISPLACEMENT_POWER_FACTOR_A",
+        "DISPLACEMENT_POWER_FACTOR_B",
+        "DISPLACEMENT_POWER_FACTOR_C",
+        "DISPLACEMENT_POWER_FACTOR_TOTAL"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3109,
+      "modv:quantity": 10,
+      "modpoll:members": [
+        "FREQUENCY",
+        "INPUT_METERING_RATE_CH1",
+        "INPUT_METERING_RATE_CH2",
+        "INPUT_METERING_RATE_CH3",
+        "INPUT_METERING_RATE_CH4"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3131,
+      "modv:quantity": 3,
+      "modpoll:members": [
+        "TEMPERATURE",
+        "PHASE_ROTATION"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3191,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "POWER_FACTOR_TOTAL_IEC",
+        "POWER_FACTOR_TOTAL_LEAD_LAG"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3203,
+      "modv:quantity": 48,
+      "modpoll:members": [
+        "ACTIVE_ENERGY_DELIVERED",
+        "ACTIVE_ENERGY_RECEIVED",
+        "ACTIVE_ENERGY_DELIVERED_PLUS_RECEIVED",
+        "ACTIVE_ENERGY_DELIVERED_MINUS_RECEIVED",
+        "REACTIVE_ENERGY_DELIVERED",
+        "REACTIVE_ENERGY_RECEIVED",
+        "REACTIVE_ENERGY_DELIVERED_PLUS_RECEIVED",
+        "REACTIVE_ENERGY_DELIVERED_MINUS_RECEIVED",
+        "APPARENT_ENERGY_DELIVERED",
+        "APPARENT_ENERGY_RECEIVED",
+        "APPARENT_ENERGY_DELIVERED_PLUS_RECEIVED",
+        "APPARENT_ENERGY_DELIVERED_MINUS_RECEIVED"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3569,
+      "modv:quantity": 16,
+      "modpoll:members": [
+        "INPUT_METERING_ACCUMULATION_CH1",
+        "INPUT_METERING_ACCUMULATION_CH2",
+        "INPUT_METERING_ACCUMULATION_CH3",
+        "INPUT_METERING_ACCUMULATION_CH4"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3765,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_ACTIVE_POWER"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3781,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_REACTIVE_POWER"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3797,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_APPARENT_POWER"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3813,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_CURRENT_A"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3829,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_CURRENT_B"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3845,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_CURRENT_C"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3861,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_CURRENT_N"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3877,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_CURRENT_AVG"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3893,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_CURRENT_G"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3973,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_ACTIVE_POWER_PHASE_A"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 3989,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_REACTIVE_POWER_PHASE_A"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4005,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_APPARENT_POWER_PHASE_A"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4021,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_ACTIVE_POWER_PHASE_B"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4037,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_REACTIVE_POWER_PHASE_B"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4053,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_APPARENT_POWER_PHASE_B"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4085,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_REACTIVE_POWER_PHASE_C"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4101,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "DEMAND_PRESENT_APPARENT_POWER_PHASE_C"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4190,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "TARIFF_ACTIVE_RATE"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4195,
+      "modv:quantity": 124,
+      "modpoll:members": [
+        "ACTIVE_ENERGY_DELIVERED_RATE_1",
+        "ACTIVE_ENERGY_DELIVERED_RATE_2",
+        "ACTIVE_ENERGY_DELIVERED_RATE_3",
+        "ACTIVE_ENERGY_DELIVERED_RATE_4",
+        "ACTIVE_ENERGY_DELIVERED_RATE_5",
+        "ACTIVE_ENERGY_DELIVERED_RATE_6",
+        "ACTIVE_ENERGY_DELIVERED_RATE_7",
+        "ACTIVE_ENERGY_DELIVERED_RATE_8",
+        "ACTIVE_ENERGY_RECEIVED_RATE_1",
+        "ACTIVE_ENERGY_RECEIVED_RATE_2",
+        "ACTIVE_ENERGY_RECEIVED_RATE_3",
+        "ACTIVE_ENERGY_RECEIVED_RATE_4",
+        "ACTIVE_ENERGY_RECEIVED_RATE_5",
+        "ACTIVE_ENERGY_RECEIVED_RATE_6",
+        "ACTIVE_ENERGY_RECEIVED_RATE_7",
+        "ACTIVE_ENERGY_RECEIVED_RATE_8",
+        "REACTIVE_ENERGY_DELIVERED_RATE_1",
+        "REACTIVE_ENERGY_DELIVERED_RATE_2",
+        "REACTIVE_ENERGY_DELIVERED_RATE_3",
+        "REACTIVE_ENERGY_DELIVERED_RATE_4",
+        "REACTIVE_ENERGY_DELIVERED_RATE_5",
+        "REACTIVE_ENERGY_DELIVERED_RATE_6",
+        "REACTIVE_ENERGY_DELIVERED_RATE_7",
+        "REACTIVE_ENERGY_DELIVERED_RATE_8",
+        "REACTIVE_ENERGY_RECEIVED_RATE_1",
+        "REACTIVE_ENERGY_RECEIVED_RATE_2",
+        "REACTIVE_ENERGY_RECEIVED_RATE_3",
+        "REACTIVE_ENERGY_RECEIVED_RATE_4",
+        "REACTIVE_ENERGY_RECEIVED_RATE_5",
+        "REACTIVE_ENERGY_RECEIVED_RATE_6",
+        "REACTIVE_ENERGY_RECEIVED_RATE_7"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 4319,
+      "modv:quantity": 68,
+      "modpoll:members": [
+        "REACTIVE_ENERGY_RECEIVED_RATE_8",
+        "APPARENT_ENERGY_DELIVERED_RATE_1",
+        "APPARENT_ENERGY_DELIVERED_RATE_2",
+        "APPARENT_ENERGY_DELIVERED_RATE_3",
+        "APPARENT_ENERGY_DELIVERED_RATE_4",
+        "APPARENT_ENERGY_DELIVERED_RATE_5",
+        "APPARENT_ENERGY_DELIVERED_RATE_6",
+        "APPARENT_ENERGY_DELIVERED_RATE_7",
+        "APPARENT_ENERGY_DELIVERED_RATE_8",
+        "APPARENT_ENERGY_RECEIVED_RATE_1",
+        "APPARENT_ENERGY_RECEIVED_RATE_2",
+        "APPARENT_ENERGY_RECEIVED_RATE_3",
+        "APPARENT_ENERGY_RECEIVED_RATE_4",
+        "APPARENT_ENERGY_RECEIVED_RATE_5",
+        "APPARENT_ENERGY_RECEIVED_RATE_6",
+        "APPARENT_ENERGY_RECEIVED_RATE_7",
+        "APPARENT_ENERGY_RECEIVED_RATE_8"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 8904,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "DIGITAL_INPUT_STATUS_RAW"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 8914,
+      "modv:quantity": 16,
+      "modpoll:members": [
+        "DI1_COUNT",
+        "DI1_ON_TIME",
+        "DI2_COUNT",
+        "DI2_ON_TIME",
+        "DI3_COUNT",
+        "DI3_ON_TIME",
+        "DI4_COUNT",
+        "DI4_ON_TIME"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 9666,
+      "modv:quantity": 1,
+      "modpoll:members": [
+        "DIGITAL_OUTPUT_STATUS_RAW"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 9674,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "DO1_COUNT",
+        "DO1_ON_TIME"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 9682,
+      "modv:quantity": 4,
+      "modpoll:members": [
+        "DO2_COUNT",
+        "DO2_ON_TIME"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 21299,
+      "modv:quantity": 10,
+      "modpoll:members": [
+        "THD_CURRENT_A",
+        "THD_CURRENT_B",
+        "THD_CURRENT_C",
+        "THD_CURRENT_N",
+        "THD_CURRENT_G"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 21319,
+      "modv:quantity": 16,
+      "modpoll:members": [
+        "TDD",
+        "THD_VOLTAGE_A_B",
+        "THD_VOLTAGE_B_C",
+        "THD_VOLTAGE_C_A",
+        "THD_VOLTAGE_LL",
+        "THD_VOLTAGE_A_N",
+        "THD_VOLTAGE_B_N",
+        "THD_VOLTAGE_C_N"
+      ]
+    },
+    {
+      "modv:entity": "HoldingRegister",
+      "modv:address": 21337,
+      "modv:quantity": 2,
+      "modpoll:members": [
+        "THD_VOLTAGE_LN"
+      ]
+    }
+  ]
+}

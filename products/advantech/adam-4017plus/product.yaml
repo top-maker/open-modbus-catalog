@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: ADAM-4017+
+category: analog-input-module
+description: 8-channel differential analog input module for mV, V and mA signals, 16-bit, RS-485 Modbus RTU.
+translations:
+  zh-CN:
+    description: 8 通道差分模拟量输入模块，各通道可独立设置量程，输入毫伏、伏和毫安信号，分辨率 16 位，隔离电压 3000 V DC，RS-485 接口，支持 Modbus RTU，默认 ASCII 协议。
+specs:
+- label: Channels
+  value: 8 differential, individually configurable ranges
+- label: Input ranges
+  value: ±150 mV to ±10 V, 0–150 mV to 0–10 V, ±20 mA, 0–20 mA, 4–20 mA
+- label: Resolution
+  value: 16-bit; accuracy ±0.1% (voltage), ±0.2% (current)
+- label: Isolation
+  value: 3000 VDC
+- label: Communication
+  value: RS-485, ADAM ASCII or Modbus/RTU; ships with ADAM ASCII
+- label: Dimensions
+  value: 112 × 60 × 30 mm overall (H × W × D)
+communication:
+  protocols:
+  - modbus-rtu
+  defaults:
+    serial:
+      unitId: 1
+      baudRate: 9600
+      dataBits: 8
+      parity: none
+      stopBits: 1
+    reference: 'ADAM-4000 Series User Manual Ed. 9, Appendix D.2, PDF page 260: new ADAM-4000 modules have address 1 and 9600, N, 8, 1. The module ships with the ADAM ASCII protocol; switch it to Modbus first by the INIT procedure of Appendix H.1, PDF page 290 (initial communication settings 9600 baud, N-8-1)'
+documents:
+- type: datasheet
+  title: ADAM-4017+ / 4018+ / 4019+ datasheet, Modbus models (22 Sep 2023)
+  url: https://advdownload.advantech.com/productfile/PIS/ADAM-4017+/file/ADAM-4017_4018_4019_DS(092223)20230928142137.pdf
+  reference: 'Page 1: ADAM-4017+ specifications, general specifications and ordering information (ADAM-4017+-F)'
+  sha256: 3cc7b529e32bc36105c7ceb6e6906ea0741629580046858a70bdec1a7f7fe8b9
+  retrievedAt: '2026-11-14'
+- type: manual
+  title: ADAM-4000 Series User Manual, Ed. 9
+  url: https://advdownload.advantech.com/productfile/Downloadfile1/1-2IIGU49/ADAM-4000_Series_User_manual_Ed.9_FINAL.pdf
+  reference: Appendix G.1 I/O Modbus Mapping Table, table 3 ADAM-4017+, PDF page 277 (printed page 265). Appendix H.1 Changing Configuration to Modbus Protocol, PDF page 290. Table 3.2 Technical Specifications of ADAM-4017+, PDF page 42. Appendix C.1 ADAM Dimensions, PDF page 250. Default settings, Appendix D.2, PDF page 260
+  sha256: e93915a358433a56098d42ceda293908245f509906c03b0743b216db8a211fcc
+  retrievedAt: '2026-11-14'
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the ADAM-4017+ module with a round label cover with two screws above a ten-pin terminal block
+  translations:
+    zh-CN:
+      alt: ADAM-4017+ 模块的正视线稿，圆形标签盖上有两颗螺钉，下方为十针接线端子
+  view: front-orthographic
+  source:
+    url: https://advdownload.advantech.com/productfile/Downloadfile1/1-2IIGU49/ADAM-4000_Series_User_manual_Ed.9_FINAL.pdf
+    reference: 'Appendix C.1 ADAM Dimensions, PDF page 250: 60 mm wide, 112 mm high with the terminal block, round cover R35, screws 56 mm apart, terminal block 52 mm wide'
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

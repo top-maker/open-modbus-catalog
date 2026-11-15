@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=../../../schema/product.schema.json
+
+modelNumber: PAC2200
+category: power-meter
+description: DIN-rail power monitoring device for 5 A CT or 65 A direct connection, class 0.5, Modbus RTU or TCP.
+translations:
+  zh-CN:
+    description: 导轨式电力监测仪表，有 5 A 互感器接入和 65 A 直接接入两种，电压电流精度 0.5 级，按版本带 RS-485 Modbus RTU 或以太网 Modbus TCP 接口。
+specs:
+- label: Versions
+  value: 5 A device (1 A or 5 A CTs) and 65 A device (direct connection)
+- label: Voltage inputs
+  value: 100/173 V to 230/400 V AC (L-N/L-L), 50/60 Hz
+- label: Accuracy
+  value: Voltage and current class 0.5; power and active energy class 1 (IEC 61557-12)
+- label: Digital I/O
+  value: 1 digital input, 1 digital output (switching or pulse)
+- label: Communication
+  value: Optional Ethernet Modbus TCP, RS485 Modbus RTU (4800–115200 baud) or M-BUS
+- label: Dimensions
+  value: 108 × 97 × 71 mm (W × H × D), DIN rail
+communication:
+  protocols:
+  - modbus-rtu
+  - modbus-tcp
+  defaults:
+    tcp:
+      port: 502
+    serial:
+      unitId: 126
+      baudRate: 19200
+      dataBits: 8
+      parity: none
+      stopBits: 2
+    reference: 'SENTRON PAC2200 Equipment Manual 12/2022, section 6.3 Parameterizing the device, PDF pages 83-84: "MODBUS TCP" port 502, "MODBUS RTU" address 126, baud rate 19200, format 8N2 (8 data bits, no parity, 2 stop bits), each a factory setting of the version with that interface'
+documents:
+- type: manual
+  title: SENTRON PAC2200 Equipment Manual, 12/2022, L1V30415167B-06
+  url: https://cache.industry.siemens.com/dl/files/835/109746835/att_1123515/v2/MAN_L1V30415167B-06_en_en-US.pdf
+  reference: Modbus measured variables with the function codes 0x03 and 0x04, Appendix A.1.3, Table A-3, PDF pages 107-110; function codes, PDF page 105. Technical specifications, PDF pages 91-95. Dimensional drawings, PDF page 103. The manual stands in for a datasheet and holds the Modbus tables
+  sha256: fa77d5328dcd82c2b43cbd7d93567129f411776c1e2c826f2b24a00eec9da6cf
+  retrievedAt: '2026-11-14'
+images:
+- path: images/01.svg
+  alt: Front-view line illustration of the PAC2200 DIN-rail device with terminal covers above and below a display and a button column
+  translations:
+    zh-CN:
+      alt: PAC2200 导轨式仪表的正视线稿，上下为端子盖，中间为显示屏和一列按键
+  view: front-orthographic
+  source:
+    url: https://cache.industry.siemens.com/dl/files/835/109746835/att_1123515/v2/MAN_L1V30415167B-06_en_en-US.pdf
+    reference: 'Chapter 9 Dimensional drawings, Figure 9-1, PDF page 103: 108 mm wide and 97 mm high, 71 mm deep'
+  rights: Independently drawn from documented geometry. Pending maintainer release review.

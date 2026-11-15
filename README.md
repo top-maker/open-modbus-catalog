@@ -128,4 +128,5 @@ sets the parallelism.
 
 The catalog, including product records, Thing Models and illustrations, is
 available under the [MIT License](LICENSE). Linked manufacturer documents remain
-under their publishers' terms.
+under their publishers' terms, and so do manufacturer product photographs,
+which are included without a transfer of the manufacturers' rights.

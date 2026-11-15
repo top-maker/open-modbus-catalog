@@ -38,7 +38,7 @@ moxa:
   website: https://www.moxa.com
 
 schneider-electric:
-  name: Schneider Electric
+  name: Schneider
   translations:
     zh-CN:
       name: 施耐德电气

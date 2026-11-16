@@ -1,8 +1,8 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "modpoll==2.0.0a13",
-#     "modsim==2.0.0a15",
+#     "modpoll==2.0.0a15",
+#     "modsim==2.0.0a17",
 #     "pyyaml==6.0.3",
 # ]
 #

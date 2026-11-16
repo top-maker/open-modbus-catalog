@@ -9,12 +9,12 @@
   ],
   "@type": "tm:ThingModel",
   "title": "Advantech ADAM-4017+ 8-Channel Analog Input Module",
-  "description": "Baseline model for the Advantech ADAM-4017+ 8-channel differential analog input module (mV, V and mA inputs) read over RS-485 Modbus RTU; it applies to modules that report module name words 0x4017 and 0x5000 in holding registers 40211 and 40212. The module ships with the ADAM ASCII protocol and must be switched to Modbus first (ADAM-4000 Series User Manual Ed. 9, Appendix H.1, PDF page 290). Register map: Appendix G.1, table 3 'ADAM-4017+ 8-channel Analog Input Module', PDF page 277 (printed page 265): 4X addresses, one 16-bit register each, converted to zero-based addresses (40001 is address 0). The manual does not state the encoding of the current values (signedness and scaling follow the channel's input range and data format), so each channel is exposed as a raw word and the user decodes it with the range the channel is set to. The manual lists the function code only as the 4X data table, which this model reads as holding registers. Left out: the per-channel type codes and the channel enable word, which are configuration, and the writes the manual marks R/W.",
+  "description": "Baseline model for the Advantech ADAM-4017+ 8-channel differential analog input module (mV, V and mA inputs) read over RS-485 Modbus RTU; it applies to modules that report module name words 0x4017 and 0x5000 in holding registers 40211 and 40212. The module ships with the ADAM ASCII protocol and must be switched to Modbus first (ADAM-4000 Series User Manual Ed. 9, Appendix H.1, PDF page 290).\n\nRegister map: ADAM-4000 Series User Manual Ed. 9, Appendix G.1. Holding registers: table 3 'ADAM-4017+ 8-channel Analog Input Module', PDF page 277 (printed page 265), 4X addresses, one 16-bit register each; the manual lists the function code only as the 4X data table, which this model reads as holding registers. Addresses here are zero-based: 40001 is address 0.\n\nThe manual does not state the encoding of the current values (signedness and scaling follow the channel's input range and data format), so each channel is exposed as a raw word and the user decodes it with the range the channel is set to. The manual's examples for the two firmware version words are 0xA200 and 0x0000; it does not describe their encoding.\n\nLeft out: the per-channel type codes and the channel enable word, which are configuration, and the writes the manual marks R/W.",
   "modpoll:version": "0.2",
   "properties": {
     "AI0_RAW": {
       "type": "integer",
-      "description": "Raw current value of analog input channel 0, read only. Holding register 40001 (zero-based address 0), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9. The manual does not state the encoding: it depends on the channel's input range and data format, so decode it with the range configured for the channel.",
+      "description": "Raw current value of analog input channel 0.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -32,7 +32,7 @@
     },
     "AI1_RAW": {
       "type": "integer",
-      "description": "Raw current value of analog input channel 1, read only. Holding register 40002 (zero-based address 1), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9. The manual does not state the encoding: it depends on the channel's input range and data format, so decode it with the range configured for the channel.",
+      "description": "Raw current value of analog input channel 1.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -50,7 +50,7 @@
     },
     "AI2_RAW": {
       "type": "integer",
-      "description": "Raw current value of analog input channel 2, read only. Holding register 40003 (zero-based address 2), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9. The manual does not state the encoding: it depends on the channel's input range and data format, so decode it with the range configured for the channel.",
+      "description": "Raw current value of analog input channel 2.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -68,7 +68,7 @@
     },
     "AI3_RAW": {
       "type": "integer",
-      "description": "Raw current value of analog input channel 3, read only. Holding register 40004 (zero-based address 3), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9. The manual does not state the encoding: it depends on the channel's input range and data format, so decode it with the range configured for the channel.",
+      "description": "Raw current value of analog input channel 3.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -86,7 +86,7 @@
     },
     "AI4_RAW": {
       "type": "integer",
-      "description": "Raw current value of analog input channel 4, read only. Holding register 40005 (zero-based address 4), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9. The manual does not state the encoding: it depends on the channel's input range and data format, so decode it with the range configured for the channel.",
+      "description": "Raw current value of analog input channel 4.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -104,7 +104,7 @@
     },
     "AI5_RAW": {
       "type": "integer",
-      "description": "Raw current value of analog input channel 5, read only. Holding register 40006 (zero-based address 5), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9. The manual does not state the encoding: it depends on the channel's input range and data format, so decode it with the range configured for the channel.",
+      "description": "Raw current value of analog input channel 5.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -122,7 +122,7 @@
     },
     "AI6_RAW": {
       "type": "integer",
-      "description": "Raw current value of analog input channel 6, read only. Holding register 40007 (zero-based address 6), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9. The manual does not state the encoding: it depends on the channel's input range and data format, so decode it with the range configured for the channel.",
+      "description": "Raw current value of analog input channel 6.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -140,7 +140,7 @@
     },
     "AI7_RAW": {
       "type": "integer",
-      "description": "Raw current value of analog input channel 7, read only. Holding register 40008 (zero-based address 7), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9. The manual does not state the encoding: it depends on the channel's input range and data format, so decode it with the range configured for the channel.",
+      "description": "Raw current value of analog input channel 7.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -158,7 +158,7 @@
     },
     "MODULE_NAME_1": {
       "type": "integer",
-      "description": "First word of the module name, read only, 0x4017 (bytes 0x40 0x17) for the ADAM-4017+. Holding register 40211 (zero-based address 210), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9.",
+      "description": "First word of the module name, 0x4017 (bytes 0x40 0x17) for the ADAM-4017+.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -177,7 +177,7 @@
     },
     "MODULE_NAME_2": {
       "type": "integer",
-      "description": "Second word of the module name, read only, 0x5000 (bytes 0x50 0x00) for the ADAM-4017+. Holding register 40212 (zero-based address 211), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9.",
+      "description": "Second word of the module name, 0x5000 (bytes 0x50 0x00) for the ADAM-4017+.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -196,7 +196,7 @@
     },
     "VERSION_1": {
       "type": "integer",
-      "description": "First firmware version word, read only; the manual's example is 0xA200 and does not describe the encoding. Holding register 40213 (zero-based address 212), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9.",
+      "description": "First firmware version word.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -214,7 +214,7 @@
     },
     "VERSION_2": {
       "type": "integer",
-      "description": "Second firmware version word, read only; the manual's example is 0x0000 and does not describe the encoding. Holding register 40214 (zero-based address 213), one 16-bit word; ADAM-4017+ table of Appendix G.1, PDF page 277 of the ADAM-4000 Series User Manual Ed. 9.",
+      "description": "Second firmware version word.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,

@@ -9,12 +9,12 @@
   ],
   "@type": "tm:ThingModel",
   "title": "Eastron SDM120-M Single-Phase Energy Meter",
-  "description": "Baseline model for the Eastron SDM120-M (ordered as SDM120-Modbus) single-phase two-wire DIN-rail energy meter with a 45 A direct connection, read over RS-485 Modbus RTU; it applies to meters that report meter code 0x0020 (32) in holding register 0xFC02. The software version is not stated; the meter reports it in holding register 0xFC84. Register map: Eastron SDM120-M User Manual V1.0 (2025), Modbus register Map, PDF pages 11-14: input registers read with function code 04, holding registers with function code 03. The map gives each value's start address, which this model uses as the zero-based address (register 30001 is start address 0x0000). Values are IEEE 754 32-bit floats, or signed 64-bit integers in the counter block at 0x2710, in consecutive registers. The manual does not state the word order, and no meter was read on hardware: the model reads the high word first, the Modbus default, and the first reading on a real meter must confirm it. The manual states no limit on the request size and no address ranges that may be read together, so every point or run of contiguous points is its own acquisition group. The SDM120-M User Manual V1.1 (2026) covers the SDM120-M(MB) and has no register map. Left out: the configuration holding registers (demand period, pulse width, rate and output mode, parity and stop bits, meter ID, baud rate, display scroll time, CO2 rate, measurement mode), the write-only reset of historical data, the serial number, which is instance data, and the second block of scaled 32-bit integer registers at 0x280A-0x2846 (voltage, current, powers, power factor, frequency and carbon emissions in units of 0.1 to 0.001), which repeats values the float registers carry and which the catalog's simulation check cannot serve at the type range limits.",
+  "description": "Baseline model for the Eastron SDM120-M (ordered as SDM120-Modbus) single-phase two-wire DIN-rail energy meter with a 45 A direct connection, read over RS-485 Modbus RTU; it applies to meters that report meter code 0x0020 (32) in holding register 0xFC02. The software version is not stated; the meter reports it in holding register 0xFC84.\n\nRegister map: Eastron SDM120-M User Manual V1.0 (2025), Modbus register Map, PDF pages 11-14. Input registers: input parameters table, from PDF page 11, read with function code 04; values are IEEE 754 32-bit floats in two registers, or signed 64-bit integers in four registers in the counter block at 0x2710. Holding registers: holding parameters table, PDF page 14, read with function code 03, one 16-bit word each. The map gives each value's start address, which this model uses as the zero-based address (register 30001 is start address 0x0000).\n\nThe manual does not state the word order, and no meter was read on hardware: the model reads the high word first, the Modbus default, and the first reading on a real meter must confirm it. The manual states no limit on the request size and no address ranges that may be read together, so every point or run of contiguous points is its own acquisition group. The SDM120-M User Manual V1.1 (2026) covers the SDM120-M(MB) and has no register map. Units are SI symbols: the manual's VAr, kVArh, VArh and Kg are var, kvarh, varh and kg here, and its rows named VAh and Ah are the apparent energy and the charge.\n\nLeft out: the configuration holding registers (demand period, pulse width, rate and output mode, parity and stop bits, meter ID, baud rate, display scroll time, CO2 rate, measurement mode), the write-only reset of historical data, the serial number, which is instance data, and the second block of scaled 32-bit integer registers at 0x280A-0x2846 (voltage, current, powers, power factor, frequency and carbon emissions in units of 0.1 to 0.001), which repeats values the float registers carry and which the catalog's simulation check cannot serve at the type range limits.",
   "modpoll:version": "0.2",
   "properties": {
     "VOLTAGE": {
       "type": "number",
-      "description": "Line to neutral voltage. Input register 30001 (start address 0x0000), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Voltage.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -30,7 +30,7 @@
     },
     "CURRENT": {
       "type": "number",
-      "description": "Current. Input register 30007 (start address 0x0006), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Current.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -46,7 +46,7 @@
     },
     "ACTIVE_POWER": {
       "type": "number",
-      "description": "Active power. Input register 30013 (start address 0x000C), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Active power.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -62,7 +62,7 @@
     },
     "APPARENT_POWER": {
       "type": "number",
-      "description": "Apparent power. Input register 30019 (start address 0x0012), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Apparent power.",
       "readOnly": true,
       "unit": "VA",
       "forms": [
@@ -78,7 +78,7 @@
     },
     "REACTIVE_POWER": {
       "type": "number",
-      "description": "Reactive power (the manual writes the unit as VAr). Input register 30025 (start address 0x0018), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Reactive power.",
       "readOnly": true,
       "unit": "var",
       "forms": [
@@ -94,7 +94,7 @@
     },
     "POWER_FACTOR": {
       "type": "number",
-      "description": "Power factor. Input register 30031 (start address 0x001E), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Power factor.",
       "readOnly": true,
       "forms": [
         {
@@ -109,7 +109,7 @@
     },
     "FREQUENCY": {
       "type": "number",
-      "description": "Frequency of the supply voltage. Input register 30071 (start address 0x0046), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Frequency.",
       "readOnly": true,
       "unit": "Hz",
       "forms": [
@@ -125,7 +125,7 @@
     },
     "IMPORT_ACTIVE_ENERGY": {
       "type": "number",
-      "description": "Import active energy. Input register 30073 (start address 0x0048), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Import active energy.",
       "readOnly": true,
       "unit": "kWh",
       "forms": [
@@ -141,7 +141,7 @@
     },
     "EXPORT_ACTIVE_ENERGY": {
       "type": "number",
-      "description": "Export active energy. Input register 30075 (start address 0x004A), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Export active energy.",
       "readOnly": true,
       "unit": "kWh",
       "forms": [
@@ -157,7 +157,7 @@
     },
     "IMPORT_REACTIVE_ENERGY": {
       "type": "number",
-      "description": "Import reactive energy (the manual writes the unit as kVArh). Input register 30077 (start address 0x004C), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Import reactive energy.",
       "readOnly": true,
       "unit": "kvarh",
       "forms": [
@@ -173,7 +173,7 @@
     },
     "EXPORT_REACTIVE_ENERGY": {
       "type": "number",
-      "description": "Export reactive energy (the manual writes the unit as kVArh). Input register 30079 (start address 0x004E), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Export reactive energy.",
       "readOnly": true,
       "unit": "kvarh",
       "forms": [
@@ -189,7 +189,7 @@
     },
     "APPARENT_ENERGY": {
       "type": "number",
-      "description": "Apparent energy (the manual's row is named VAh). Input register 30081 (start address 0x0050), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "VAh (apparent energy).",
       "readOnly": true,
       "unit": "kVAh",
       "forms": [
@@ -205,7 +205,7 @@
     },
     "CHARGE": {
       "type": "number",
-      "description": "Charge in ampere hours (the manual's row is named Ah). Input register 30083 (start address 0x0052), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Ah (charge in ampere hours).",
       "readOnly": true,
       "unit": "Ah",
       "forms": [
@@ -221,7 +221,7 @@
     },
     "POWER_DEMAND": {
       "type": "number",
-      "description": "Total system power demand. Input register 30085 (start address 0x0054), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total system power demand.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -237,7 +237,7 @@
     },
     "POWER_DEMAND_MAX": {
       "type": "number",
-      "description": "Maximum total system power demand. Input register 30087 (start address 0x0056), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Maximum total system power demand.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -253,7 +253,7 @@
     },
     "IMPORT_POWER_DEMAND": {
       "type": "number",
-      "description": "Import system power demand. Input register 30089 (start address 0x0058), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Import system power demand.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -269,7 +269,7 @@
     },
     "IMPORT_POWER_DEMAND_MAX": {
       "type": "number",
-      "description": "Maximum import system power demand. Input register 30091 (start address 0x005A), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Maximum import system power demand.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -285,7 +285,7 @@
     },
     "EXPORT_POWER_DEMAND": {
       "type": "number",
-      "description": "Export system power demand. Input register 30093 (start address 0x005C), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Export system power demand.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -301,7 +301,7 @@
     },
     "EXPORT_POWER_DEMAND_MAX": {
       "type": "number",
-      "description": "Maximum export system power demand. Input register 30095 (start address 0x005E), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Maximum export system power demand.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -317,7 +317,7 @@
     },
     "CURRENT_DEMAND": {
       "type": "number",
-      "description": "Current demand. Input register 30259 (start address 0x0102), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Current demand.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -333,7 +333,7 @@
     },
     "CURRENT_DEMAND_MAX": {
       "type": "number",
-      "description": "Maximum current demand. Input register 30265 (start address 0x0108), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Maximum current demand.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -349,7 +349,7 @@
     },
     "TOTAL_ACTIVE_ENERGY": {
       "type": "number",
-      "description": "Total active energy. Input register 30343 (start address 0x0156), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total active energy.",
       "readOnly": true,
       "unit": "kWh",
       "forms": [
@@ -365,7 +365,7 @@
     },
     "TOTAL_REACTIVE_ENERGY": {
       "type": "number",
-      "description": "Total reactive energy (the manual writes the unit as kVArh). Input register 30345 (start address 0x0158), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total reactive energy.",
       "readOnly": true,
       "unit": "kvarh",
       "forms": [
@@ -381,7 +381,7 @@
     },
     "CO2": {
       "type": "number",
-      "description": "Carbon emissions, computed from the energy and the configured CO2 rate (the manual writes the unit as Kg). Input register 320131 (start address 0x4EA2), 32-bit float in two registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "CO2: carbon emissions computed from the energy and the configured CO2 rate.",
       "readOnly": true,
       "unit": "kg",
       "forms": [
@@ -397,7 +397,7 @@
     },
     "IMPORT_ACTIVE_ENERGY_WH": {
       "type": "integer",
-      "description": "Total import active energy as a 64-bit integer. Input register 310001 (start address 0x2710), 64-bit signed integer in four registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total import active energy.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -413,7 +413,7 @@
     },
     "EXPORT_ACTIVE_ENERGY_WH": {
       "type": "integer",
-      "description": "Total export active energy as a 64-bit integer. Input register 310005 (start address 0x2714), 64-bit signed integer in four registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total export active energy.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -429,7 +429,7 @@
     },
     "IMPORT_REACTIVE_ENERGY_VARH": {
       "type": "integer",
-      "description": "Total import reactive energy as a 64-bit integer (the manual writes the unit as VArh). Input register 310009 (start address 0x2718), 64-bit signed integer in four registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total import reactive energy.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -445,7 +445,7 @@
     },
     "EXPORT_REACTIVE_ENERGY_VARH": {
       "type": "integer",
-      "description": "Total export reactive energy as a 64-bit integer (the manual writes the unit as VArh). Input register 310013 (start address 0x271C), 64-bit signed integer in four registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total export reactive energy.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -461,7 +461,7 @@
     },
     "APPARENT_ENERGY_VAH": {
       "type": "integer",
-      "description": "Total apparent energy as a 64-bit integer. Input register 310017 (start address 0x2720), 64-bit signed integer in four registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total apparent energy.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [
@@ -477,7 +477,7 @@
     },
     "TOTAL_ACTIVE_ENERGY_WH": {
       "type": "integer",
-      "description": "Total active energy as a 64-bit integer. Input register 310021 (start address 0x2724), 64-bit signed integer in four registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total active energy.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -493,7 +493,7 @@
     },
     "TOTAL_REACTIVE_ENERGY_VARH": {
       "type": "integer",
-      "description": "Total reactive energy as a 64-bit integer (the manual writes the unit as VArh). Input register 310025 (start address 0x2728), 64-bit signed integer in four registers; Modbus register Map, input parameters table, PDF page 11 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Total reactive energy.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -509,7 +509,7 @@
     },
     "METER_CODE": {
       "type": "integer",
-      "description": "Meter code identifying the product: 0x0020 (32) for the SDM120-M. Holding register 464515 (start address 0xFC02), one 16-bit word, read only; Modbus register Map, holding parameters table, PDF page 14 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Meter code: 0x0020 (32) for the SDM120-M.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,
@@ -527,7 +527,7 @@
     },
     "SOFTWARE_VERSION": {
       "type": "integer",
-      "description": "Software version, XX.YY: the high byte is XX and the low byte is YY, each read as two hexadecimal digits. Holding register 464645 (start address 0xFC84), one 16-bit word, read only; Modbus register Map, holding parameters table, PDF page 14 of the SDM120-M User Manual V1.0 (2025).",
+      "description": "Software version, XX.YY: the high byte is XX and the low byte is YY, each read as two hexadecimal digits.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 65535,

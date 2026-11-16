@@ -9,12 +9,12 @@
   ],
   "@type": "tm:ThingModel",
   "title": "Microstar P2000-T Three-Phase Transformer-Operated Smart Meter",
-  "description": "Baseline model for the Microstar P2000-T smart meter, read over Modbus (RS-485 Modbus RTU or a Modbus TCP gateway). Unverified: no manufacturer document lists these registers, because Microstar publishes no Modbus register map. The eight points come from the modpoll v1 contributed configuration contrib/microstar/microstar_p2000.csv of the modpoll project, which names the meter P2000 without a suffix, gives no source document and was not checked against the manufacturer; it is applied to both the P2000-D and the P2000-T on the assumption that they share this register map. That file reads all values as holding registers (function code 03) at the addresses given there, which are zero-based addresses on the wire like those of its other configurations, as 32-bit IEEE 754 floats in two registers with the high word first (BE_BE). It reads the two energies one point per request and the voltages and currents as blocks of six registers, and the model keeps those requests. The file does not say whether the voltages are phase to neutral or phase to phase, whether the energies are primary or secondary values for the transformer-operated meter, or what its '(current)' prefix on the energies means; the points carry the file's wording. Left out: everything else the meter may offer (power, power factor, frequency, demand, tariffs, identity), because nothing documents it.",
+  "description": "Baseline model for the Microstar P2000-T smart meter, read over Modbus (RS-485 Modbus RTU or a Modbus TCP gateway). Unverified: no manufacturer document lists these registers, because Microstar publishes no Modbus register map.\n\nRegister map: the modpoll v1 contributed configuration contrib/microstar/microstar_p2000.csv of the modpoll project, which names the meter P2000 without a suffix, gives no source document and was not checked against the manufacturer; it is applied to both the P2000-D and the P2000-T on the assumption that they share this register map. Holding registers: read with function code 03 at the addresses given there, which are zero-based addresses on the wire like those of its other configurations, as 32-bit IEEE 754 floats in two registers with the high word first (BE_BE).\n\nThe file reads the two energies one point per request and the voltages and currents as blocks of six registers, and the model keeps those requests. The file does not say whether the voltages are phase to neutral or phase to phase, whether the energies are primary or secondary values for the transformer-operated meter, or what its '(current)' prefix on the energies means; the points carry the file's wording.\n\nLeft out: everything else the meter may offer (power, power factor, frequency, demand, tariffs, identity), because nothing documents it.",
   "modpoll:version": "0.2",
   "properties": {
     "ACTIVE_ENERGY_IMPORT_TOTAL": {
       "type": "number",
-      "description": "Total import active energy, labelled '(current)' in the source file. Address 32784, 32-bit float in two registers, high word first, read only; from contrib/microstar/microstar_p2000.csv of the modpoll project (modpoll v1), not checked against a manufacturer document.",
+      "description": "(current) total import active energy.",
       "readOnly": true,
       "unit": "kWh",
       "forms": [
@@ -30,7 +30,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_TOTAL": {
       "type": "number",
-      "description": "Total export active energy, labelled '(current)' in the source file. Address 32800, 32-bit float in two registers, high word first, read only; from contrib/microstar/microstar_p2000.csv of the modpoll project (modpoll v1), not checked against a manufacturer document.",
+      "description": "(current) total export active energy.",
       "readOnly": true,
       "unit": "kWh",
       "forms": [
@@ -46,7 +46,7 @@
     },
     "VOLTAGE_A": {
       "type": "number",
-      "description": "Phase A voltage. Address 42514, 32-bit float in two registers, high word first, read only; from contrib/microstar/microstar_p2000.csv of the modpoll project (modpoll v1), not checked against a manufacturer document.",
+      "description": "Phase A voltage.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -62,7 +62,7 @@
     },
     "VOLTAGE_B": {
       "type": "number",
-      "description": "Phase B voltage. Address 42516, 32-bit float in two registers, high word first, read only; from contrib/microstar/microstar_p2000.csv of the modpoll project (modpoll v1), not checked against a manufacturer document.",
+      "description": "Phase B voltage.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -78,7 +78,7 @@
     },
     "VOLTAGE_C": {
       "type": "number",
-      "description": "Phase C voltage. Address 42518, 32-bit float in two registers, high word first, read only; from contrib/microstar/microstar_p2000.csv of the modpoll project (modpoll v1), not checked against a manufacturer document.",
+      "description": "Phase C voltage.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -94,7 +94,7 @@
     },
     "CURRENT_A": {
       "type": "number",
-      "description": "Phase A current. Address 42530, 32-bit float in two registers, high word first, read only; from contrib/microstar/microstar_p2000.csv of the modpoll project (modpoll v1), not checked against a manufacturer document.",
+      "description": "Phase A current.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -110,7 +110,7 @@
     },
     "CURRENT_B": {
       "type": "number",
-      "description": "Phase B current. Address 42532, 32-bit float in two registers, high word first, read only; from contrib/microstar/microstar_p2000.csv of the modpoll project (modpoll v1), not checked against a manufacturer document.",
+      "description": "Phase B current.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -126,7 +126,7 @@
     },
     "CURRENT_C": {
       "type": "number",
-      "description": "Phase C current. Address 42534, 32-bit float in two registers, high word first, read only; from contrib/microstar/microstar_p2000.csv of the modpoll project (modpoll v1), not checked against a manufacturer document.",
+      "description": "Phase C current.",
       "readOnly": true,
       "unit": "A",
       "forms": [

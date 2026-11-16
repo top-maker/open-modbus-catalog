@@ -9,12 +9,12 @@
   ],
   "@type": "tm:ThingModel",
   "title": "Siemens SENTRON PAC2200 Power Monitoring Device",
-  "description": "Baseline model for the Siemens SENTRON PAC2200 power monitoring device (versions with an Ethernet Modbus TCP or an RS485 Modbus RTU interface, 5 A and 65 A devices), read over Modbus. Register map: SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06, Appendix A.1.3 'Modbus measured variables with the function codes 0x03 and 0x04', Table A-3, PDF pages 107-110. The manual lists each value by an 'offset' and does not state the address on the wire. The PAC2200 uses the same register map as the PAC3200: the Siemens document 'SIMATIC S7-1500 Block for Connecting Modbus TCP Devices to Energy Suite V15', Entry ID 109749074 V1.1, PDF page 9, supplies one pre-configured register map for the SENTRON PAC2200, PAC3200 (T) and PAC4200. For the PAC3200 the Siemens application example 'Data Exchange between S7-1200 and SENTRON PAC via MODBUS TCP (Set 22)', Entry ID 40614428, Table 3-12 on PDF page 26, reads the total active power (offset 65) with MB_DATA_ADDR 40001 + 65 = 40066, and the Siemens document 'Modbus/TCP with MB_CLIENT and MB_SERVER', Entry ID 102020340, Table 4-5, PDF pages 23-24, maps MB_DATA_ADDR 40001 to the holding register at remote address 0. So the offset is the zero-based address on the wire: offset 1 (the voltage UL1-N) is address 1, and address 0 is not used. Registers are read with function code 03 (04 returns the same data); a read must start on the first register of a value (manual, PDF page 107). Float values are IEEE 754 in two registers, unsigned long values in two registers and double values in four registers; the manuals do not state the word order, and the Set 22 example reads the two registers of the active power directly as an S7 Real, which means the first register holds the high word. The model reads the high word first for every multi-register value, and no device was read on hardware. Left out: the settings, the command parameters and device information, the counters of parameter changes, the configurable energy counter, the cumulated average power and load profile values, the period values and their time stamps, the secondary (MID) energy totals, and the float copies of the energy values at offset 2801 onward.",
+  "description": "Baseline model for the Siemens SENTRON PAC2200 power monitoring device (versions with an Ethernet Modbus TCP or an RS485 Modbus RTU interface, 5 A and 65 A devices), read over Modbus.\n\nRegister map: SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06, Appendix A.1.3 'Modbus measured variables with the function codes 0x03 and 0x04'. Holding registers: Table A-3, PDF pages 107-110, read with function code 03 (04 returns the same data); Float values are IEEE 754 in two registers, unsigned long values in two registers and double values in four registers. The manual lists each value by an 'offset', which this model uses as the zero-based address on the wire: offset 1 (the voltage UL1-N) is address 1, and address 0 is not used.\n\nThe manual does not state the address on the wire. The PAC2200 uses the same register map as the PAC3200: the Siemens document 'SIMATIC S7-1500 Block for Connecting Modbus TCP Devices to Energy Suite V15', Entry ID 109749074 V1.1, PDF page 9, supplies one pre-configured register map for the SENTRON PAC2200, PAC3200 (T) and PAC4200. For the PAC3200 the Siemens application example 'Data Exchange between S7-1200 and SENTRON PAC via MODBUS TCP (Set 22)', Entry ID 40614428, Table 3-12 on PDF page 26, reads the total active power (offset 65) with MB_DATA_ADDR 40001 + 65 = 40066, and the Siemens document 'Modbus/TCP with MB_CLIENT and MB_SERVER', Entry ID 102020340, Table 4-5, PDF pages 23-24, maps MB_DATA_ADDR 40001 to the holding register at remote address 0. So the offset is the zero-based address on the wire. A read must start on the first register of a value (manual, PDF page 107). The manuals do not state the word order, and the Set 22 example reads the two registers of the active power directly as an S7 Real, which means the first register holds the high word. The model reads the high word first for every multi-register value, and no device was read on hardware. The device status and the digital input and output status words are kept raw.\n\nLeft out: the settings, the command parameters and device information, the counters of parameter changes, the configurable energy counter, the cumulated average power and load profile values, the period values and their time stamps, the secondary (MID) energy totals, and the float copies of the energy values at offset 2801 onward.",
   "modpoll:version": "0.2",
   "properties": {
     "VOLTAGE_L1_N": {
       "type": "number",
-      "description": "Voltage phase L1 to neutral. Offset 1, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Voltage UL1-N.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -30,7 +30,7 @@
     },
     "VOLTAGE_L2_N": {
       "type": "number",
-      "description": "Voltage phase L2 to neutral. Offset 3, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Voltage UL2-N.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -46,7 +46,7 @@
     },
     "VOLTAGE_L3_N": {
       "type": "number",
-      "description": "Voltage phase L3 to neutral. Offset 5, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Voltage UL3-N.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -62,7 +62,7 @@
     },
     "VOLTAGE_L1_L2": {
       "type": "number",
-      "description": "Voltage between phases L1 and L2. Offset 7, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Voltage UL1-L2.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -78,7 +78,7 @@
     },
     "VOLTAGE_L2_L3": {
       "type": "number",
-      "description": "Voltage between phases L2 and L3. Offset 9, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Voltage UL2-L3.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -94,7 +94,7 @@
     },
     "VOLTAGE_L3_L1": {
       "type": "number",
-      "description": "Voltage between phases L3 and L1. Offset 11, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Voltage UL3-L1.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -110,7 +110,7 @@
     },
     "CURRENT_L1": {
       "type": "number",
-      "description": "Current of phase L1. Offset 13, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Current L1.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -126,7 +126,7 @@
     },
     "CURRENT_L2": {
       "type": "number",
-      "description": "Current of phase L2. Offset 15, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Current L2.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -142,7 +142,7 @@
     },
     "CURRENT_L3": {
       "type": "number",
-      "description": "Current of phase L3. Offset 17, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Current L3.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -158,7 +158,7 @@
     },
     "APPARENT_POWER_L1": {
       "type": "number",
-      "description": "Apparent power of phase L1. Offset 19, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Apparent power L1.",
       "readOnly": true,
       "unit": "VA",
       "forms": [
@@ -174,7 +174,7 @@
     },
     "APPARENT_POWER_L2": {
       "type": "number",
-      "description": "Apparent power of phase L2. Offset 21, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Apparent power L2.",
       "readOnly": true,
       "unit": "VA",
       "forms": [
@@ -190,7 +190,7 @@
     },
     "APPARENT_POWER_L3": {
       "type": "number",
-      "description": "Apparent power of phase L3. Offset 23, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Apparent power L3.",
       "readOnly": true,
       "unit": "VA",
       "forms": [
@@ -206,7 +206,7 @@
     },
     "ACTIVE_POWER_L1": {
       "type": "number",
-      "description": "Active power of phase L1. Offset 25, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Active power L1.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -222,7 +222,7 @@
     },
     "ACTIVE_POWER_L2": {
       "type": "number",
-      "description": "Active power of phase L2. Offset 27, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Active power L2.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -238,7 +238,7 @@
     },
     "ACTIVE_POWER_L3": {
       "type": "number",
-      "description": "Active power of phase L3. Offset 29, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Active power L3.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -254,7 +254,7 @@
     },
     "REACTIVE_POWER_L1": {
       "type": "number",
-      "description": "Reactive power of phase L1. Offset 31, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Reactive power L1.",
       "readOnly": true,
       "unit": "var",
       "forms": [
@@ -270,7 +270,7 @@
     },
     "REACTIVE_POWER_L2": {
       "type": "number",
-      "description": "Reactive power of phase L2. Offset 33, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Reactive power L2.",
       "readOnly": true,
       "unit": "var",
       "forms": [
@@ -286,7 +286,7 @@
     },
     "REACTIVE_POWER_L3": {
       "type": "number",
-      "description": "Reactive power of phase L3. Offset 35, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Reactive power L3.",
       "readOnly": true,
       "unit": "var",
       "forms": [
@@ -302,7 +302,7 @@
     },
     "POWER_FACTOR_L1": {
       "type": "number",
-      "description": "Power factor of phase L1, range 0 to 1. Offset 37, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Power factor L1, range 0 to 1.",
       "readOnly": true,
       "forms": [
         {
@@ -317,7 +317,7 @@
     },
     "POWER_FACTOR_L2": {
       "type": "number",
-      "description": "Power factor of phase L2, range 0 to 1. Offset 39, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Power factor L2, range 0 to 1.",
       "readOnly": true,
       "forms": [
         {
@@ -332,7 +332,7 @@
     },
     "POWER_FACTOR_L3": {
       "type": "number",
-      "description": "Power factor of phase L3, range 0 to 1. Offset 41, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Power factor L3, range 0 to 1.",
       "readOnly": true,
       "forms": [
         {
@@ -347,7 +347,7 @@
     },
     "FREQUENCY": {
       "type": "number",
-      "description": "Frequency, range 45 to 65. Offset 55, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Frequency, range 45 to 65.",
       "readOnly": true,
       "unit": "Hz",
       "forms": [
@@ -363,7 +363,7 @@
     },
     "VOLTAGE_LN_AVG": {
       "type": "number",
-      "description": "Average phase to neutral voltage. Offset 57, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Average voltage UL-N.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -379,7 +379,7 @@
     },
     "VOLTAGE_LL_AVG": {
       "type": "number",
-      "description": "Average phase to phase voltage. Offset 59, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Average voltage UL-L.",
       "readOnly": true,
       "unit": "V",
       "forms": [
@@ -395,7 +395,7 @@
     },
     "CURRENT_AVG": {
       "type": "number",
-      "description": "Average current. Offset 61, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Average Current.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -411,7 +411,7 @@
     },
     "APPARENT_POWER_TOTAL": {
       "type": "number",
-      "description": "Total apparent power. Offset 63, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Total apparent power.",
       "readOnly": true,
       "unit": "VA",
       "forms": [
@@ -427,7 +427,7 @@
     },
     "ACTIVE_POWER_TOTAL": {
       "type": "number",
-      "description": "Total active power. Offset 65, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Total active power.",
       "readOnly": true,
       "unit": "W",
       "forms": [
@@ -443,7 +443,7 @@
     },
     "REACTIVE_POWER_TOTAL": {
       "type": "number",
-      "description": "Total reactive power. Offset 67, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Total reactive power.",
       "readOnly": true,
       "unit": "var",
       "forms": [
@@ -459,7 +459,7 @@
     },
     "POWER_FACTOR_TOTAL": {
       "type": "number",
-      "description": "Total power factor. Offset 69, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Total power factor.",
       "readOnly": true,
       "forms": [
         {
@@ -474,7 +474,7 @@
     },
     "NEUTRAL_CURRENT": {
       "type": "number",
-      "description": "Neutral current. Offset 71, Float in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Neutral Current.",
       "readOnly": true,
       "unit": "A",
       "forms": [
@@ -490,7 +490,7 @@
     },
     "DEVICE_STATUS_RAW": {
       "type": "integer",
-      "description": "Device diagnostics and device status word: byte 0 global state, byte 1 local state, byte 2 global diagnostics. Kept raw. Offset 205, Unsigned long in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Device diagnostics and device status word: byte 0 global state, byte 1 local state, byte 2 global diagnostics.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 4294967295,
@@ -508,7 +508,7 @@
     },
     "DIGITAL_OUTPUT_STATUS_RAW": {
       "type": "integer",
-      "description": "Status of the digital output: bit 0 is output 0. Kept raw. Offset 207, Unsigned long in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Status of the digital output: bit 0 is output 0.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 4294967295,
@@ -526,7 +526,7 @@
     },
     "DIGITAL_INPUT_STATUS_RAW": {
       "type": "integer",
-      "description": "Status of the digital input: byte 3 bit 0 is input 0. Kept raw. Offset 209, Unsigned long in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Status of the digital input: byte 3 bit 0 is input 0.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 4294967295,
@@ -544,7 +544,7 @@
     },
     "ACTIVE_TARIFF": {
       "type": "integer",
-      "description": "Active tariff: 0 is tariff 1, 1 is tariff 2. Offset 211, Unsigned long in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Active tariff: 0 is tariff 1, 1 is tariff 2.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 4294967295,
@@ -561,7 +561,7 @@
     },
     "UNIVERSAL_COUNTER": {
       "type": "integer",
-      "description": "Universal counter, range 0 to 999999999. Offset 215, Unsigned long in two registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Universal counter, range 0 to 999999999.",
       "readOnly": true,
       "minimum": 0,
       "maximum": 4294967295,
@@ -579,7 +579,7 @@
     },
     "ACTIVE_ENERGY_IMPORT_T1": {
       "type": "number",
-      "description": "Active energy import tariff 1, overflow at 1.0e+12. Offset 801, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Active energy import tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -595,7 +595,7 @@
     },
     "ACTIVE_ENERGY_IMPORT_T2": {
       "type": "number",
-      "description": "Active energy import tariff 2, overflow at 1.0e+12. Offset 805, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Active energy import tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -611,7 +611,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_T1": {
       "type": "number",
-      "description": "Active energy export tariff 1, overflow at 1.0e+12. Offset 809, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Active energy export tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -627,7 +627,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_T2": {
       "type": "number",
-      "description": "Active energy export tariff 2, overflow at 1.0e+12. Offset 813, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Active energy export tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -643,7 +643,7 @@
     },
     "REACTIVE_ENERGY_IMPORT_T1": {
       "type": "number",
-      "description": "Reactive energy import tariff 1, overflow at 1.0e+12. Offset 817, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Reactive energy import tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -659,7 +659,7 @@
     },
     "REACTIVE_ENERGY_IMPORT_T2": {
       "type": "number",
-      "description": "Reactive energy import tariff 2, overflow at 1.0e+12. Offset 821, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Reactive energy import tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -675,7 +675,7 @@
     },
     "REACTIVE_ENERGY_EXPORT_T1": {
       "type": "number",
-      "description": "Reactive energy export tariff 1, overflow at 1.0e+12. Offset 825, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Reactive energy export tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -691,7 +691,7 @@
     },
     "REACTIVE_ENERGY_EXPORT_T2": {
       "type": "number",
-      "description": "Reactive energy export tariff 2, overflow at 1.0e+12. Offset 829, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Reactive energy export tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -707,7 +707,7 @@
     },
     "APPARENT_ENERGY_T1": {
       "type": "number",
-      "description": "Apparent energy tariff 1, overflow at 1.0e+12. Offset 833, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Apparent energy tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [
@@ -723,7 +723,7 @@
     },
     "APPARENT_ENERGY_T2": {
       "type": "number",
-      "description": "Apparent energy tariff 2, overflow at 1.0e+12. Offset 837, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "Apparent energy tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [
@@ -739,7 +739,7 @@
     },
     "ACTIVE_ENERGY_IMPORT_L1_T1": {
       "type": "number",
-      "description": "Phase L1 active energy import tariff 1, overflow at 1.0e+12. Offset 841, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 active energy import tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -755,7 +755,7 @@
     },
     "ACTIVE_ENERGY_IMPORT_L1_T2": {
       "type": "number",
-      "description": "Phase L1 active energy import tariff 2, overflow at 1.0e+12. Offset 845, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 active energy import tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -771,7 +771,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_L1_T1": {
       "type": "number",
-      "description": "Phase L1 active energy export tariff 1, overflow at 1.0e+12. Offset 849, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 active energy export tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -787,7 +787,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_L1_T2": {
       "type": "number",
-      "description": "Phase L1 active energy export tariff 2, overflow at 1.0e+12. Offset 853, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 active energy export tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -803,7 +803,7 @@
     },
     "REACTIVE_ENERGY_IMPORT_L1_T1": {
       "type": "number",
-      "description": "Phase L1 reactive energy import tariff 1, overflow at 1.0e+12. Offset 857, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 reactive energy import tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -819,7 +819,7 @@
     },
     "REACTIVE_ENERGY_IMPORT_L1_T2": {
       "type": "number",
-      "description": "Phase L1 reactive energy import tariff 2, overflow at 1.0e+12. Offset 861, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 reactive energy import tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -835,7 +835,7 @@
     },
     "REACTIVE_ENERGY_EXPORT_L1_T1": {
       "type": "number",
-      "description": "Phase L1 reactive energy export tariff 1, overflow at 1.0e+12. Offset 865, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 reactive energy export tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -851,7 +851,7 @@
     },
     "REACTIVE_ENERGY_EXPORT_L1_T2": {
       "type": "number",
-      "description": "Phase L1 reactive energy export tariff 2, overflow at 1.0e+12. Offset 869, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 reactive energy export tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -867,7 +867,7 @@
     },
     "APPARENT_ENERGY_L1_T1": {
       "type": "number",
-      "description": "Phase L1 apparent energy tariff 1, overflow at 1.0e+12. Offset 873, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 apparent energy tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [
@@ -883,7 +883,7 @@
     },
     "APPARENT_ENERGY_L1_T2": {
       "type": "number",
-      "description": "Phase L1 apparent energy tariff 2, overflow at 1.0e+12. Offset 877, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L1 apparent energy tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [
@@ -899,7 +899,7 @@
     },
     "ACTIVE_ENERGY_IMPORT_L2_T1": {
       "type": "number",
-      "description": "Phase L2 active energy import tariff 1, overflow at 1.0e+12. Offset 881, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 active energy import tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -915,7 +915,7 @@
     },
     "ACTIVE_ENERGY_IMPORT_L2_T2": {
       "type": "number",
-      "description": "Phase L2 active energy import tariff 2, overflow at 1.0e+12. Offset 885, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 active energy import tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -931,7 +931,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_L2_T1": {
       "type": "number",
-      "description": "Phase L2 active energy export tariff 1, overflow at 1.0e+12. Offset 889, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 active energy export tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -947,7 +947,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_L2_T2": {
       "type": "number",
-      "description": "Phase L2 active energy export tariff 2, overflow at 1.0e+12. Offset 893, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 active energy export tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -963,7 +963,7 @@
     },
     "REACTIVE_ENERGY_IMPORT_L2_T1": {
       "type": "number",
-      "description": "Phase L2 reactive energy import tariff 1, overflow at 1.0e+12. Offset 897, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 reactive energy import tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -979,7 +979,7 @@
     },
     "REACTIVE_ENERGY_IMPORT_L2_T2": {
       "type": "number",
-      "description": "Phase L2 reactive energy import tariff 2, overflow at 1.0e+12. Offset 901, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 reactive energy import tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -995,7 +995,7 @@
     },
     "REACTIVE_ENERGY_EXPORT_L2_T1": {
       "type": "number",
-      "description": "Phase L2 reactive energy export tariff 1, overflow at 1.0e+12. Offset 905, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 reactive energy export tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -1011,7 +1011,7 @@
     },
     "REACTIVE_ENERGY_EXPORT_L2_T2": {
       "type": "number",
-      "description": "Phase L2 reactive energy export tariff 2, overflow at 1.0e+12. Offset 909, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 reactive energy export tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -1027,7 +1027,7 @@
     },
     "APPARENT_ENERGY_L2_T1": {
       "type": "number",
-      "description": "Phase L2 apparent energy tariff 1, overflow at 1.0e+12. Offset 913, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 apparent energy tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [
@@ -1043,7 +1043,7 @@
     },
     "APPARENT_ENERGY_L2_T2": {
       "type": "number",
-      "description": "Phase L2 apparent energy tariff 2, overflow at 1.0e+12. Offset 917, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L2 apparent energy tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [
@@ -1059,7 +1059,7 @@
     },
     "ACTIVE_ENERGY_IMPORT_L3_T1": {
       "type": "number",
-      "description": "Phase L3 active energy import tariff 1, overflow at 1.0e+12. Offset 921, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 active energy import tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -1075,7 +1075,7 @@
     },
     "ACTIVE_ENERGY_IMPORT_L3_T2": {
       "type": "number",
-      "description": "Phase L3 active energy import tariff 2, overflow at 1.0e+12. Offset 925, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 active energy import tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -1091,7 +1091,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_L3_T1": {
       "type": "number",
-      "description": "Phase L3 active energy export tariff 1, overflow at 1.0e+12. Offset 929, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 active energy export tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -1107,7 +1107,7 @@
     },
     "ACTIVE_ENERGY_EXPORT_L3_T2": {
       "type": "number",
-      "description": "Phase L3 active energy export tariff 2, overflow at 1.0e+12. Offset 933, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 active energy export tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "Wh",
       "forms": [
@@ -1123,7 +1123,7 @@
     },
     "REACTIVE_ENERGY_IMPORT_L3_T1": {
       "type": "number",
-      "description": "Phase L3 reactive energy import tariff 1, overflow at 1.0e+12. Offset 937, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 reactive energy import tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -1139,7 +1139,7 @@
     },
     "REACTIVE_ENERGY_IMPORT_L3_T2": {
       "type": "number",
-      "description": "Phase L3 reactive energy import tariff 2, overflow at 1.0e+12. Offset 941, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 reactive energy import tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -1155,7 +1155,7 @@
     },
     "REACTIVE_ENERGY_EXPORT_L3_T1": {
       "type": "number",
-      "description": "Phase L3 reactive energy export tariff 1, overflow at 1.0e+12. Offset 945, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 reactive energy export tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -1171,7 +1171,7 @@
     },
     "REACTIVE_ENERGY_EXPORT_L3_T2": {
       "type": "number",
-      "description": "Phase L3 reactive energy export tariff 2, overflow at 1.0e+12. Offset 949, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 reactive energy export tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "varh",
       "forms": [
@@ -1187,7 +1187,7 @@
     },
     "APPARENT_ENERGY_L3_T1": {
       "type": "number",
-      "description": "Phase L3 apparent energy tariff 1, overflow at 1.0e+12. Offset 953, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 apparent energy tariff 1, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [
@@ -1203,7 +1203,7 @@
     },
     "APPARENT_ENERGY_L3_T2": {
       "type": "number",
-      "description": "Phase L3 apparent energy tariff 2, overflow at 1.0e+12. Offset 957, Double in four registers, read only; Table A-3, Appendix A.1.3, PDF pages 107-110 of the SENTRON PAC2200 Equipment Manual 12/2022 L1V30415167B-06.",
+      "description": "L3 apparent energy tariff 2, overflow at 1.0e+12.",
       "readOnly": true,
       "unit": "VAh",
       "forms": [

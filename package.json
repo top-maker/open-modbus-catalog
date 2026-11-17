@@ -3,9 +3,12 @@
   "private": true,
   "scripts": {
     "validate": "node scripts/validate-catalog.mjs",
-    "test": "node --test 'test/*.test.mjs'"
+    "wot": "node scripts/check-wot.mjs",
+    "test": "node --test 'test/*.test.mjs' && uv run --locked --script test/check-thing-models.test.py",
+    "check": "npm test && npm run validate && npm run wot && uv run --locked --script scripts/check-thing-models.py"
   },
   "devDependencies": {
+    "@thing-description-playground/core": "1.4.0",
     "ajv": "8.20.0",
     "saxes": "6.0.0",
     "yaml": "2.9.1"

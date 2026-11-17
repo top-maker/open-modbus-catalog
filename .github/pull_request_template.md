@@ -4,6 +4,6 @@
 
 ## Checks
 
-- [ ] `npm test`, `npm run validate` and `uv run --locked --script scripts/check-thing-models.py` pass
+- [ ] `npm run check` passes
 - [ ] Every fact cites a listed document with an exact page or section
 - [ ] Documents, photographs, illustrations and text are cleared for public redistribution, and no private or partner-restricted material is included

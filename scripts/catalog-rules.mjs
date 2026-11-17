@@ -31,9 +31,12 @@ const allowedRootFiles = [
   'scripts/catalog-rules.mjs',
   'scripts/check-thing-models.py',
   'scripts/check-thing-models.py.lock',
+  'scripts/check-wot.mjs',
   'scripts/simulation.py',
   'scripts/validate-catalog.mjs',
   'simulation-presets.yaml',
+  'test/check-thing-models.test.py',
+  'test/check-thing-models.test.py.lock',
   'test/validate-catalog.test.mjs',
 ];
 const slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
@@ -194,7 +197,7 @@ export function validateCatalog(root, files = listFiles(root)) {
   }
 
   // The baseline Thing Model and its simulation data live at fixed paths next to
-  // product.yaml. The simulation check validates the data against modpoll-wot.
+  // product.yaml. The static checks validate the data against modpoll-wot.
   function checkModel(directory) {
     const modelPath = `${directory}model.tm.json`;
     const dataPath = `${directory}model.data.json`;

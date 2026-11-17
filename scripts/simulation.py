@@ -5,9 +5,7 @@
 """Simulation values for catalog Thing Models.
 
 `preset_data` builds static simulation data (initial values only) from
-simulation-presets.yaml for a package without model.data.json. `edge_values`
-builds the decoding passes of the simulation check from point types alone.
-Scaled values are the raw integer times the multiplier as Modpoll computes it,
+simulation-presets.yaml for a package without model.data.json. Scaled values are the raw integer times the multiplier as Modpoll computes it,
 which Modsim serves exactly and Modpoll reads back unchanged.
 
 Run it on a package to print the preset simulation data, for example to start
@@ -111,35 +109,6 @@ def preset_data(thing_model, category, presets=None):
             raise ValueError(f"{name}: no exact value fits the point")
         initial[name] = value
     return {"version": "1", "initial": initial}
-
-
-def edge_values(thing_model):
-    """Decoding passes: lower bound, upper bound, then high-bit and asymmetric patterns.
-
-    An identity point (`const`) cannot hold any other value, so it serves its constant in every pass.
-    """
-    passes = [{}, {}, {}]
-    for name, prop in thing_model["properties"].items():
-        form = read_form(prop)
-        kind = form["modv:type"]
-        if "const" in prop:
-            values = [prop["const"]] * 3
-        elif prop["type"] == "boolean" or kind == "xsd:boolean":
-            values = [False, True, True]
-        elif kind in FLOATS:
-            values = [fit(prop, target) for target in (-1024.25, 3.0e38 if kind == "xsd:float" else 1.0e300, 1.5)]
-        elif prop["type"] == "string" or kind == "xsd:string":
-            size = 2 * form.get("modv:quantity", 1)  # a string holds two characters per register
-            values = ["", "AZ"[:size], "Modbus"[:size]]
-        else:
-            low, high, factor = bounds(prop, form)
-            pattern = min(max(0x1234, low), high)
-            high_bit = (high + 1) // 2 + 1 if low >= 0 else -1
-            values = [scaled(raw, factor) for raw in (low, high, high_bit if low <= high_bit <= high else pattern)]
-        for target, value in zip(passes, values):
-            if value is not None:
-                target[name] = value
-    return passes
 
 
 def main():

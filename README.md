@@ -98,14 +98,23 @@ category and point unit; `uv run scripts/simulation.py <package>` prints it as
 a starting point for `model.data.json`. Readings of real devices, such as a
 Modpoll `--export` snapshot, are instance data and do not belong here.
 
-CI runs the simulation check on every Thing Model: it validates the profile,
-serves the simulation data with Modsim and reads it once with Modpoll, requiring
-static values to read back unchanged and changing values to stay in range,
-then serves values derived from each point's type (bounds, high bit and
-asymmetric patterns) to check decoding. This shows that a Thing Model
-executes consistently; it does not show that its point mappings match
-hardware. Hardware verification records are kept by ModioHub, not in this
-catalog.
+CI runs four static checks on every Thing Model:
+
+- W3C WoT: the Thing Model schema and the additional assertions of
+  [Eclipse Thingweb Playground](https://github.com/eclipse-thingweb/playground);
+- executable profile: modpoll-wot validates the
+  [profile](https://github.com/top-maker/modpoll/blob/v2/packages/modpoll-wot/profile.md),
+  including that each raw type's width matches its register count;
+- consistency: no two points share registers or bits, except identical
+  aliases and different bits of one register, and each `minimum` and
+  `maximum` fits the raw type after the multiplier;
+- simulation data: every readable point has a value, and every value fits
+  the point's type, range and multiplier exactly; changing values stay in range.
+
+These checks show that a Thing Model is well formed and consistent; they
+cannot catch a wrong address or word order. The catalog runs no simulated
+device: Modpoll and Modsim test their own encoding and decoding. Hardware
+verification records are kept by ModioHub, not in this catalog.
 
 ## Checks
 
@@ -114,15 +123,14 @@ Run the same checks as CI from a Git checkout with Node.js 24 and
 
 ```sh
 npm ci
-npm test
-npm run validate
-uv run --locked --script scripts/check-thing-models.py
+npm run check
 ```
 
-`npm test` shows that each validation rule rejects the bad data it exists for.
-The simulation check runs four packages at a time; `--changed-since REF` limits
-it to packages changed since a Git ref, as pull requests do in CI, and `--jobs N`
-sets the parallelism.
+`npm test` shows that each validation rule and static check rejects the bad
+data it exists for. `npm run wot` runs the W3C WoT validation, and
+`uv run --locked --script scripts/check-thing-models.py` the other static
+checks; `--changed-since REF` limits the latter to packages changed since a
+Git ref, as pull requests do in CI.
 
 ## License
 

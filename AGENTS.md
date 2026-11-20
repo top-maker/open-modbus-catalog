@@ -1,6 +1,6 @@
 # Public catalog conventions
 
-Cross-repository workspace map and shared rules: `/mnt/wsl/data/work/projects/workhome/AGENTS.md` (remote: `https://ysdlab-rpi-080.great-prometheus.ts.net:8443/ysd/workhome.git`). Read it before work that spans repositories.
+For work that spans multiple repositories, follow each affected repository's own AGENTS.md and confirm the scope and ownership of the change with the user before proceeding.
 
 - Review the working tree and current branch before editing. Integrate changes into `main` through a reviewed pull request.
 - Verify the manufacturer, exact model number, applicable variant, and source before adding product metadata. Share only data and assets cleared for public distribution.

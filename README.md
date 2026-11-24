@@ -132,6 +132,13 @@ data it exists for. `npm run wot` runs the W3C WoT validation, and
 checks; `--changed-since REF` limits the latter to packages changed since a
 Git ref, as pull requests do in CI.
 
+## Secret scan
+
+CI runs [gitleaks](https://github.com/gitleaks/gitleaks) over the Git history
+on every pull request. With [mise](https://mise.jdx.dev/) installed,
+`mise run gitleaks` runs the same scan locally; `mise install` provides the
+pinned Node.js, uv and gitleaks versions.
+
 ## License
 
 The catalog, including product records, Thing Models and illustrations, is
